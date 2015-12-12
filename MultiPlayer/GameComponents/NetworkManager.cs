@@ -20,9 +20,13 @@ namespace MultiPlayer.GameComponents
             config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
             config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
             config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
+            config.AcceptIncomingConnections = true;
+            config.Port = PORT;
 
             Me = new NetPeer(config);
-            Me.DiscoverLocalPeers(PORT);
+            Me.Start();
+
+            Me.DiscoverLocalPeers(5002);
         }
 
         public void Start()
@@ -59,10 +63,13 @@ namespace MultiPlayer.GameComponents
                         Logger.Log($"Uuum. Someone connected. I don't really know what to do now...");
                         break;
                     case NetIncomingMessageType.StatusChanged:
-                        Logger.Log(message.ReadString());
+                        //Logger.Log(message.ReadString());
                         break;
                 }
             }
+            if (Me.Connections.Count > 0)
+                Me.Connections[0].SendMessage(Me.CreateMessage("hey server!!"), NetDeliveryMethod.ReliableOrdered, 0);
+
         }
     }
 }

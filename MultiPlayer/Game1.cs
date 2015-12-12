@@ -46,6 +46,7 @@ namespace MultiPlayer
         {
             ComponentManager = new ComponentManager();
             ComponentManager.DelayedAdd(new Logger());
+            ComponentManager.DelayedAdd(new NetworkManager());
 
             ComponentManager.Start();
 
