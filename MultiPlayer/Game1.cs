@@ -86,7 +86,7 @@ namespace MultiPlayer
                 .With(new ShipEngine())
                 .With(new PlayerController())
                 .With(new Drag())
-                .With(new ScreenWrapper())
+                .With(new ScreenWrapper()).With(new ParticleEmitter())
                 .WithChild("machine gun", new Vector2(0, -1))
                 .Create());
 

@@ -55,6 +55,7 @@
     <Compile Include="GameComponents\IStartable.cs" />
     <Compile Include="GameComponents\IUpdateable.cs" />
     <Compile Include="GameComponents\NetworkManager.cs" />
+    <Compile Include="GameComponents\ParticleEmitter.cs" />
     <Compile Include="GameComponents\PlayerController.cs" />
     <Compile Include="GameComponents\ScreenWrapper.cs" />
     <Compile Include="GameComponents\ShipEngine.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Core\InputManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomUtil.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="TextureUtil.cs" />
     <Compile Include="Transform.cs" />
