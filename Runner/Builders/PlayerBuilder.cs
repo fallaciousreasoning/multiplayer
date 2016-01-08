@@ -16,7 +16,7 @@ namespace Runner.Builders
             var width = 1f;
             var height = 2f;
 
-            var groundDetector = new GroundDetector();
+            var groundDetector = new TriggerDetector();
             var characterMotor = new CharacterMotor();
             characterMotor.GroundDetector = groundDetector;
 

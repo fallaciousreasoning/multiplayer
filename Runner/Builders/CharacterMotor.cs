@@ -87,6 +87,6 @@ namespace Runner.Builders
         }
 
         public GameObject GameObject { get; set; }
-        public GroundDetector GroundDetector { get; set; }
+        public TriggerDetector GroundDetector { get; set; }
     }
 }

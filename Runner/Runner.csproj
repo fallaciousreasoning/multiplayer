@@ -38,7 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Builders\GroundDetector.cs" />
+    <Compile Include="Builders\TriggerDetector.cs" />
     <Compile Include="Builders\ObstacleBuilder.cs" />
     <Compile Include="Builders\PlayerBuilder.cs" />
     <Compile Include="Builders\PlayerController.cs" />
