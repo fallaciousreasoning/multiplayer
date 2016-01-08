@@ -10,29 +10,33 @@ namespace Runner.Builders
 {
     public class AnimationController : IUpdateable
     {
-        public bool IsRelative = true;
-        public bool ResetOnComplete;
+        public bool IsRelative { get; set; } = true;
+        public bool ResetOnComplete { get; set; }
+        public bool Reverses { get; set; }
+        public bool IsLooped { get; set; }
 
-        public List<float> Times = new List<float>(); 
-        public List<KeyFrame> Frames = new List<KeyFrame>();
+        public Transform AnimationTarget;
 
-        public float CurrentTime;
+        private readonly List<float> times = new List<float>(); 
+        private readonly List<KeyFrame> frames = new List<KeyFrame>();
 
-        public int CurrentFrame = 0;
-        public bool Playing;
-        public bool Paused;
+        private float currentTime;
 
-        public bool IsLooped;
-
-        public Transform Animating;
+        private int currentFrame = 0;
+        private bool playing;
+        private bool paused;
 
         private float lastTime;
         private KeyFrame lastFrame;
         private KeyFrame firstFrame;
 
-        public AnimationController(Transform animating)
+        private bool reversing;
+
+        internal AnimationController(List<KeyFrame> frames, List<float> times)
         {
-            Animating = animating;
+            this.AnimationTarget = AnimationTarget;
+            this.frames = frames;
+            this.times = times;
         }
 
         public void Stop()
@@ -42,27 +46,30 @@ namespace Runner.Builders
 
         public void Resume()
         {
-            Paused = false;
+            paused = false;
         }
 
         public void Pause()
         {
-            Paused = true;
+            paused = true;
         }
 
         public void Start()
         {
-            Playing = true;
-            CurrentFrame = 0;
-            CurrentTime = 0;
+            Console.WriteLine("Starting animation!");
+
+            playing = true;
+            reversing = false;
+            currentFrame = 0;
+            currentTime = 0;
             lastTime = 0;
 
-            firstFrame = new KeyFrame(Animating);
+            firstFrame = new KeyFrame(AnimationTarget);
 
             //If our first frame is a setup frame, set our transform to that position
-            if (Times.Count > 0 && Times[0] == 0)
+            if (times.Count > 0 && times[0] == 0)
             {
-                lastFrame = Frames[CurrentFrame++];
+                lastFrame = frames[currentFrame++];
             }
             //Otherwise, animate it from where it is
             else
@@ -73,9 +80,11 @@ namespace Runner.Builders
 
         public void Update(float step)
         {
-            if (!Playing || Paused) return;
+            if (!playing || paused) return;
 
-            CurrentTime += step;
+            if (!reversing)
+                currentTime += step;
+            else currentTime -= step;
 
             if (ShouldMoveNextFrame())
             {
@@ -86,16 +95,18 @@ namespace Runner.Builders
 
         private bool ShouldMoveNextFrame()
         {
-            return Times[CurrentFrame] <= CurrentFrame;
+            return reversing ?  times[currentFrame] > currentTime : times[currentFrame] <= currentTime;
         }
 
         private void NextFrame()
         {
-            lastFrame = Frames[CurrentFrame];
-            lastTime = Times[CurrentFrame];
+            lastFrame = frames[currentFrame];
+            lastTime = times[currentFrame];
 
-            CurrentFrame++;
-            if (CurrentFrame >= Frames.Count)
+            currentFrame += reversing ? -1 : 1;
+            Console.WriteLine($"Moving to frame {currentFrame}");
+
+            if (currentFrame >= frames.Count || currentFrame < 0)
             {
                 Complete();
             }
@@ -103,36 +114,52 @@ namespace Runner.Builders
 
         private void Animate(bool finish = false)
         {
-            Animate(Frames[CurrentFrame], finish);
+            Animate(frames[currentFrame], finish);
         }
 
         private void Animate(KeyFrame frame, bool finish = false)
         {
-            var time = Times[CurrentFrame];
+            var time = times[currentFrame];
 
-            var percentage = finish ? 1 : (CurrentTime - lastTime)/(time - lastTime);
+            var percentage = finish ? 1 : (currentTime - lastTime)/(time - lastTime);
             var s = frame.SmoothingFunction;
 
             var position = new Vector2(s(lastFrame.Position.X, frame.Position.X, percentage), s(lastFrame.Position.Y, frame.Position.Y, percentage));
+            
             var rotation = s(lastFrame.Rotation, frame.Rotation, percentage);
+            
             var scale = new Vector2(s(lastFrame.Scale.X, frame.Scale.X, percentage), s(lastFrame.Scale.Y, frame.Scale.Y, percentage));
 
-            Animating.LocalPosition = position;
-            Animating.LocalRotation = rotation;
-            Animating.LocalScale = scale;
+            if (IsRelative)
+            {
+                position += firstFrame.Position;
+                rotation += firstFrame.Rotation;
+                scale *= firstFrame.Scale;
+            }
+
+            AnimationTarget.LocalPosition = position;
+            AnimationTarget.LocalRotation = rotation;
+            AnimationTarget.LocalScale = scale;
         }
 
         private void Complete()
         {
+            Console.WriteLine("Completing");
             //Make sure we're on the last frame
-            CurrentFrame = Frames.Count - 1;
+            currentFrame = reversing ? 0 : frames.Count - 1;
             Animate(true);
+
+            if (Reverses && !reversing)
+            {
+                reversing = true;
+                return;
+            }
 
             //If we're resetting, focus on the first frame
             if (ResetOnComplete)
                 Animate(firstFrame, true);
 
-            Playing = false;
+            playing = false;
             if (IsLooped) Start();
         }
     }
@@ -142,7 +169,7 @@ namespace Runner.Builders
         public static Func<float, float, float, float> Lerp
             => MathHelper.Lerp;
 
-        public static Func<float, float, float, float> Linear => (start, end, percent) => end + (end - start)*percent;
+        public static Func<float, float, float, float> Linear => (start, end, percent) => start + (end - start)*percent;
          
         public Vector2 Position;
         public float Rotation;
@@ -151,22 +178,98 @@ namespace Runner.Builders
         public Func<float, float, float, float> SmoothingFunction;
 
         public KeyFrame(Transform transform)
-            : this(transform.LocalPosition, transform.LocalScale, transform.LocalRotation)
+            : this(transform.LocalPosition, transform.LocalRotation, transform.LocalScale)
         {
         }
 
-        public KeyFrame(Vector2 position, Vector2 scale, float rotation) : this(position, scale, rotation, Linear)
+        public KeyFrame(Vector2 position, float rotation) : this(position, rotation, Vector2.One)
+        {
+        }
+
+        public KeyFrame(Vector2 position) : this(position, 0, Vector2.One)
+        {
+        }
+
+        public KeyFrame(float rotation) : this(Vector2.Zero, rotation, Vector2.One) { }
+
+        public KeyFrame(Vector2 position, float rotation, Vector2 scale) : this(position, rotation, scale, Linear)
         {
             
         }
 
-        public KeyFrame(Vector2 position, Vector2 scale, float rotation, Func<float, float, float, float> smoothingFunction)
+        public KeyFrame(Vector2 position, float rotation, Vector2 scale, Func<float, float, float, float> smoothingFunction)
         {
             Position = position;
             Scale = scale;
             Rotation = rotation;
 
             SmoothingFunction = smoothingFunction;
+        }
+    }
+
+    public class AnimationBuilder
+    {
+        private readonly List<KeyFrame> frames = new List<KeyFrame>();
+        private readonly List<float> times = new List<float>();
+        private bool loops;
+        private bool isRelative;
+        private bool reverses;
+        private bool resetsOnComplete;
+
+        private AnimationBuilder()
+        {
+        }
+
+        public static AnimationBuilder New()
+        {
+            return new AnimationBuilder();
+        }
+
+        public AnimationBuilder InsertFrame(float timeStamp, KeyFrame frame)
+        {
+            var index = 0;
+            while (index < frames.Count && times[index] < timeStamp)
+                index++;
+
+            frames.Insert(index, frame);
+            times.Insert(index, timeStamp);
+
+            return this;
+        }
+
+        public AnimationBuilder Loops(bool loops)
+        {
+            this.loops = loops;
+            return this;
+        }
+
+        public AnimationBuilder IsRelative(bool isRelative)
+        {
+            this.isRelative = isRelative;
+            return this;
+        }
+
+        public AnimationBuilder Reverses(bool reverses)
+        {
+            this.reverses = reverses;
+            return this;
+        }
+
+        public AnimationBuilder ResetsOnComplete(bool resetsOnComplete)
+        {
+            this.resetsOnComplete = resetsOnComplete;
+            return this;
+        }
+
+        public AnimationController Create()
+        {
+            var animator = new AnimationController(frames, times);
+            animator.IsLooped = loops;
+            animator.IsRelative = isRelative;
+            animator.ResetOnComplete = resetsOnComplete;
+            animator.Reverses = reverses;
+
+            return animator;
         }
     }
 }

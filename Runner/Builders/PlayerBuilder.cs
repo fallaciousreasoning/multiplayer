@@ -75,5 +75,31 @@ namespace Runner.Builders
 
                 .With(ColliderFactory.BoxCollider(width, height, BodyType.Dynamic, true));
         }
+
+        public static AnimationBuilder BuildRollAnimation()
+        {
+            var animator = AnimationBuilder.New()
+                .InsertFrame(0f, new KeyFrame(new Vector2(0f), 0))
+                .InsertFrame(2.5f, new KeyFrame(new Vector2(1f, 0), MathHelper.Pi))
+                .InsertFrame(5f, new KeyFrame(new Vector2(1f, 1f), MathHelper.TwoPi))
+                .IsRelative(true)
+                .Loops(true);
+            return animator;
+        }
+
+        public static GameObject AnimationTest()
+        {
+            var animator = BuildRollAnimation().Create();
+
+            var gameObject = GameObjectFactory.New()
+                .WithTexture(TextureUtil.CreateTexture(64, 64, Color.Yellow))
+                .With(animator)
+                .Create();
+
+            animator.AnimationTarget = gameObject.Transform;
+            animator.Start();
+
+            return gameObject;
+        }
     }
 }
