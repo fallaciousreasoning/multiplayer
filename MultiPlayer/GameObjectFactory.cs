@@ -15,6 +15,8 @@ namespace MultiPlayer
         private Sprite renderer;
         private Transform transform;
 
+        private string tag;
+
         public static GameObjectFactory New()
         {
             return new GameObjectFactory()
@@ -34,6 +36,12 @@ namespace MultiPlayer
         public GameObjectFactory WithTexture(Texture2D texture)
         {
             renderer.Texture = texture;
+            return this;
+        }
+
+        public GameObjectFactory WithTag(string tag)
+        {
+            this.tag = tag;
             return this;
         }
 
@@ -96,6 +104,7 @@ namespace MultiPlayer
         public GameObject Create()
         {
             var gameObject = new GameObject(transform, renderer, components);
+            gameObject.Tag.Name = tag;
 
             return gameObject;
         }

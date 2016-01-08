@@ -8,7 +8,7 @@ namespace MultiPlayer.Core
 {
     public class PrefabFactory
     {
-        private readonly Dictionary<string, Func<Vector2, float, Vector2, GameObject>> gameObjectBuilders = new Dictionary<string, Func<Vector2, float, Vector2, GameObject>>();
+        private readonly Dictionary<string, Func<GameObject>> gameObjectBuilders = new Dictionary<string, Func<GameObject>>();
         private readonly bool ignoreCase;
 
         private ComponentManager<GameObject> manager; 
@@ -20,21 +20,6 @@ namespace MultiPlayer.Core
         }
 
         public void RegisterPrefab(string name, Func<GameObject> builder)
-        {
-            RegisterPrefab(name, v => builder());
-        }
-
-        public void RegisterPrefab(string name, Func<Vector2, GameObject> builder)
-        {
-            RegisterPrefab(name, (v, f) => builder(v));
-        }
-
-        public void RegisterPrefab(string name, Func<Vector2, float, GameObject> builder)
-        {
-            RegisterPrefab(name, (v, f, s) => builder(v, f));
-        }
-
-        public void RegisterPrefab(string name, Func<Vector2, float, Vector2, GameObject> builder)
         {
             name = ignoreCase ? name.ToLower() : name;
             if (gameObjectBuilders.ContainsKey(name)) throw new Exception($"You've already created a prefab called {name}");
@@ -104,7 +89,12 @@ namespace MultiPlayer.Core
             name = ignoreCase ? name.ToLower() : name;
             if (!gameObjectBuilders.ContainsKey(name)) throw new Exception($"You don't have a prefab called {name}");
 
-            return gameObjectBuilders[name](position, rotation, scale);
+            var gameObject = gameObjectBuilders[name]();
+            gameObject.Transform.Position = position;
+            gameObject.Transform.Rotation = rotation;
+            gameObject.Transform.Scale = scale;
+
+            return gameObject;
         }
     }
 }

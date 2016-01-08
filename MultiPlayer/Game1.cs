@@ -50,7 +50,6 @@ namespace MultiPlayer
         {
             ComponentManager = new ComponentManager();
             ComponentManager.DelayedAdd(new Logger());
-            ComponentManager.DelayedAdd(new NetworkManager());
 
             PhysicsWorld = new PhysicsWorld();
             ComponentManager.DelayedAdd(PhysicsWorld);
@@ -81,35 +80,30 @@ namespace MultiPlayer
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            PrefabFactory.RegisterPrefab("machine gun", (p) => GameObjectFactory.New()
-                .AtPosition(p)
-                .WithTexture(TextureUtil.CreateTexture(16, 16, Color.Red))
-                .With(new Weapon() { FireRate = 0.5f })
-                .Create());
+            //PrefabFactory.RegisterPrefab("machine gun", () => GameObjectFactory.New()
+            //    .WithTexture(TextureUtil.CreateTexture(16, 16, Color.Red))
+            //    .With(new Weapon() { FireRate = 0.5f })
+            //    .Create());
 
-            PrefabFactory.RegisterPrefab("player", () => GameObjectFactory.New()
-                .AtPosition(new Vector2(0))
-                .WithTexture(TextureUtil.CreateTexture(64, 128, Color.Black))
-                .With(new VelocityController())
-                .With(new ShipEngine())
-                .With(new PlayerController())
-                .With(new Drag())
-                .With(new ScreenWrapper()).With(new ParticleEmitter())
-                .WithChild("machine gun", new Vector2(0, -1))
-                .Create());
+            //PrefabFactory.RegisterPrefab("player", () => GameObjectFactory.New()
+            //    .AtPosition(new Vector2(0))
+            //    .WithTexture(TextureUtil.CreateTexture(64, 128, Color.Black))
+            //    .With(new VelocityController())
+            //    .With(new ShipEngine())
+            //    .With(new PlayerController())
+            //    .With(new Drag())
+            //    .With(new ScreenWrapper()).With(new ParticleEmitter())
+            //    .WithChild("machine gun", new Vector2(0, -1))
+            //    .Create());
 
-            PrefabFactory.RegisterPrefab("bullet", (v, f) => GameObjectFactory.New()
-                .AtPosition(v)
-                .WithRotation(f)
-                .WithTexture(TextureUtil.CreateTexture(16, 16, Color.Yellow))
-                .With(new VelocityController())
-                .With(new BulletController())
-                .With(new ScreenWrapper())
-                .Create());
+            //PrefabFactory.RegisterPrefab("bullet", () => GameObjectFactory.New()
+            //    .WithTexture(TextureUtil.CreateTexture(16, 16, Color.Yellow))
+            //    .With(new VelocityController())
+            //    .With(new BulletController())
+            //    .With(new ScreenWrapper())
+            //    .Create());
 
-            PrefabFactory.RegisterPrefab("unitbox", (v, f) => GameObjectFactory.New()
-                .AtPosition(v)
-                .WithRotation(f)
+            PrefabFactory.RegisterPrefab("unitbox", () => GameObjectFactory.New()
                 .WithTexture(TextureUtil.CreateTexture(64, 64, Color.Black))
                 .With(new Collider()
                 {
@@ -117,9 +111,7 @@ namespace MultiPlayer
                 })
                 .Create());
 
-            PrefabFactory.RegisterPrefab("cursor", (v, f) => GameObjectFactory.New()
-                .AtPosition(v)
-                .WithRotation(f)
+            PrefabFactory.RegisterPrefab("cursor", () => GameObjectFactory.New()
                 .WithTexture(TextureUtil.CreateTexture(64, 64, Color.Red))
                 .With(new SimpleController()).With(new Collider()
                 {
@@ -129,9 +121,6 @@ namespace MultiPlayer
                 .Create());
 
             GameObjectManager.Start();
-
-            PrefabFactory.Instantiate("unitbox", new Vector2(5));
-            PrefabFactory.Instantiate("cursor");
         }
 
         /// <summary>

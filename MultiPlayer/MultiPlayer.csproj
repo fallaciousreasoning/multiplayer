@@ -58,6 +58,7 @@
     <Compile Include="GameComponents\NetworkManager.cs" />
     <Compile Include="GameComponents\ParticleEmitter.cs" />
     <Compile Include="GameComponents\Physics\Collider.cs" />
+    <Compile Include="GameComponents\Physics\ColliderFactory.cs" />
     <Compile Include="GameComponents\Physics\IHearsCollision.cs" />
     <Compile Include="GameComponents\Physics\IHearsTrigger.cs" />
     <Compile Include="GameComponents\Physics\PhysicsWorld.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="GameComponents\ShipEngine.cs" />
     <Compile Include="GameComponents\SimpleController.cs" />
     <Compile Include="GameComponents\StayOnMouse.cs" />
+    <Compile Include="GameComponents\Tag.cs" />
     <Compile Include="GameComponents\VelocityController.cs" />
     <Compile Include="GameComponents\Weapon.cs" />
     <Compile Include="GameObject.cs" />

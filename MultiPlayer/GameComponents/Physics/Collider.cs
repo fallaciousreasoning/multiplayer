@@ -33,8 +33,8 @@ namespace MultiPlayer.GameComponents.Physics
             {
                 if (IsTrigger == value) return;
 
-                isTrigger = value;
                 Body.IsSensor = value;
+                isTrigger = value;
             }
         }
 
@@ -48,7 +48,6 @@ namespace MultiPlayer.GameComponents.Physics
 
         internal Collider()
         {
-            
         }
 
         public void LateUpdate(float step)

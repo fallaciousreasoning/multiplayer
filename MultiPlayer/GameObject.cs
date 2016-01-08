@@ -14,6 +14,7 @@ namespace MultiPlayer
     {
         public VelocityController Velocity { get; private set; }
         public Transform Transform { get; private set; }
+        public Tag Tag { get; private set; }
         public Sprite Renderer { get; private set; }
 
         public readonly List<IHearsCollision> HearCollisions = new List<IHearsCollision>();
@@ -25,6 +26,7 @@ namespace MultiPlayer
         {
             this.Transform = transform;
             this.Renderer = sprite;
+            this.Tag = new Tag();
 
             Add(Transform);
             Add(sprite);
@@ -44,6 +46,12 @@ namespace MultiPlayer
 
             if (component is IHearsDestroy)
                 hearDestroy.Add(component as IHearsDestroy);
+
+            if (component is IHearsTrigger)
+                HearTriggers.Add(component as IHearsTrigger);
+
+            if (component is IHearsCollision)
+                HearCollisions.Add(component as IHearsCollision);
         }
 
         /// <summary>
