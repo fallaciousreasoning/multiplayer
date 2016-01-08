@@ -88,7 +88,7 @@ namespace Runner.Builders
         private int dir;
         private bool wasOnGround;
 
-        private AnimationController currentAnimationController;
+        private AnimationController currentPhysicsAnimationController;
 
         public void Start()
         {
@@ -97,10 +97,10 @@ namespace Runner.Builders
 
         public void Update(float step)
         {
-            if (currentAnimationController != null)
+            if (currentPhysicsAnimationController != null)
             {
-                if (!currentAnimationController.IsPlaying)
-                    currentAnimationController = null;
+                if (!currentPhysicsAnimationController.IsPlaying)
+                    currentPhysicsAnimationController = null;
                 return;
             }
 
@@ -164,8 +164,8 @@ namespace Runner.Builders
             else if (CanClamber)
             {
                 Velocity = Vector2.Zero;
-                currentAnimationController = ClamberRightAnimation;
-                currentAnimationController.Start();
+                currentPhysicsAnimationController = ClamberRightAnimation;
+                currentPhysicsAnimationController.Start();
             }
             else if (CanWallJump)
             {
