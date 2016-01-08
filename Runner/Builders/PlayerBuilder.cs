@@ -23,23 +23,29 @@ namespace Runner.Builders
             var sensorLopOff = 0.9f;
             var sensorWidth = width*sensorWidthRatio;
             var sensorWidthPixels = (int) (sensorWidth*Transform.PIXELS_A_METRE);
+            var clamberSensorOffset = 1.5f;
 
             var groundDetector = new TriggerDetector() { TriggeredBy = "Ground" };
             var leftWallDetector = new TriggerDetector() { TriggeredBy = "Ground"};
             var rightWallDetector = new TriggerDetector() { TriggeredBy = "Ground" };
             var clamberDetector = new TriggerDetector() {TriggeredBy = "Ground"};
 
+            var clamberRightAnimator = ClamberAnimation().Create();
+
             var characterMotor = new CharacterMotor();
             characterMotor.GroundDetector = groundDetector;
             characterMotor.LeftWallDetector = leftWallDetector;
             characterMotor.RightWallDetector = rightWallDetector;
+
             characterMotor.ClamberDetector = clamberDetector;
+            characterMotor.ClamberRightAnimation = clamberRightAnimator;
 
             return GameObjectFactory.New()
                 .WithTag("player")
                 .WithTexture(TextureUtil.CreateTexture(widthPixels,heightPixels, Color.White))
                 .With(characterMotor)
                 .With(new PlayerController())
+                .With(clamberRightAnimator)
 
                 //Add the ground detector (bar below)
                 .WithChild(GameObjectFactory.New()
@@ -70,10 +76,21 @@ namespace Runner.Builders
                     .With(ColliderFactory.BoxTrigger(width * 3f*sensorLopOff, sensorWidth))
                     .With(clamberDetector)
                     .WithTexture(TextureUtil.CreateTexture(widthPixels*3, sensorWidthPixels, Color.Red))
-                    .AtPosition(-new Vector2(0, height * 0.5f + sensorWidth*0.5f))
+                    .AtPosition(-new Vector2(0, (height * 0.5f + sensorWidth*0.5f)*clamberSensorOffset))
                     .Create())
 
                 .With(ColliderFactory.BoxCollider(width, height, BodyType.Dynamic, true));
+        }
+
+        public static AnimationBuilder ClamberAnimation()
+        {
+            var animator = AnimationBuilder.New()
+                .InsertFrame(0, new KeyFrame(new Vector2(0)))
+                .InsertFrame(0.2f, new KeyFrame(new Vector2(0, -1)))
+                .InsertFrame(0.3f, new KeyFrame(new Vector2(0.5f, -1f)))
+                .IsRelative(true);
+
+            return animator;
         }
 
         public static AnimationBuilder BuildRollAnimation()
@@ -95,8 +112,7 @@ namespace Runner.Builders
                 .WithTexture(TextureUtil.CreateTexture(64, 64, Color.Yellow))
                 .With(animator)
                 .Create();
-
-            animator.AnimationTarget = gameObject.Transform;
+            
             animator.Start();
 
             return gameObject;

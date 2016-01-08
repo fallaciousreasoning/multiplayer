@@ -13,6 +13,11 @@ namespace Runner.Builders
     public class CharacterMotor : IUpdateable, IStartable, IKnowsGameObject
     {
         /// <summary>
+        /// An animation of the player clambering over a ledge to the right
+        /// </summary>
+        public AnimationController ClamberRightAnimation;
+
+        /// <summary>
         /// Gets the direction facing away from the wall (zero if neither or both sides are walls)
         /// </summary>
         public int AwayFromWall
@@ -83,6 +88,8 @@ namespace Runner.Builders
         private int dir;
         private bool wasOnGround;
 
+        private AnimationController currentAnimationController;
+
         public void Start()
         {
             collider = GameObject.GetComponent<Collider>();
@@ -90,6 +97,13 @@ namespace Runner.Builders
 
         public void Update(float step)
         {
+            if (currentAnimationController != null)
+            {
+                if (!currentAnimationController.IsPlaying)
+                    currentAnimationController = null;
+                return;
+            }
+
             var newVelocity = Velocity;
 
             dir = MathHelper.Clamp(dir, -1, 1);
@@ -101,6 +115,10 @@ namespace Runner.Builders
             //Clamp the x velocity to a maximum
             newVelocity.X = MathHelper.Clamp(newVelocity.X, -MaxXSpeed, MaxXSpeed);
             newVelocity.Y = MathHelper.Clamp(newVelocity.Y, -MaxYSpeed, MaxYSpeed);
+
+            if (LeftWallDetector.Triggered && Velocity.X < 0) Velocity.X = 0;
+            if (RightWallDetector.Triggered && Velocity.X > 0) Velocity.X = 0;
+            if (GroundDetector.Triggered && Velocity.Y > 0) Velocity.Y = 0;
 
             collider.Body.LinearVelocity = newVelocity;
 
@@ -145,7 +163,9 @@ namespace Runner.Builders
             }
             else if (CanClamber)
             {
-                //TODO clambering!
+                Velocity = Vector2.Zero;
+                currentAnimationController = ClamberRightAnimation;
+                currentAnimationController.Start();
             }
             else if (CanWallJump)
             {

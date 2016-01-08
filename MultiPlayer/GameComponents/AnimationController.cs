@@ -4,18 +4,20 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using MultiPlayer;
+using MultiPlayer.GameComponents;
 using IUpdateable = MultiPlayer.GameComponents.IUpdateable;
 
 namespace Runner.Builders
 {
-    public class AnimationController : IUpdateable
+    public class AnimationController : IUpdateable, IKnowsGameObject
     {
         public bool IsRelative { get; set; } = true;
         public bool ResetOnComplete { get; set; }
         public bool Reverses { get; set; }
         public bool IsLooped { get; set; }
+        public bool IsPlaying { get { return playing; } }
 
-        public Transform AnimationTarget;
+        public Transform AnimationTarget { get { return GameObject.Transform; } }
 
         private readonly List<float> times = new List<float>(); 
         private readonly List<KeyFrame> frames = new List<KeyFrame>();
@@ -34,7 +36,6 @@ namespace Runner.Builders
 
         internal AnimationController(List<KeyFrame> frames, List<float> times)
         {
-            this.AnimationTarget = AnimationTarget;
             this.frames = frames;
             this.times = times;
         }
@@ -162,6 +163,8 @@ namespace Runner.Builders
             playing = false;
             if (IsLooped) Start();
         }
+
+        public GameObject GameObject { get; set; }
     }
 
     public struct KeyFrame
