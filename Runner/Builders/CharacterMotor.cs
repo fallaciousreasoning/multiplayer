@@ -87,6 +87,25 @@ namespace Runner.Builders
         }
 
         public GameObject GameObject { get; set; }
+
+        /// <summary>
+        /// Detects when the gameobject is touching the ground
+        /// </summary>
         public TriggerDetector GroundDetector { get; set; }
+
+        /// <summary>
+        /// Detects when the gameobject is touch a wall on the left
+        /// </summary>
+        public TriggerDetector LeftWallDetector { get; set; }
+
+        /// <summary>
+        /// Detects when the gameobject is touch a wall on the right
+        /// </summary>
+        public TriggerDetector RightWallDetector { get; set; }
+
+        /// <summary>
+        /// Detects when the player is not able to clamber
+        /// </summary>
+        public TriggerDetector ClamberDetector { get; set; }
     }
 }
