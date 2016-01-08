@@ -12,7 +12,7 @@ namespace MultiPlayer.Core
         private readonly bool ignoreCase;
 
         private ComponentManager<GameObject> manager; 
-
+        
         public PrefabFactory(ComponentManager<GameObject> manager, bool ignoreCase = true)
         {
             this.manager = manager;

@@ -14,6 +14,7 @@ namespace MultiPlayer
 
         public Dictionary<Type, LinkedList<T>> Components { get; private set; } 
         public List<IUpdateable> UpdateableComponents { get; private set; }
+        public List<ILateUpdateable> LateUpdateableComponents { get; private set; }
         public List<IStartable> StartableComponents { get; private set; }
         public List<IDrawable> DrawableComponents { get; private set; }
 
@@ -21,6 +22,7 @@ namespace MultiPlayer
         {
             Components = new Dictionary<Type, LinkedList<T>>();
             UpdateableComponents = new List<IUpdateable>();
+            LateUpdateableComponents = new List<ILateUpdateable>();
             StartableComponents = new List<IStartable>();
             DrawableComponents = new List<IDrawable>();
         }
@@ -44,6 +46,10 @@ namespace MultiPlayer
 
             if (component is IUpdateable)
                 UpdateableComponents.Add(component as IUpdateable);
+
+            if (component is ILateUpdateable)
+                LateUpdateableComponents.Add(component as ILateUpdateable);
+
             if (component is IStartable)
             {
                 StartableComponents.Add(component as IStartable);
@@ -81,6 +87,19 @@ namespace MultiPlayer
                     var destroyable = updateableComponent as IDestroyable;
                     if (destroyable.ShouldRemove)
                         toRemove.Add(i);
+                }
+            }
+
+            for (var i = 0; i < LateUpdateableComponents.Count; i++)
+            {
+                var updateableComponent = LateUpdateableComponents[i];
+                updateableComponent.LateUpdate(step);
+
+                if (updateableComponent is IDestroyable)
+                {
+                    var destroyable = updateableComponent as IDestroyable;
+                    if (destroyable.ShouldRemove)
+                        LateUpdateableComponents.RemoveAt(i--);
                 }
             }
 

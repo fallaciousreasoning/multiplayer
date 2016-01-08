@@ -1,9 +1,12 @@
 ﻿using System;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer.Core;
 using MultiPlayer.GameComponents;
+using MultiPlayer.GameComponents.Physics;
 
 namespace MultiPlayer
 {
@@ -15,13 +18,14 @@ namespace MultiPlayer
         private static GraphicsDeviceManager graphics;
         private static SpriteBatch spriteBatch;
 
+        public PhysicsWorld PhysicsWorld { get; private set; }
         public SpriteFont DefaultFont { get; private set; }
         public PrefabFactory PrefabFactory { get; private set; }
         public InputManager Input { get; private set; }
         public SpriteBatch SpriteBatch { get { return spriteBatch; } }
         public GraphicsDevice Device { get { return graphics.GraphicsDevice; } }
 
-        private ComponentManager ComponentManager;
+        public ComponentManager ComponentManager;
         public ComponentManager<GameObject> GameObjectManager;
 
         public static Game1 Game { get; private set; }
@@ -48,16 +52,20 @@ namespace MultiPlayer
             ComponentManager.DelayedAdd(new Logger());
             ComponentManager.DelayedAdd(new NetworkManager());
 
-            ComponentManager.Start();
+            PhysicsWorld = new PhysicsWorld();
+            ComponentManager.DelayedAdd(PhysicsWorld);
 
             GameObjectManager = new ComponentManager<GameObject>();
             ComponentManager.DelayedAdd(GameObjectManager);
 
+            PrefabFactory = new PrefabFactory(GameObjectManager);
+            ComponentManager.DelayedAdd(PrefabFactory);
+
+            ComponentManager.Start();
+
             Input = new InputManager(this);
             Components.Add(Input);
             Input.AddButton("shoot", new InputButton(Keys.Space));
-
-            PrefabFactory = new PrefabFactory(GameObjectManager);
 
             base.Initialize();
         }
@@ -99,10 +107,31 @@ namespace MultiPlayer
                 .With(new ScreenWrapper())
                 .Create());
 
+            PrefabFactory.RegisterPrefab("unitbox", (v, f) => GameObjectFactory.New()
+                .AtPosition(v)
+                .WithRotation(f)
+                .WithTexture(TextureUtil.CreateTexture(64, 64, Color.Black))
+                .With(new Collider()
+                {
+                    Body = BodyFactory.CreateRectangle(PhysicsWorld.World, 1, 1, 1)
+                })
+                .Create());
+
+            PrefabFactory.RegisterPrefab("cursor", (v, f) => GameObjectFactory.New()
+                .AtPosition(v)
+                .WithRotation(f)
+                .WithTexture(TextureUtil.CreateTexture(64, 64, Color.Red))
+                .With(new SimpleController()).With(new Collider()
+                {
+                    Body = BodyFactory.CreateRectangle(PhysicsWorld.World, 1, 1, 1),
+                    BodyType = BodyType.Dynamic
+                })
+                .Create());
+
             GameObjectManager.Start();
 
-            var player = PrefabFactory.Instantiate("player");
-            // TODO: use this.Content to load your game content here
+            PrefabFactory.Instantiate("unitbox", new Vector2(5));
+            PrefabFactory.Instantiate("cursor");
         }
 
         /// <summary>

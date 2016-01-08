@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MultiPlayer.GameComponents;
+using MultiPlayer.GameComponents.Physics;
 using IUpdateable = MultiPlayer.GameComponents.IUpdateable;
 
 namespace MultiPlayer
@@ -14,6 +15,9 @@ namespace MultiPlayer
         public VelocityController Velocity { get; private set; }
         public Transform Transform { get; private set; }
         public Sprite Renderer { get; private set; }
+
+        public readonly List<IHearsCollision> HearCollisions = new List<IHearsCollision>();
+        public readonly List<IHearsTrigger> HearTriggers = new List<IHearsTrigger>(); 
 
         private readonly List<IHearsDestroy> hearDestroy = new List<IHearsDestroy>();
         

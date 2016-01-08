@@ -51,14 +51,21 @@
     <Compile Include="GameComponents\IHearsDestroy.cs" />
     <Compile Include="GameComponents\IKnowsGameObject.cs" />
     <Compile Include="GameComponents\IKnowsParent.cs" />
+    <Compile Include="GameComponents\ILateUpdateable.cs" />
     <Compile Include="GameComponents\KnowsParentType.cs" />
     <Compile Include="GameComponents\IStartable.cs" />
     <Compile Include="GameComponents\IUpdateable.cs" />
     <Compile Include="GameComponents\NetworkManager.cs" />
     <Compile Include="GameComponents\ParticleEmitter.cs" />
+    <Compile Include="GameComponents\Physics\Collider.cs" />
+    <Compile Include="GameComponents\Physics\IHearsCollision.cs" />
+    <Compile Include="GameComponents\Physics\IHearsTrigger.cs" />
+    <Compile Include="GameComponents\Physics\PhysicsWorld.cs" />
     <Compile Include="GameComponents\PlayerController.cs" />
     <Compile Include="GameComponents\ScreenWrapper.cs" />
     <Compile Include="GameComponents\ShipEngine.cs" />
+    <Compile Include="GameComponents\SimpleController.cs" />
+    <Compile Include="GameComponents\StayOnMouse.cs" />
     <Compile Include="GameComponents\VelocityController.cs" />
     <Compile Include="GameComponents\Weapon.cs" />
     <Compile Include="GameObject.cs" />
@@ -73,6 +80,10 @@
     <Compile Include="Transform.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="FarseerPhysics MonoGame, Version=3.5.0.30732, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Downloads\Farseer Physics Engine 3.5\bin\WindowsGL\Debug\FarseerPhysics MonoGame.dll</HintPath>
+    </Reference>
     <Reference Include="Lidgren.Network, Version=3.4.0.456, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\Windows\Lidgren.Network.dll</HintPath>
@@ -87,6 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Runner.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

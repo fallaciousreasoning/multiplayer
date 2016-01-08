@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiPlayer", "MultiPlayer\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PretendPeer", "PretendPeer\PretendPeer.csproj", "{31A92FA5-1200-4EC9-8FDE-023A7D0250C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "Runner\Runner.csproj", "{8A7A2F80-B068-4A28-93CF-B829C8085C9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,12 @@ Global
 		{31A92FA5-1200-4EC9-8FDE-023A7D0250C2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{31A92FA5-1200-4EC9-8FDE-023A7D0250C2}.Release|x86.ActiveCfg = Release|Any CPU
 		{31A92FA5-1200-4EC9-8FDE-023A7D0250C2}.Release|x86.Build.0 = Release|Any CPU
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Debug|x86.ActiveCfg = Debug|x86
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Debug|x86.Build.0 = Debug|x86
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Release|Any CPU.ActiveCfg = Release|x86
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Release|x86.ActiveCfg = Release|x86
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

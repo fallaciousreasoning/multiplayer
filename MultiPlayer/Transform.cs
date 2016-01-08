@@ -12,7 +12,14 @@ namespace MultiPlayer
         public const float PIXELS_A_METRE = 64.0f;
         public const float METRES_A_PIXEL = 1/PIXELS_A_METRE;
 
-        public Vector2 LocalPosition;
+        public Vector2 LocalPosition
+        {
+            get { return localPosition; }
+            set
+            {
+                localPosition = value;
+            }
+        }
 
         public Vector2 Position
         {
@@ -22,7 +29,10 @@ namespace MultiPlayer
                     ? (GameObject.ParentObject as GameObject).Transform.Position + Vector2.Transform(LocalPosition, Matrix.CreateRotationZ((GameObject.ParentObject as GameObject).Transform.Rotation))
                     : LocalPosition;
             }
-            set { LocalPosition = value - Position; }
+            set
+            {
+                LocalPosition = value - (Position - LocalPosition);
+            }
         }
 
         public Vector2 DrawPosition
@@ -40,16 +50,26 @@ namespace MultiPlayer
             {
                 if (Scale.X == 0 || Scale.Y == 0) return;
 
-                LocalScale = value/Scale;
+                LocalScale = value/(Scale/LocalScale);
             }
         }
 
-        public float LocalRotation;
+        public float LocalRotation
+        {
+            get { return localRotation; }
+            set
+            {
+                localRotation = value;
+            }
+        }
+
+        private Vector2 localPosition;
+        private float localRotation;
 
         public float Rotation
         {
             get { return GameObject.ParentObject is GameObject ? (GameObject.ParentObject as GameObject).Transform.Rotation + LocalRotation : LocalRotation; }
-            set { LocalRotation = value - Rotation; }
+            set { LocalRotation = value - (Rotation - LocalRotation); }
         }
 
         public Vector2 FacingDirection

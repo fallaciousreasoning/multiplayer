@@ -19,15 +19,15 @@ namespace MultiPlayer.GameComponents
         {
             var halfSize = renderer.TextureSize.HalfSize;
 
-            if (GameObject.Transform.LocalPosition.X < Min.X - halfSize.X)
-                GameObject.Transform.LocalPosition.X = Max.X + halfSize.X;
-            if (GameObject.Transform.LocalPosition.X > Max.X + halfSize.X)
-                GameObject.Transform.LocalPosition.X = Min.X - halfSize.X;
+            //if (GameObject.Transform.LocalPosition.X < Min.X - halfSize.X)
+            //    GameObject.Transform.LocalPosition.X = Max.X + halfSize.X;
+            //if (GameObject.Transform.LocalPosition.X > Max.X + halfSize.X)
+            //    GameObject.Transform.LocalPosition.X = Min.X - halfSize.X;
 
-            if (GameObject.Transform.LocalPosition.Y < Min.Y - halfSize.Y)
-                GameObject.Transform.LocalPosition.Y = Max.Y + halfSize.Y;
-            if (GameObject.Transform.LocalPosition.Y > Max.Y + halfSize.Y)
-                GameObject.Transform.LocalPosition.Y = Min.Y - halfSize.Y;
+            //if (GameObject.Transform.LocalPosition.Y < Min.Y - halfSize.Y)
+            //    GameObject.Transform.LocalPosition.Y = Max.Y + halfSize.Y;
+            //if (GameObject.Transform.LocalPosition.Y > Max.Y + halfSize.Y)
+            //    GameObject.Transform.LocalPosition.Y = Min.Y - halfSize.Y;
         }
 
         public void Start()
