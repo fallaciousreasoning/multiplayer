@@ -67,17 +67,21 @@ namespace Runner.Builders
 
         public float HorizontalAirAcceleration { get; set; } = 50;
         public float HorizontalAcceleration { get; set; } = 100;
+        public float HorizontalSlideAcceleration { get; set; } = 0;
+
         public float MaxXSpeed { get; set; } = 10;
         public float MaxYSpeed { get; set; } = 10;
 
         public float HorizontalAirDrag { get; set; } = 0.5f;
         public float HorizontalDrag { get; set; } = 5;
+        public float HorizontalSlideDrag { get; set; } = 1f;
 
         public Vector2 Gravity { get; set; } = new Vector2(0, 15);
 
         private Collider collider;
 
         private int dir;
+        private bool wasOnGround;
 
         public void Start()
         {
@@ -106,6 +110,8 @@ namespace Runner.Builders
 
             dir = 0;
             tillJump -= step;
+
+            wasOnGround = OnGround;
         }
 
         /// <summary>
