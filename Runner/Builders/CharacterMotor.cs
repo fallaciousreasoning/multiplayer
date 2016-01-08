@@ -20,19 +20,30 @@ namespace Runner.Builders
             get
             {
                 var away = 0;
-                if (LeftWallDetector.Triggered) away--;
-                if (RightWallDetector.Triggered) away++;
+                if (LeftWallDetector.Triggered) away++;
+                if (RightWallDetector.Triggered) away--;
                 return away;
             }
         }
 
         /// <summary>
-        /// Determines if the player can wall jump
+        /// Determines if the player can wall jump. You can wall jump if you are touching a wall, not touching the 
+        /// ground and you can't clamber (clambering is preferred to wall jumping)
         /// </summary>
         public bool CanWallJump
         {
-            get { return !OnGround && (LeftWallDetector.Triggered || RightWallDetector.Triggered); }
+            get { return !OnGround && (LeftWallDetector.Triggered || RightWallDetector.Triggered) && !CanClamber; }
         }
+
+        /// <summary>
+        /// The Horizontal impulse applied to the player, away from the wall when wall jumping
+        /// </summary>
+        public float WallJumpHorizontalImpulse = 5;
+
+        /// <summary>
+        /// The vertical impulse applied to the player when wall jumping
+        /// </summary>
+        public float WallJumpVerticalImpulse = -10;
 
         /// <summary>
         /// Determines whether the player is on the ground
@@ -48,7 +59,10 @@ namespace Runner.Builders
             get { return (LeftWallDetector.Triggered || RightWallDetector.Triggered) && !ClamberDetector.Triggered; }
         }
 
-        public Vector2 JumpImpulse { get; set; } = new Vector2(0, -5);
+        public float JumpDelay = 0.2f;
+        private float tillJump;
+
+        public float JumpImpulse = -10;
         public Vector2 Velocity;
 
         public float HorizontalAirAcceleration { get; set; } = 50;
@@ -59,7 +73,7 @@ namespace Runner.Builders
         public float HorizontalAirDrag { get; set; } = 0.5f;
         public float HorizontalDrag { get; set; } = 5;
 
-        public Vector2 Gravity { get; set; } = new Vector2(0, 10);
+        public Vector2 Gravity { get; set; } = new Vector2(0, 15);
 
         private Collider collider;
 
@@ -91,29 +105,57 @@ namespace Runner.Builders
                 Velocity.X -= Velocity.X*GetHorizontalDrag()*step;
 
             dir = 0;
+            tillJump -= step;
         }
 
+        /// <summary>
+        /// Tells the motor to accelerate left
+        /// </summary>
         public void AccelerateRight()
         {
             dir++;
         }
-
+        
+        /// <summary>
+        /// Tells the player to accelerate right
+        /// </summary>
         public void AccelerateLeft()
         {
             dir--;
         }
 
+        /// <summary>
+        /// Tells the player to jump
+        /// </summary>
         public void Jump()
         {
+            if (tillJump > 0)
+                return;
+
             //Jump
             if (OnGround)
             {
-                Velocity += JumpImpulse;
+                Velocity.Y = JumpImpulse;
+            }
+            else if (CanClamber)
+            {
+                //TODO clambering!
             }
             else if (CanWallJump)
             {
-                
+                Velocity.X = WallJumpHorizontalImpulse*AwayFromWall*10;
+                Velocity.Y = WallJumpVerticalImpulse;
             }
+
+            tillJump = JumpDelay;
+        }
+
+        /// <summary>
+        /// Tells the player to slide
+        /// </summary>
+        public void Slide()
+        {
+            throw new NotImplementedException();
         }
 
         private float GetHorizontalAcceleration()

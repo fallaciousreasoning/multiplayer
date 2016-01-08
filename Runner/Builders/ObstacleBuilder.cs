@@ -10,8 +10,9 @@ namespace Runner.Builders
 {
     public static class ObstacleBuilder
     {
-        public static GameObjectFactory BuildGround(float width)
+        public static GameObjectFactory BuildGround()
         {
+            int width = 1;
             int height = 1;
             return GameObjectFactory.New()
                 .WithTag("Ground")
