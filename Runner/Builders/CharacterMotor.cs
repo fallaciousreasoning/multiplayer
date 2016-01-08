@@ -12,7 +12,41 @@ namespace Runner.Builders
 {
     public class CharacterMotor : IUpdateable, IStartable, IKnowsGameObject
     {
-        public bool OnGround { get { return GroundDetector.OnGround; } }
+        /// <summary>
+        /// Gets the direction facing away from the wall (zero if neither or both sides are walls)
+        /// </summary>
+        public int AwayFromWall
+        {
+            get
+            {
+                var away = 0;
+                if (LeftWallDetector.Triggered) away--;
+                if (RightWallDetector.Triggered) away++;
+                return away;
+            }
+        }
+
+        /// <summary>
+        /// Determines if the player can wall jump
+        /// </summary>
+        public bool CanWallJump
+        {
+            get { return !OnGround && (LeftWallDetector.Triggered || RightWallDetector.Triggered); }
+        }
+
+        /// <summary>
+        /// Determines whether the player is on the ground
+        /// </summary>
+        public bool OnGround { get { return GroundDetector.Triggered; } }
+
+        /// <summary>
+        /// Determines whether the player can clamber onto a ledge. Ledge direction is 
+        /// the opposite to wall jump direction.s
+        /// </summary>
+        public bool CanClamber
+        {
+            get { return (LeftWallDetector.Triggered || RightWallDetector.Triggered) && !ClamberDetector.Triggered; }
+        }
 
         public Vector2 JumpImpulse { get; set; } = new Vector2(0, -5);
         public Vector2 Velocity;
@@ -71,9 +105,15 @@ namespace Runner.Builders
 
         public void Jump()
         {
-            if (!OnGround) return;
-
-           Velocity += JumpImpulse;
+            //Jump
+            if (OnGround)
+            {
+                Velocity += JumpImpulse;
+            }
+            else if (CanWallJump)
+            {
+                
+            }
         }
 
         private float GetHorizontalAcceleration()

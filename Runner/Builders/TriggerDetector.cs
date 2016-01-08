@@ -11,7 +11,7 @@ namespace Runner.Builders
     {
         public string TriggeredBy = "Ground";
 
-        public bool OnGround => touchingTriggers.Count > 0;
+        public bool Triggered => touchingTriggers.Count > 0;
 
         private readonly List<GameObject> touchingTriggers = new List<GameObject>();
 
