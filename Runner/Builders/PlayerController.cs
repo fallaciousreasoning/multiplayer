@@ -25,6 +25,9 @@ namespace Runner.Builders
 
             if (Game1.Game.Input.GetButtonDown("jump"))
                 motor.Jump();
+
+            if (Game1.Game.Input.GetButtonDown("slide"))
+                motor.Slide();
         }
 
         public GameObject GameObject { get; set; }

@@ -17,6 +17,7 @@ namespace Runner
             base.Initialize();
 
             Input.AddButton("jump", new InputButton(Keys.Space, Keys.W, Keys.Up));
+            Input.AddButton("slide", new InputButton(Keys.S, Keys.LeftShift, Keys.Down));
         }
 
         protected override void LoadContent()
