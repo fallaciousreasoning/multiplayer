@@ -12,7 +12,7 @@ namespace MultiPlayer.GameComponents.Animation
             (start, end, percent) => MathHelper.Lerp(start, end, percent);
 
         public static readonly Func<float, float, float, float> Linear =
-            (start, end, percent) => (end - start) * percent;
+            (start, end, percent) => start + (end - start) * percent;
 
         public FloatFrame(float value, Func<float, float, float, float> interpolator = null)
             : base(value, interpolator??Linear)

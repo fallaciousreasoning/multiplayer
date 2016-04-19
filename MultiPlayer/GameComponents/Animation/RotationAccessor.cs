@@ -17,7 +17,7 @@ namespace MultiPlayer.GameComponents.Animation
         public void Set(object value, object relativeTo)
         {
             var v1 = (float)value;
-            var v2 = (float)relativeTo;
+            var v2 = (float)(relativeTo ?? 0f);
 
             GameObject.Transform.Rotation = v2 + v1;
         }

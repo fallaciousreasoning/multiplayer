@@ -17,7 +17,7 @@ namespace MultiPlayer.GameComponents.Animation
         public void Set(object value, object relativeTo)
         {
             var v1 = (Vector2)value;
-            var v2 = (Vector2)relativeTo;
+            var v2 = (Vector2)(relativeTo ?? Vector2.One);
 
             GameObject.Transform.Scale = v2 * v1;
         }

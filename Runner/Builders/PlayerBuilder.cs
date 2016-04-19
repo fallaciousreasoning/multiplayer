@@ -118,9 +118,9 @@ namespace Runner.Builders
         public static AnimationBuilder BuildSlideAnimation()
         {
             var animation = AnimationBuilder.New()
-                .InsertFrame(0, new KeyFrame(new Vector2(0), 0))
-                .InsertFrame(0.2f, new KeyFrame(new Vector2(0), MathHelper.PiOver2))
-                .IsRelative(true);
+                .InsertFrame(0, new KeyFrame(0))
+                .InsertFrame(0.2f, new KeyFrame(MathHelper.PiOver2))
+                .IsRelative(false);
 
             return animation;
         }
