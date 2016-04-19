@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Runner.Builders;
+﻿using System.Collections.Generic;
 
-namespace MultiPlayer.GameComponents
+namespace MultiPlayer.GameComponents.Animation
 {
     public class AnimationController : IUpdateable, IKnowsGameObject
     {

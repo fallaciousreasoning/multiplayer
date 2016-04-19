@@ -6,6 +6,7 @@ using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using MultiPlayer;
 using MultiPlayer.GameComponents;
+using MultiPlayer.GameComponents.Animation;
 using MultiPlayer.GameComponents.Physics;
 
 namespace Runner.Builders
@@ -33,10 +34,12 @@ namespace Runner.Builders
 
             var clamberRightAnimation = ClamberAnimation().Create();
             var rollanimation = BuildRollAnimation().Create();
+            var slideAnimation = BuildSlideAnimation().Create();
 
             var animator = new AnimationController()
                 .Add("clamber_right", clamberRightAnimation)
-                .Add("roll", rollanimation);
+                .Add("roll", rollanimation)
+                .Add("slide_down", slideAnimation);
 
             var characterMotor = new CharacterMotor();
             characterMotor.GroundDetector = groundDetector;
@@ -110,6 +113,16 @@ namespace Runner.Builders
                 .Loops(true);
 
             return animator;
+        }
+
+        public static AnimationBuilder BuildSlideAnimation()
+        {
+            var animation = AnimationBuilder.New()
+                .InsertFrame(0, new KeyFrame(new Vector2(0), 0))
+                .InsertFrame(0.2f, new KeyFrame(new Vector2(0), MathHelper.PiOver2))
+                .IsRelative(true);
+
+            return animation;
         }
 
         public static GameObject AnimationTest()

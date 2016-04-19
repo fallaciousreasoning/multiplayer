@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using MultiPlayer;
 using MultiPlayer.GameComponents;
+using MultiPlayer.GameComponents.Animation;
 using MultiPlayer.GameComponents.Physics;
 using IUpdateable = MultiPlayer.GameComponents.IUpdateable;
 
@@ -175,7 +176,15 @@ namespace Runner.Builders
         /// </summary>
         public void Slide()
         {
-            throw new NotImplementedException();
+            if (OnGround)
+            {
+                currentPhysicsAnimation = Animator.Start("slide_down");
+            }
+            //TODO rolling
+            else
+            {
+                
+            }
         }
 
         private float GetHorizontalAcceleration()
