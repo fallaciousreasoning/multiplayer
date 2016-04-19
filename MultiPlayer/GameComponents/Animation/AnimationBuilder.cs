@@ -63,6 +63,25 @@ namespace MultiPlayer.GameComponents.Animation
             return this;
         }
 
+        public Animation CreateReverse()
+        {
+            var reversedTimes = new List<float>();
+            times.ForEach(t => reversedTimes.Add(times[0] + times[times.Count - 1] - t));
+            reversedTimes.Reverse();
+
+            var reversedFrames = new List<KeyFrame>();
+            reversedFrames.AddRange(frames);
+            reversedFrames.Reverse();
+
+            var animator = new Animation(reversedFrames, reversedTimes, seriesAccessors);
+            animator.IsLooped = loops;
+            animator.IsRelative = isRelative;
+            animator.ResetOnComplete = resetsOnComplete;
+            animator.Reverses = reverses;
+
+            return animator;
+        }
+
         public Animation Create()
         {
             var animator = new Animation(frames, times, seriesAccessors);

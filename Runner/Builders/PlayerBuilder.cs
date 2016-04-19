@@ -33,13 +33,15 @@ namespace Runner.Builders
             var clamberDetector = new TriggerDetector() {TriggeredBy = "Ground"};
 
             var clamberRightAnimation = ClamberAnimation().Create();
-            var rollanimation = BuildRollAnimation().Create();
-            var slideAnimation = BuildSlideAnimation().Create();
+            var rollanimation = RollAnimation().Create();
+            var slideDownAnimation = SlideDownAnimation().Create();
+            var slideUpAnimation = SlideDownAnimation().CreateReverse();
 
             var animator = new AnimationController()
                 .Add("clamber_right", clamberRightAnimation)
                 .Add("roll", rollanimation)
-                .Add("slide_down", slideAnimation);
+                .Add("slide_down", slideDownAnimation)
+                .Add("slide_up", slideUpAnimation);
 
             var characterMotor = new CharacterMotor();
             characterMotor.GroundDetector = groundDetector;
@@ -103,7 +105,7 @@ namespace Runner.Builders
             return animator;
         }
 
-        public static AnimationBuilder BuildRollAnimation()
+        public static AnimationBuilder RollAnimation()
         {
             var animator = AnimationBuilder.New()
                 .InsertFrame(0f, new KeyFrame(new Vector2(0f), 0))
@@ -115,11 +117,11 @@ namespace Runner.Builders
             return animator;
         }
 
-        public static AnimationBuilder BuildSlideAnimation()
+        public static AnimationBuilder SlideDownAnimation()
         {
             var animation = AnimationBuilder.New()
                 .InsertFrame(0, new KeyFrame(0))
-                .InsertFrame(0.2f, new KeyFrame(MathHelper.PiOver2))
+                .InsertFrame(0.2f, new KeyFrame(-MathHelper.PiOver2))
                 .IsRelative(false);
 
             return animation;
@@ -127,7 +129,7 @@ namespace Runner.Builders
 
         public static GameObject AnimationTest()
         {
-            var animator = BuildRollAnimation().Create();
+            var animator = RollAnimation().Create();
 
             var gameObject = GameObjectFactory.New()
                 .WithTexture(TextureUtil.CreateTexture(64, 64, Color.Yellow))

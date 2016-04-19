@@ -11,8 +11,22 @@ using IUpdateable = MultiPlayer.GameComponents.IUpdateable;
 
 namespace Runner.Builders
 {
+    [Flags]
+    public enum CharacterState
+    {
+        Normal = 1,
+        Sliding = 2,
+        OnWall = 4,
+        Clambering = 8
+    }
+
     public class CharacterMotor : IUpdateable, IStartable, IKnowsGameObject
     {
+        /// <summary>
+        /// The state of the character motor
+        /// </summary>
+        public CharacterState State { get; private set; } = CharacterState.Normal;
+
         /// <summary>
         /// Gets the direction facing away from the wall (zero if neither or both sides are walls)
         /// </summary>
@@ -60,6 +74,8 @@ namespace Runner.Builders
             get { return (LeftWallDetector.Triggered || RightWallDetector.Triggered) && !ClamberDetector.Triggered; }
         }
 
+        public float SlideJumpDelay = 0.1f;
+
         public float JumpDelay = 0.2f;
         private float tillJump;
 
@@ -75,7 +91,7 @@ namespace Runner.Builders
 
         public float HorizontalAirDrag { get; set; } = 0.5f;
         public float HorizontalDrag { get; set; } = 5;
-        public float HorizontalSlideDrag { get; set; } = 1f;
+        public float HorizontalSlideDrag { get; set; } = 2.5f;
 
         public Vector2 Gravity { get; set; } = new Vector2(0, 15);
 
@@ -133,6 +149,8 @@ namespace Runner.Builders
         /// </summary>
         public void AccelerateRight()
         {
+            if (State == CharacterState.Sliding) return;
+
             dir++;
         }
         
@@ -141,6 +159,8 @@ namespace Runner.Builders
         /// </summary>
         public void AccelerateLeft()
         {
+            if (State == CharacterState.Sliding) return;
+
             dir--;
         }
 
@@ -148,6 +168,26 @@ namespace Runner.Builders
         /// Tells the player to jump
         /// </summary>
         public void Jump()
+        {
+            switch (State)
+            {
+                case CharacterState.Sliding:
+                    SlideJump();
+                    break;
+                default:
+                    NormalJump();
+                    break;
+            }
+        }
+
+        private void SlideJump()
+        {
+            Animator.Start("slide_up");
+            State = CharacterState.Normal;
+            tillJump = 0.5f;
+        }
+
+        private void NormalJump()
         {
             if (tillJump > 0)
                 return;
@@ -164,7 +204,7 @@ namespace Runner.Builders
             }
             else if (CanWallJump)
             {
-                Velocity.X = WallJumpHorizontalImpulse*AwayFromWall*10;
+                Velocity.X = WallJumpHorizontalImpulse * AwayFromWall * 10;
                 Velocity.Y = WallJumpVerticalImpulse;
             }
 
@@ -176,9 +216,12 @@ namespace Runner.Builders
         /// </summary>
         public void Slide()
         {
+            if (!State.HasFlag(CharacterState.Normal)) return;
+
             if (OnGround)
             {
                 currentPhysicsAnimation = Animator.Start("slide_down");
+                State = CharacterState.Sliding;
             }
             //TODO rolling
             else
@@ -194,7 +237,11 @@ namespace Runner.Builders
 
         private float GetHorizontalDrag()
         {
-            return OnGround ? HorizontalDrag : HorizontalAirDrag;
+            return State == CharacterState.Sliding
+                ? HorizontalSlideDrag
+                : OnGround
+                    ? HorizontalDrag
+                    : HorizontalAirDrag;
         }
 
         public GameObject GameObject { get; set; }
