@@ -38,7 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>Runner.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Builders\TriggerDetector.cs" />

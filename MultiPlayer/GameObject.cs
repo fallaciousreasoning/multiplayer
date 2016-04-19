@@ -34,7 +34,7 @@ namespace MultiPlayer
             components.ForEach(DelayedAdd);
         }
 
-        protected override sealed void Add(object component)
+        protected sealed override void Add(object component)
         {
             base.Add(component);
 

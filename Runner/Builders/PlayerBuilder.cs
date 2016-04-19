@@ -5,6 +5,7 @@ using System.Text;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using MultiPlayer;
+using MultiPlayer.GameComponents;
 using MultiPlayer.GameComponents.Physics;
 
 namespace Runner.Builders
@@ -30,7 +31,12 @@ namespace Runner.Builders
             var rightWallDetector = new TriggerDetector() { TriggeredBy = "Ground" };
             var clamberDetector = new TriggerDetector() {TriggeredBy = "Ground"};
 
-            var clamberRightAnimator = ClamberAnimation().Create();
+            var clamberRightAnimation = ClamberAnimation().Create();
+            var rollanimation = BuildRollAnimation().Create();
+
+            var animator = new AnimationController()
+                .Add("clamber_right", clamberRightAnimation)
+                .Add("roll", rollanimation);
 
             var characterMotor = new CharacterMotor();
             characterMotor.GroundDetector = groundDetector;
@@ -38,14 +44,15 @@ namespace Runner.Builders
             characterMotor.RightWallDetector = rightWallDetector;
 
             characterMotor.ClamberDetector = clamberDetector;
-            characterMotor.ClamberRightAnimation = clamberRightAnimator;
+            characterMotor.Animator = animator;
+
 
             return GameObjectFactory.New()
                 .WithTag("player")
                 .WithTexture(TextureUtil.CreateTexture(widthPixels,heightPixels, Color.White))
                 .With(characterMotor)
                 .With(new PlayerController())
-                .With(clamberRightAnimator)
+                .With(animator)
 
                 //Add the ground detector (bar below)
                 .WithChild(GameObjectFactory.New()
@@ -101,6 +108,7 @@ namespace Runner.Builders
                 .InsertFrame(5f, new KeyFrame(new Vector2(1f, 1f), MathHelper.TwoPi))
                 .IsRelative(true)
                 .Loops(true);
+
             return animator;
         }
 

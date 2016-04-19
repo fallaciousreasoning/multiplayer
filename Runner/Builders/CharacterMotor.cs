@@ -13,11 +13,6 @@ namespace Runner.Builders
     public class CharacterMotor : IUpdateable, IStartable, IKnowsGameObject
     {
         /// <summary>
-        /// An animation of the player clambering over a ledge to the right
-        /// </summary>
-        public AnimationController ClamberRightAnimation;
-
-        /// <summary>
         /// Gets the direction facing away from the wall (zero if neither or both sides are walls)
         /// </summary>
         public int AwayFromWall
@@ -88,7 +83,7 @@ namespace Runner.Builders
         private int dir;
         private bool wasOnGround;
 
-        private AnimationController currentPhysicsAnimationController;
+        private Animation currentPhysicsAnimation;
 
         public void Start()
         {
@@ -97,10 +92,10 @@ namespace Runner.Builders
 
         public void Update(float step)
         {
-            if (currentPhysicsAnimationController != null)
+            if (currentPhysicsAnimation != null)
             {
-                if (!currentPhysicsAnimationController.IsPlaying)
-                    currentPhysicsAnimationController = null;
+                if (!currentPhysicsAnimation.IsPlaying)
+                    currentPhysicsAnimation = null;
                 return;
             }
 
@@ -164,8 +159,7 @@ namespace Runner.Builders
             else if (CanClamber)
             {
                 Velocity = Vector2.Zero;
-                currentPhysicsAnimationController = ClamberRightAnimation;
-                currentPhysicsAnimationController.Start();
+                currentPhysicsAnimation = Animator.Start("clamber_right");
             }
             else if (CanWallJump)
             {
@@ -215,5 +209,10 @@ namespace Runner.Builders
         /// Detects when the player is not able to clamber
         /// </summary>
         public TriggerDetector ClamberDetector { get; set; }
+
+        /// <summary>
+        /// The animator for the game object
+        /// </summary>
+        public AnimationController Animator { get; set; }
     }
 }

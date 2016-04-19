@@ -44,6 +44,7 @@
     <Compile Include="Core\PrefabFactory.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameComponents\AABB.cs" />
+    <Compile Include="GameComponents\Animation.cs" />
     <Compile Include="GameComponents\AnimationController.cs" />
     <Compile Include="GameComponents\BulletController.cs" />
     <Compile Include="GameComponents\Drag.cs" />
