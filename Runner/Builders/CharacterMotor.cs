@@ -17,7 +17,8 @@ namespace Runner.Builders
         Normal = 1,
         Sliding = 2,
         OnWall = 4,
-        Clambering = 8
+        Clambering = 8,
+        Rolling = 16
     }
 
     public class CharacterMotor : IUpdateable, IStartable, IKnowsGameObject
@@ -95,6 +96,8 @@ namespace Runner.Builders
 
         public Vector2 Gravity { get; set; } = new Vector2(0, 15);
 
+        private bool shouldRoll;
+
         private Collider collider;
 
         private int dir;
@@ -141,6 +144,18 @@ namespace Runner.Builders
             dir = 0;
             tillJump -= step;
 
+            //If we've just hit the ground
+            if (!wasOnGround && OnGround)
+            {
+                if (shouldRoll)
+                {
+                    //State = CharacterState.Rolling;
+                    shouldRoll = false;
+
+                    Animator.Start("roll");
+                }
+            }
+
             wasOnGround = OnGround;
         }
 
@@ -178,6 +193,8 @@ namespace Runner.Builders
                     NormalJump();
                     break;
             }
+
+            shouldRoll = false;
         }
 
         private void SlideJump()
@@ -226,7 +243,7 @@ namespace Runner.Builders
             //TODO rolling
             else
             {
-                
+                shouldRoll = true;
             }
         }
 

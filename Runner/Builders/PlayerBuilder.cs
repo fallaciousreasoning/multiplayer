@@ -63,7 +63,7 @@ namespace Runner.Builders
                 .WithChild(GameObjectFactory.New()
                     .With(ColliderFactory.BoxTrigger(width*sensorLopOff, sensorWidth))
                     .With(groundDetector)
-                    .WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
+                    //.WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
                     .AtPosition(new Vector2(0, height * 0.5f + 0.1f))
                     .Create())
 
@@ -71,7 +71,7 @@ namespace Runner.Builders
                 .WithChild(GameObjectFactory.New()
                     .With(ColliderFactory.BoxTrigger(sensorWidth, height*sensorLopOff))
                     .With(leftWallDetector)
-                    .WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
+                    //.WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
                     .AtPosition(-new Vector2(width * 0.5f + sensorWidth*0.5f, 0))
                     .Create())
 
@@ -79,7 +79,7 @@ namespace Runner.Builders
                 .WithChild(GameObjectFactory.New()
                     .With(ColliderFactory.BoxTrigger(sensorWidth, height*sensorLopOff))
                     .With(rightWallDetector)
-                    .WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
+                    //.WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
                     .AtPosition(new Vector2(width * 0.5f + sensorWidth*0.5f, 0))
                     .Create())
 
@@ -87,7 +87,7 @@ namespace Runner.Builders
                 .WithChild(GameObjectFactory.New()
                     .With(ColliderFactory.BoxTrigger(width * 3f*sensorLopOff, sensorWidth))
                     .With(clamberDetector)
-                    .WithTexture(TextureUtil.CreateTexture(widthPixels*3, sensorWidthPixels, Color.Red))
+                    //.WithTexture(TextureUtil.CreateTexture(widthPixels*3, sensorWidthPixels, Color.Red))
                     .AtPosition(-new Vector2(0, (height * 0.5f + sensorWidth*0.5f)*clamberSensorOffset))
                     .Create())
 
@@ -108,11 +108,10 @@ namespace Runner.Builders
         public static AnimationBuilder RollAnimation()
         {
             var animator = AnimationBuilder.New()
-                .InsertFrame(0f, new KeyFrame(new Vector2(0f), 0))
-                .InsertFrame(2.5f, new KeyFrame(new Vector2(1f, 0), MathHelper.Pi))
-                .InsertFrame(5f, new KeyFrame(new Vector2(1f, 1f), MathHelper.TwoPi))
-                .IsRelative(true)
-                .Loops(true);
+                .InsertFrame(0f, new KeyFrame(new Vector2(0f), 0, new Vector2(1)))
+                .InsertFrame(0.2f, new KeyFrame(new Vector2(1f, 0.2f), MathHelper.Pi, new Vector2(1, 0.5f)))
+                .InsertFrame(0.4f, new KeyFrame(new Vector2(2f, 0f), MathHelper.TwoPi, new Vector2(1)))
+                .IsRelative(true);
 
             return animator;
         }
