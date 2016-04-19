@@ -58,7 +58,9 @@
     <Compile Include="GameComponents\Animation\PositionAccessor.cs" />
     <Compile Include="GameComponents\Animation\Vector2Frame.cs" />
     <Compile Include="GameComponents\BulletController.cs" />
+    <Compile Include="GameComponents\Camera.cs" />
     <Compile Include="GameComponents\Drag.cs" />
+    <Compile Include="GameComponents\Follow.cs" />
     <Compile Include="GameComponents\IDestroyable.cs" />
     <Compile Include="GameComponents\IDrawable.cs" />
     <Compile Include="GameComponents\IHearsDestroy.cs" />

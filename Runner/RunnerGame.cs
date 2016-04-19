@@ -12,6 +12,7 @@ namespace Runner
 {
     public class RunnerGame : Game1
     {
+        private GameObject camera;
         protected override void Initialize()
         {
             base.Initialize();
@@ -27,8 +28,12 @@ namespace Runner
             PrefabFactory.RegisterPrefab("ground", () => ObstacleBuilder.BuildGround().Create());
             PrefabFactory.RegisterPrefab("player", () => PlayerBuilder.BuildPlayer().Create());
             PrefabFactory.RegisterPrefab("animated", PlayerBuilder.AnimationTest);
+            
+            var player = PrefabFactory.Instantiate("player", new Vector2(6.25f, 0));
 
-            PrefabFactory.Instantiate("player", new Vector2(6.25f, 0));
+            camera = CameraBuilder.CreateCamera(player.Transform);
+
+            PrefabFactory.Instantiate(camera);
             PrefabFactory.Instantiate("ground", new Vector2(6.5f, 7), 0, new Vector2(13, 1));
             PrefabFactory.Instantiate("ground", new Vector2(0.5f, 4), 0, new Vector2(1, 8));
             PrefabFactory.Instantiate("ground", new Vector2(12f, 4), 0, new Vector2(1, 8));

@@ -24,7 +24,7 @@ namespace MultiPlayer
         public InputManager Input { get; private set; }
         public SpriteBatch SpriteBatch { get { return spriteBatch; } }
         public GraphicsDevice Device { get { return graphics.GraphicsDevice; } }
-
+        
         public ComponentManager ComponentManager;
         public ComponentManager<GameObject> GameObjectManager;
 
@@ -155,7 +155,7 @@ namespace MultiPlayer
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(0, null, null, null, null, null, Camera.ActiveCamera?.World ?? Matrix.Identity);
 
             ComponentManager.Draw();
 

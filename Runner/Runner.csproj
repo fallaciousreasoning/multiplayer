@@ -41,6 +41,7 @@
     <StartupObject>Runner.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Builders\CameraBuilder.cs" />
     <Compile Include="Builders\TriggerDetector.cs" />
     <Compile Include="Builders\ObstacleBuilder.cs" />
     <Compile Include="Builders\PlayerBuilder.cs" />
