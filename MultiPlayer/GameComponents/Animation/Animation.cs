@@ -7,7 +7,25 @@ namespace MultiPlayer.GameComponents.Animation
 {
     public class Animation : IUpdateable, IKnowsGameObject
     {
+        private static readonly HashSet<string> PhysicsSeries = new HashSet<string>
+        {
+            KeyFrame.POSITION_NAME,
+            KeyFrame.ROTATION_NAME
+        };
+
+        private static readonly Dictionary<Type, ICalculator> Calculators = new Dictionary<Type, ICalculator>()
+        {
+            {typeof(float), new FloatCalculator() },
+            {typeof(Vector2), new Vector2Calculator() }
+        };
+
         public bool IsRelative { get; set; } = true;
+
+        /// <summary>
+        /// Indicates whether the animation should attempt to let the physics behave normally. Risky.
+        /// </summary>
+        public bool AnimatePhysics { get; set; }
+
         public bool ResetOnComplete { get; set; }
         public bool Reverses { get; set; }
         public bool IsLooped { get; set; }
@@ -28,6 +46,7 @@ namespace MultiPlayer.GameComponents.Animation
         private bool paused;
 
         private float lastTime;
+        private float lastAnimationTime;
 
         private Dictionary<string, object> lastFrame;
         private Dictionary<string, object> firstFrame;
@@ -121,6 +140,8 @@ namespace MultiPlayer.GameComponents.Animation
         {
             if (!playing || paused) return;
 
+            lastAnimationTime = currentTime;
+
             if (!reversing)
                 currentTime += step;
             else currentTime -= step;
@@ -161,11 +182,25 @@ namespace MultiPlayer.GameComponents.Animation
             var time = times[currentFrame];
 
             var percentage = finish ? 1 : (currentTime - lastTime)/(time - lastTime);
+            //Only calculate the last percentage if we have to
+            var lastPercentage = AnimatePhysics ? (lastAnimationTime - lastAnimationTime)/(time - lastAnimationTime) : 0;
+
             foreach (var seriesName in series)
             {
                 var seriesFrame = frame.GetFrame(seriesName);
                 var accessor = seriesAccessors[seriesName];
+
                 var value = seriesFrame.Interpolate(lastFrame[seriesName], Frame[seriesName], percentage);
+                if (AnimatePhysics && PhysicsSeries.Contains(seriesName))
+                {
+                    var calculator = Calculators[value.GetType()];
+
+                    var lastValue = seriesFrame.Interpolate(lastFrame[seriesName], Frame[seriesName], percentage);
+                    var difference = calculator.Sub(value, lastValue);
+
+                    //Basically, add the amount we expected to move this frame to our position
+                    value = calculator.Add(accessor.Get(), difference);
+                }
 
                 accessor.Set(value, IsRelative ? firstFrame[seriesName] : null);
             }
