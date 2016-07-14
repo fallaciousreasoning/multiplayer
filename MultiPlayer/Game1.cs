@@ -81,7 +81,6 @@ namespace MultiPlayer
             DefaultFont = Content.Load<SpriteFont>("Default");
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             //PrefabFactory.RegisterPrefab("machine gun", () => GameObjectFactory.New()
             //    .WithTexture(TextureUtil.CreateTexture(16, 16, Color.Red))
             //    .With(new Weapon() { FireRate = 0.5f })

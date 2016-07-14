@@ -1,8 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using System.IO;
+using Editor.Scripts;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer;
 using MultiPlayer.Core;
+using MultiPlayer.GameComponents;
+using Newtonsoft.Json;
 using Runner;
 using Runner.Builders;
 
@@ -15,9 +20,12 @@ namespace Editor
     {
         private GameObject camera;
         private GameObject cursor;
+        private MapInfo map;
 
         protected override void Initialize()
         {
+            map = new MapInfo();
+            
             base.Initialize();
         }
 
@@ -32,13 +40,42 @@ namespace Editor
 
             camera = CameraBuilder.CreateCamera(cursor.Transform);
             PrefabFactory.Instantiate(camera);
+            
+            var scene = GameObjectFactory.New().Create();
+            PrefabFactory.Instantiate(scene);
 
-            PrefabFactory.Instantiate("ground", new Vector2(6.5f, 7), 0, new Vector2(13, 1));
-            PrefabFactory.Instantiate("ground", new Vector2(0.5f, 4), 0, new Vector2(1, 8));
-            PrefabFactory.Instantiate("ground", new Vector2(12f, 4), 0, new Vector2(1, 8));
+            map.Scene = new PrefabInfo() {PrefabName = "empty", Children = new List<PrefabInfo>()};
 
-            PrefabFactory.Instantiate("ground", new Vector2(11, 5.5f), 0, new Vector2(2, 5));
-            PrefabFactory.Instantiate("ground", new Vector2(1, 5.5f), 0, new Vector2(2, 5));
+            //Create placer
+            var placer = new Placer()
+            {
+                Place = (topLeft, size) =>
+                {
+                    var pos = topLeft + size*0.5f;
+                    PrefabFactory.Instantiate("ground",pos , 0, size, scene);
+                    map.Scene.Children.Add(new PrefabInfo()
+                    {
+                        PrefabName = "ground",
+                        Position = pos,
+                        Scale = size,
+                    });
+                    var json = JsonConvert.SerializeObject(map);
+                    using (var w = new StreamWriter(File.Create("map.json")))
+                    {
+                        w.Write(json);
+                    }
+                }
+            };
+            var renderer = new ShadowRenderer()
+            {
+                Placer = placer
+            };
+            var placerObj = GameObjectFactory.New()
+                .With(placer)
+                .With(renderer)
+                .Create();
+
+            PrefabFactory.Instantiate(placerObj);
         }
     }
 }
