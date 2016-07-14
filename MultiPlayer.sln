@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiPlayer", "MultiPlayer\MultiPlayer.csproj", "{348807D4-6619-48AF-939A-5F5570BA5475}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PretendPeer", "PretendPeer\PretendPeer.csproj", "{31A92FA5-1200-4EC9-8FDE-023A7D0250C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "Runner\Runner.csproj", "{8A7A2F80-B068-4A28-93CF-B829C8085C9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor", "Editor\Editor.csproj", "{D68E91F3-AE1F-4DAA-9565-93ECF3822AAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,12 @@ Global
 		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Release|Any CPU.ActiveCfg = Release|x86
 		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Release|x86.ActiveCfg = Release|x86
 		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Release|x86.Build.0 = Release|x86
+		{D68E91F3-AE1F-4DAA-9565-93ECF3822AAC}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D68E91F3-AE1F-4DAA-9565-93ECF3822AAC}.Debug|x86.ActiveCfg = Debug|x86
+		{D68E91F3-AE1F-4DAA-9565-93ECF3822AAC}.Debug|x86.Build.0 = Debug|x86
+		{D68E91F3-AE1F-4DAA-9565-93ECF3822AAC}.Release|Any CPU.ActiveCfg = Release|x86
+		{D68E91F3-AE1F-4DAA-9565-93ECF3822AAC}.Release|x86.ActiveCfg = Release|x86
+		{D68E91F3-AE1F-4DAA-9565-93ECF3822AAC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

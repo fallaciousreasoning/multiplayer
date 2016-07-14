@@ -1,19 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8A7A2F80-B068-4A28-93CF-B829C8085C9C}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{D68E91F3-AE1F-4DAA-9565-93ECF3822AAC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Runner</RootNamespace>
-    <AssemblyName>Runner</AssemblyName>
+    <RootNamespace>Editor</RootNamespace>
+    <AssemblyName>Editor</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
-    <MonoGameContentBuilderExe>
-    </MonoGameContentBuilderExe>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -22,48 +21,33 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Windows\Debug\</OutputPath>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
     <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Windows\Release\</OutputPath>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
     <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>Runner.Program</StartupObject>
-  </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Builders\CameraBuilder.cs" />
-    <Compile Include="Builders\TriggerDetector.cs" />
-    <Compile Include="Builders\ObstacleBuilder.cs" />
-    <Compile Include="Builders\PlayerBuilder.cs" />
-    <Compile Include="Builders\PlayerController.cs" />
-    <Compile Include="Builders\CharacterMotor.cs" />
-    <Compile Include="PlayerAnimationHelper.cs" />
-    <Compile Include="PrefabInitializer.cs" />
+    <Compile Include="EditorGame.cs" />
+    <Compile Include="MapInfo.cs" />
+    <Compile Include="MouseComponent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RunnerGame.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="FarseerPhysics MonoGame, Version=3.5.0.30732, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\Farseer Physics Engine 3.5\bin\WindowsGL\Debug\FarseerPhysics MonoGame.dll</HintPath>
-    </Reference>
     <Reference Include="MonoGame.Framework">
-      <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -78,6 +62,10 @@
     <ProjectReference Include="..\MultiPlayer\MultiPlayer.csproj">
       <Project>{348807d4-6619-48af-939a-5f5570ba5475}</Project>
       <Name>MultiPlayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Runner\Runner.csproj">
+      <Project>{8a7a2f80-b068-4a28-93cf-b829c8085c9c}</Project>
+      <Name>Runner</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

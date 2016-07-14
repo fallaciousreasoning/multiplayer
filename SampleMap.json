@@ -1,0 +1,24 @@
+{
+	"Name":"My first map",
+	"Author":"me",
+	"Spawn":{
+		"x":0,
+		"y":0
+	},
+	
+	"Checkpoints":[
+		{ 
+			"x":0,
+			"y":0
+		}
+	],
+
+	"Platforms":[
+		{
+			"width":5,
+			"height":1,
+			"x":0,
+			"y":0
+		},		
+	]
+}

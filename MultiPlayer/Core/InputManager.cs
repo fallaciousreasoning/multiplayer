@@ -83,6 +83,8 @@ namespace MultiPlayer
         }
 
         public Vector2 MousePosition { get { return new Vector2(mouseState.X, mouseState.Y); } }
+        public Vector2 LastMousePosition { get { return new Vector2(oldMouseState.X, oldMouseState.Y); } }
+        public Vector2 MouseMoved { get { return MousePosition - LastMousePosition; } }
 
         public bool IsDown(MouseButton button)
         {

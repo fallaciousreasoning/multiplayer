@@ -66,6 +66,8 @@ namespace MultiPlayer
             Components.Add(Input);
             Input.AddButton("shoot", new InputButton(Keys.Space));
 
+            IsMouseVisible = true;
+
             base.Initialize();
         }
 

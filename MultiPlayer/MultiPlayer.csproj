@@ -85,6 +85,7 @@
     <Compile Include="GameComponents\Physics\IHearsTrigger.cs" />
     <Compile Include="GameComponents\Physics\PhysicsWorld.cs" />
     <Compile Include="GameComponents\PlayerController.cs" />
+    <Compile Include="GameComponents\PrefabInfo.cs" />
     <Compile Include="GameComponents\ScreenWrapper.cs" />
     <Compile Include="GameComponents\ShipEngine.cs" />
     <Compile Include="GameComponents\SimpleController.cs" />

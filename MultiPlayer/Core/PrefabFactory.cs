@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using MultiPlayer.GameComponents;
 
 namespace MultiPlayer.Core
 {
@@ -17,6 +18,8 @@ namespace MultiPlayer.Core
         {
             this.manager = manager;
             this.ignoreCase = ignoreCase;
+
+            RegisterPrefab("empty", () => GameObjectFactory.New().Create());
         }
 
         public void RegisterPrefab(string name, Func<GameObject> builder)
@@ -25,6 +28,18 @@ namespace MultiPlayer.Core
             if (gameObjectBuilders.ContainsKey(name)) throw new Exception($"You've already created a prefab called {name}");
             
             gameObjectBuilders.Add(name, builder);
+        }
+
+        public GameObject Instantiate(PrefabInfo info)
+        {
+            return Instantiate(info, null);
+        }
+
+        public GameObject Instantiate(PrefabInfo info, GameObject parent)
+        {
+            var gameObject = Instantiate(info.PrefabName, info.Position, info.Rotation, info.Scale, parent);
+            info.Children?.ForEach(child => Instantiate(child, gameObject));
+            return gameObject;
         }
 
         public GameObject Instantiate(string name)
@@ -44,28 +59,31 @@ namespace MultiPlayer.Core
 
         public GameObject Instantiate(string name, Vector2 position, float rotation, Vector2 scale)
         {
-            return Instantiate(name, position, rotation, scale, manager);
+            return Instantiate(name, position, rotation, scale, null);
         }
 
-        public GameObject Instantiate(string name, ComponentManager<GameObject> parent)
+        public GameObject Instantiate(string name, GameObject parent)
         {
             return Instantiate(name, Vector2.Zero, parent);
         }
 
-        public GameObject Instantiate(string name, Vector2 position, ComponentManager<GameObject> parent)
+        public GameObject Instantiate(string name, Vector2 position, GameObject parent)
         {
             return Instantiate(name, position, 0f, parent);
         }
 
-        public GameObject Instantiate(string name, Vector2 position, float rotation, ComponentManager<GameObject> parent)
+        public GameObject Instantiate(string name, Vector2 position, float rotation, GameObject parent)
         {
             return Instantiate(name, position, rotation, Vector2.One, parent);
         }
 
-        public GameObject Instantiate(string name, Vector2 position, float rotation, Vector2 scale, ComponentManager<GameObject> parent)
+        public GameObject Instantiate(string name, Vector2 position, float rotation, Vector2 scale, GameObject parent)
         {
             var gameObject = Build(name, position, rotation, scale);
-            parent.DelayedAdd(gameObject);
+            if (parent != null)
+                parent.DelayedAdd(gameObject);
+            else
+                manager.DelayedAdd(gameObject);
             return gameObject;
         }
 

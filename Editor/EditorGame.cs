@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer;
 using MultiPlayer.Core;
+using Runner;
 using Runner.Builders;
 
-namespace Runner
+namespace Editor
 {
-    public class RunnerGame : Game1
+    /// <summary>
+    /// This is the main type for your game.
+    /// </summary>
+    public class EditorGame : Game1
     {
         private GameObject camera;
+        private GameObject cursor;
+
         protected override void Initialize()
         {
             base.Initialize();
-
-            Input.AddButton("jump", new InputButton(Keys.Space, Keys.W, Keys.Up));
-            Input.AddButton("slide", new InputButton(Keys.S, Keys.LeftShift, Keys.Down));
         }
 
         protected override void LoadContent()
@@ -26,12 +26,13 @@ namespace Runner
             base.LoadContent();
 
             PrefabInitializer.AddRunnerGamePrefabs(PrefabFactory);
-            
-            var player = PrefabFactory.Instantiate("player", new Vector2(6.25f, 0));
 
-            camera = CameraBuilder.CreateCamera(player.Transform);
+            cursor = GameObjectFactory.New().With(new MouseComponent()).Create();
+            PrefabFactory.Instantiate(cursor);
 
+            camera = CameraBuilder.CreateCamera(cursor.Transform);
             PrefabFactory.Instantiate(camera);
+
             PrefabFactory.Instantiate("ground", new Vector2(6.5f, 7), 0, new Vector2(13, 1));
             PrefabFactory.Instantiate("ground", new Vector2(0.5f, 4), 0, new Vector2(1, 8));
             PrefabFactory.Instantiate("ground", new Vector2(12f, 4), 0, new Vector2(1, 8));
