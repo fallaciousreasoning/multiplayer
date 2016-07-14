@@ -64,24 +64,31 @@ namespace MultiPlayer.GameComponents.Animation
             this.resetsOnComplete = resetsOnComplete;
             return this;
         }
+        public AnimationBuilder Reversed()
+        {
+            var newAnimator = new AnimationBuilder()
+            {
+                animatePhysics = animatePhysics,
+                isRelative = isRelative,
+                loops = loops,
+                resetsOnComplete = resetsOnComplete,
+                reverses = reverses
+            };
+            
+            for (var i = times.Count - 1; i >= 0; --i)
+                newAnimator.times.Add(times[0] + times[times.Count - 1] - times[i]);
+
+            for (var i = frames.Count - 1; i >= 0; --i)
+            {
+                newAnimator.frames.Add(frames[i].Clone());
+            }
+
+            return newAnimator;
+        }
 
         public Animation CreateReverse()
         {
-            var reversedTimes = new List<float>();
-            times.ForEach(t => reversedTimes.Add(times[0] + times[times.Count - 1] - t));
-            reversedTimes.Reverse();
-
-            var reversedFrames = new List<KeyFrame>();
-            reversedFrames.AddRange(frames);
-            reversedFrames.Reverse();
-
-            var animator = new Animation(reversedFrames, reversedTimes, seriesAccessors);
-            animator.IsLooped = loops;
-            animator.IsRelative = isRelative;
-            animator.ResetOnComplete = resetsOnComplete;
-            animator.Reverses = reverses;
-
-            return animator;
+            return Reversed().CreateReverse();
         }
 
         public Animation Create()
@@ -106,6 +113,8 @@ namespace MultiPlayer.GameComponents.Animation
         {
             foreach (var frame in frames)
             {
+                if (!frame.Values.ContainsKey(KeyFrame.POSITION_NAME)) continue;
+                
                 var value = (frame.Values[KeyFrame.POSITION_NAME] as Vector2?) ?? Vector2.Zero;
 
                 frame.Values[KeyFrame.POSITION_NAME] = new Vector2(-value.X, value.Y);
@@ -118,6 +127,8 @@ namespace MultiPlayer.GameComponents.Animation
         {
             foreach (var frame in frames)
             {
+                if (!frame.Values.ContainsKey(KeyFrame.POSITION_NAME)) continue;
+
                 var value = (frame.Values[KeyFrame.POSITION_NAME] as Vector2?) ?? Vector2.Zero;
 
                 frame.Values[KeyFrame.POSITION_NAME] = new Vector2(value.X, -value.Y);
@@ -128,14 +139,38 @@ namespace MultiPlayer.GameComponents.Animation
 
         public AnimationBuilder ReflectRotation()
         {
-            foreach (var frame in frames)
+            var animator = Clone();
+
+            foreach (var frame in animator.frames)
             {
+                if (!frame.Values.ContainsKey(KeyFrame.ROTATION_NAME)) continue;
+
                 var value = (frame.Values[KeyFrame.ROTATION_NAME] as float?) ?? 0;
 
                 frame.Values[KeyFrame.ROTATION_NAME] = -value;
             }
 
-            return this;
+            return animator;
+        }
+
+        public AnimationBuilder Clone()
+        {
+            var newAnimator = new AnimationBuilder()
+            {
+                animatePhysics = animatePhysics,
+                isRelative = isRelative,
+                loops = loops,
+                resetsOnComplete = resetsOnComplete,
+                reverses = reverses
+            };
+
+            for (var i = 0; i < frames.Count; ++i)
+                newAnimator.times.Add(times[i]);
+
+            for (var i = 0; i < frames.Count; ++i)
+                newAnimator.frames.Add(frames[i].Clone());
+
+            return newAnimator;
         }
     }
 }

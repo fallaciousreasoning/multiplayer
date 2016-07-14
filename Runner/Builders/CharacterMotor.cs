@@ -24,6 +24,11 @@ namespace Runner.Builders
     public class CharacterMotor : IUpdateable, IStartable, IKnowsGameObject
     {
         /// <summary>
+        /// The direction the character is currently facing
+        /// </summary>
+        public Direction Facing { get; private set; }
+
+        /// <summary>
         /// The state of the character motor
         /// </summary>
         public CharacterState State { get; private set; } = CharacterState.Normal;
@@ -60,6 +65,16 @@ namespace Runner.Builders
         /// The vertical impulse applied to the player when wall jumping
         /// </summary>
         public float WallJumpVerticalImpulse = -10;
+
+        /// <summary>
+        /// The minimum velocity the character needs to maintain to be counted as 'moving'
+        /// </summary>
+        public float VelocityMinForMoving = 0.01f;
+
+        /// <summary>
+        /// Indicates whether the character is moving
+        /// </summary>
+        public bool Moving { get { return VelocityMinForMoving*VelocityMinForMoving > Velocity.LengthSquared(); } }
 
         /// <summary>
         /// Determines whether the player is on the ground
@@ -141,6 +156,11 @@ namespace Runner.Builders
             if (dir == 0)
                 Velocity.X -= Velocity.X*GetHorizontalDrag()*step;
 
+            if (Velocity.X < -VelocityMinForMoving)
+                Facing = Direction.Left;
+            if (Velocity.X > VelocityMinForMoving)
+                Facing = Direction.Right;
+
             dir = 0;
             tillJump -= step;
 
@@ -152,7 +172,7 @@ namespace Runner.Builders
                     //State = CharacterState.Rolling;
                     shouldRoll = false;
 
-                    Animator.Start("roll");
+                    Animator.Start(Animations.Name(PlayerAnimation.Roll, Facing));
                 }
             }
 
@@ -199,7 +219,7 @@ namespace Runner.Builders
 
         private void SlideJump()
         {
-            Animator.Start("slide_up");
+            Animator.Start(Animations.Name(PlayerAnimation.SlideUp, Facing));
             State = CharacterState.Normal;
             tillJump = 0.5f;
         }
@@ -217,7 +237,7 @@ namespace Runner.Builders
             else if (CanClamber)
             {
                 Velocity = Vector2.Zero;
-                currentPhysicsAnimation = Animator.Start("clamber_right");
+                currentPhysicsAnimation = Animator.Start(Animations.Name(PlayerAnimation.Clamber, Facing));
             }
             else if (CanWallJump)
             {
@@ -237,7 +257,7 @@ namespace Runner.Builders
 
             if (OnGround)
             {
-                currentPhysicsAnimation = Animator.Start("slide_down");
+                currentPhysicsAnimation = Animator.Start(Animations.Name(PlayerAnimation.SlideDown, Facing));
                 State = CharacterState.Sliding;
             }
             //TODO rolling

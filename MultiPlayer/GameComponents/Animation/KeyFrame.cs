@@ -40,6 +40,11 @@ namespace MultiPlayer.GameComponents.Animation
             SetSeries(ROTATION_NAME, new FloatFrame(rotation));
         }
 
+        private KeyFrame()
+        {
+            
+        }
+
         public IAnimationFrame GetFrame(string seriesName)
         {
             if (frames.ContainsKey(seriesName)) return frames[seriesName];
@@ -61,6 +66,20 @@ namespace MultiPlayer.GameComponents.Animation
         public bool ContainsAll(IEnumerable<string> seriesNames)
         {
             return seriesNames.All(Series.Contains);
+        }
+
+        public KeyFrame Clone()
+        {
+            var clone = new KeyFrame();
+
+            foreach (var series in Series)
+            {
+                clone.Series.Add(series);
+                clone.Values.Add(series, Values[series]);
+                clone.frames.Add(series, frames[series]);
+            }
+
+            return clone;
         }
     }
 }

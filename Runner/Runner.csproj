@@ -51,6 +51,7 @@
     <Compile Include="Builders\PlayerBuilder.cs" />
     <Compile Include="Builders\PlayerController.cs" />
     <Compile Include="Builders\CharacterMotor.cs" />
+    <Compile Include="PlayerAnimationHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RunnerGame.cs" />

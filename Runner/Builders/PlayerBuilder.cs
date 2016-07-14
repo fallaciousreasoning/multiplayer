@@ -33,19 +33,47 @@ namespace Runner.Builders
             var clamberDetector = new TriggerDetector() {TriggeredBy = "Ground"};
 
             var clamberRightAnimation = ClamberAnimation().Create();
-            var rollanimation = RollAnimation()
+            var clamberLeftAnimation = ClamberAnimation()
+                .ReflectHorizontal()
+                .Create();
+
+            var rollRightAnimation = RollAnimation()
+                .Create();
+            var rollLeftAnimation = RollAnimation()
+                .ReflectHorizontal()
+                .ReflectRotation()
+                .Create();
+            
+            var slideDownRightAnimation = SlideDownAnimation()
+                .Create();
+
+            var slideDownLeftAnimation = SlideDownAnimation()
+                .ReflectHorizontal()
+                .ReflectRotation()
+                .Create();
+            
+            var slideUpRightAnimation = SlideDownAnimation()
+                .Reversed()
+                .Create();
+
+            var slideUpLeftAnimation = SlideDownAnimation()
+                .Reversed()
                 .ReflectHorizontal()
                 .ReflectRotation()
                 .Create();
 
-            var slideDownAnimation = SlideDownAnimation().Create();
-            var slideUpAnimation = SlideDownAnimation().CreateReverse();
 
             var animator = new AnimationController()
-                .Add("clamber_right", clamberRightAnimation)
-                .Add("roll", rollanimation)
-                .Add("slide_down", slideDownAnimation)
-                .Add("slide_up", slideUpAnimation);
+                .Add(Animations.Name(PlayerAnimation.Clamber, Direction.Right), clamberRightAnimation)
+                .Add(Animations.Name(PlayerAnimation.Clamber, Direction.Left), clamberLeftAnimation)
+
+                .Add(Animations.Name(PlayerAnimation.Roll, Direction.Left), rollLeftAnimation)
+                .Add(Animations.Name(PlayerAnimation.Roll, Direction.Right), rollRightAnimation)
+
+                .Add(Animations.Name(PlayerAnimation.SlideDown, Direction.Right), slideDownRightAnimation)
+                .Add(Animations.Name(PlayerAnimation.SlideUp, Direction.Right), slideUpRightAnimation)
+                .Add(Animations.Name(PlayerAnimation.SlideDown, Direction.Left), slideDownLeftAnimation)
+                .Add(Animations.Name(PlayerAnimation.SlideUp, Direction.Left), slideUpLeftAnimation);
 
             var characterMotor = new CharacterMotor();
             characterMotor.GroundDetector = groundDetector;
