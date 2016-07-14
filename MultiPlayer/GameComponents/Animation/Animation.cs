@@ -10,7 +10,7 @@ namespace MultiPlayer.GameComponents.Animation
         private static readonly HashSet<string> PhysicsSeries = new HashSet<string>
         {
             KeyFrame.POSITION_NAME,
-            KeyFrame.ROTATION_NAME
+            //KeyFrame.ROTATION_NAME
         };
 
         private static readonly Dictionary<Type, ICalculator> Calculators = new Dictionary<Type, ICalculator>()
@@ -183,7 +183,7 @@ namespace MultiPlayer.GameComponents.Animation
 
             var percentage = finish ? 1 : (currentTime - lastTime)/(time - lastTime);
             //Only calculate the last percentage if we have to
-            var lastPercentage = AnimatePhysics ? (lastAnimationTime - lastAnimationTime)/(time - lastAnimationTime) : 0;
+            var lastPercentage = AnimatePhysics && !finish ? (lastAnimationTime - lastTime)/(time - lastTime) : percentage;
 
             foreach (var seriesName in series)
             {
@@ -191,15 +191,17 @@ namespace MultiPlayer.GameComponents.Animation
                 var accessor = seriesAccessors[seriesName];
 
                 var value = seriesFrame.Interpolate(lastFrame[seriesName], Frame[seriesName], percentage);
+                
                 if (AnimatePhysics && PhysicsSeries.Contains(seriesName))
                 {
                     var calculator = Calculators[value.GetType()];
 
-                    var lastValue = seriesFrame.Interpolate(lastFrame[seriesName], Frame[seriesName], percentage);
+                    var lastValue = seriesFrame.Interpolate(lastFrame[seriesName], Frame[seriesName], lastPercentage);
                     var difference = calculator.Sub(value, lastValue);
 
                     //Basically, add the amount we expected to move this frame to our position
                     value = calculator.Add(accessor.Get(), difference);
+                    if (IsRelative) value = calculator.Sub(value, firstFrame[seriesName]);
                 }
 
                 accessor.Set(value, IsRelative ? firstFrame[seriesName] : null);

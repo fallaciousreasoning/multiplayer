@@ -14,6 +14,7 @@ namespace MultiPlayer.GameComponents.Animation
         private bool isRelative;
         private bool reverses;
         private bool resetsOnComplete;
+        private bool animatePhysics;
 
         private AnimationBuilder()
         {
@@ -89,8 +90,15 @@ namespace MultiPlayer.GameComponents.Animation
             animator.IsRelative = isRelative;
             animator.ResetOnComplete = resetsOnComplete;
             animator.Reverses = reverses;
+            animator.AnimatePhysics = animatePhysics;
 
             return animator;
+        }
+
+        public AnimationBuilder AnimatePhysics()
+        {
+            this.animatePhysics = true;
+            return this;
         }
     }
 }

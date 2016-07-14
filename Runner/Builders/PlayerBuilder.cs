@@ -111,6 +111,7 @@ namespace Runner.Builders
                 .InsertFrame(0f, new KeyFrame(new Vector2(0f), 0, new Vector2(1)))
                 .InsertFrame(0.2f, new KeyFrame(new Vector2(1f, 0.2f), MathHelper.Pi, new Vector2(1, 0.5f)))
                 .InsertFrame(0.4f, new KeyFrame(new Vector2(2f, 0f), MathHelper.TwoPi, new Vector2(1)))
+                .AnimatePhysics()
                 .IsRelative(true);
 
             return animator;
