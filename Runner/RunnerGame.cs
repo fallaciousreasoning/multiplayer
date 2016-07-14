@@ -39,6 +39,8 @@ namespace Runner
             PrefabFactory.Instantiate("ground", new Vector2(12f, 4), 0, new Vector2(1, 8));
 
             PrefabFactory.Instantiate("ground", new Vector2(11, 5.5f), 0, new Vector2(2, 5));
+            PrefabFactory.Instantiate("ground", new Vector2(1, 5.5f), 0, new Vector2(2, 5));
+
 
             //PrefabFactory.Instantiate("animated");
         }
