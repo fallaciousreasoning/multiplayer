@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace MultiPlayer.GameComponents.Animation
 {
@@ -98,6 +99,42 @@ namespace MultiPlayer.GameComponents.Animation
         public AnimationBuilder AnimatePhysics()
         {
             this.animatePhysics = true;
+            return this;
+        }
+
+        public AnimationBuilder ReflectHorizontal()
+        {
+            foreach (var frame in frames)
+            {
+                var value = (frame.Values[KeyFrame.POSITION_NAME] as Vector2?) ?? Vector2.Zero;
+
+                frame.Values[KeyFrame.POSITION_NAME] = new Vector2(-value.X, value.Y);
+            }
+
+            return this;
+        }
+
+        public AnimationBuilder ReflectVertical()
+        {
+            foreach (var frame in frames)
+            {
+                var value = (frame.Values[KeyFrame.POSITION_NAME] as Vector2?) ?? Vector2.Zero;
+
+                frame.Values[KeyFrame.POSITION_NAME] = new Vector2(value.X, -value.Y);
+            }
+
+            return this;
+        }
+
+        public AnimationBuilder ReflectRotation()
+        {
+            foreach (var frame in frames)
+            {
+                var value = (frame.Values[KeyFrame.ROTATION_NAME] as float?) ?? 0;
+
+                frame.Values[KeyFrame.ROTATION_NAME] = -value;
+            }
+
             return this;
         }
     }

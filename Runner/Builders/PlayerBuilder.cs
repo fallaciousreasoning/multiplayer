@@ -33,7 +33,11 @@ namespace Runner.Builders
             var clamberDetector = new TriggerDetector() {TriggeredBy = "Ground"};
 
             var clamberRightAnimation = ClamberAnimation().Create();
-            var rollanimation = RollAnimation().Create();
+            var rollanimation = RollAnimation()
+                .ReflectHorizontal()
+                .ReflectRotation()
+                .Create();
+
             var slideDownAnimation = SlideDownAnimation().Create();
             var slideUpAnimation = SlideDownAnimation().CreateReverse();
 
