@@ -16,6 +16,7 @@ namespace MultiPlayer
         public List<IUpdateable> UpdateableComponents { get; private set; }
         public List<ILateUpdateable> LateUpdateableComponents { get; private set; }
         public List<IStartable> StartableComponents { get; private set; }
+        public List<IDestroyable> DestroyableComponents { get; private set; }
         public List<IDrawable> DrawableComponents { get; private set; }
 
         public ComponentManager()
@@ -25,6 +26,7 @@ namespace MultiPlayer
             LateUpdateableComponents = new List<ILateUpdateable>();
             StartableComponents = new List<IStartable>();
             DrawableComponents = new List<IDrawable>();
+            DestroyableComponents = new List<IDestroyable>();
         }
 
         public void DelayedAdd(T component)
@@ -59,6 +61,14 @@ namespace MultiPlayer
             }
             if (component is IDrawable)
                 DrawableComponents.Add(component as IDrawable);
+            if (component is IDestroyable)
+            {
+                var destroyable = component as IDestroyable;
+
+                //Reset the should remove flag in case this object has been removed from somewhere.
+                destroyable.ShouldRemove = false;
+                DestroyableComponents.Add(destroyable);
+            }
         }
 
         public IEnumerable<K> GetComponents<K>() where K : T
@@ -75,7 +85,7 @@ namespace MultiPlayer
 
         public void Update(float step)
         {
-            var toRemove = new List<int>();
+            var toRemove = new List<IDestroyable>();
 
             for (var i = 0; i < UpdateableComponents.Count; i++)
             {
@@ -86,7 +96,7 @@ namespace MultiPlayer
                 {
                     var destroyable = updateableComponent as IDestroyable;
                     if (destroyable.ShouldRemove)
-                        toRemove.Add(i);
+                        UpdateableComponents.RemoveAt(i--);
                 }
             }
 
@@ -99,22 +109,31 @@ namespace MultiPlayer
                 {
                     var destroyable = updateableComponent as IDestroyable;
                     if (destroyable.ShouldRemove)
+                    {
                         LateUpdateableComponents.RemoveAt(i--);
+                    }
+                }
+            }
+
+            for (var i = 0; i < DestroyableComponents.Count; ++i)
+            {
+                var destroyable = DestroyableComponents[i];
+                if (destroyable.ShouldRemove)
+                {
+                    DestroyableComponents.RemoveAt(i--);
+                    toRemove.Add(destroyable);
                 }
             }
 
             for (var i = toRemove.Count - 1; i >= 0; --i)
             {
-                var removeAt = toRemove[i];
-
-                var component = UpdateableComponents[removeAt];
-                (component as IHearsDestroy)?.OnDestroy();
-
-                UpdateableComponents.RemoveAt(removeAt);
+                var remove = toRemove[i];
+                
+                (remove as IHearsDestroy)?.OnDestroy();
 
                 //TODO improve this. It's not as nice as I'd like
-                if (component is IDrawable)
-                    DrawableComponents.Remove(component as IDrawable);
+                if (remove is IDrawable)
+                    DrawableComponents.Remove(remove as IDrawable);
             }
 
             delayedAdd.ForEach(Add);
