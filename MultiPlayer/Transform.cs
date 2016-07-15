@@ -48,9 +48,9 @@ namespace MultiPlayer
             get { return GameObject.ParentObject is GameObject ? (GameObject.ParentObject as GameObject).Transform.Scale*LocalScale : LocalScale; }
             set
             {
-                if (Scale.X == 0 || Scale.Y == 0) return;
-
-                LocalScale = value/(Scale/LocalScale);
+                var scale = Scale;
+                if (value.X != 0 && scale.X != 0) LocalScale.X = value.X/(scale.X/LocalScale.X);
+                if (value.Y != 0 && scale.Y != 0) LocalScale.Y = value.Y/(scale.Y/LocalScale.Y);
             }
         }
 

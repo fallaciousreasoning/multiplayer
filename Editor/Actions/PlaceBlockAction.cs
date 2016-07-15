@@ -22,9 +22,7 @@ namespace Editor.Actions
 
         public void Do()
         {
-            if (gameObject == null)
-                gameObject = Prefabs.Instantiate(prefabInfo, Scene);
-            else Prefabs.Instantiate(gameObject, Scene);
+            gameObject = Prefabs.Instantiate(prefabInfo, Scene);
 
             Info.Scene.Children.Add(prefabInfo);
         }

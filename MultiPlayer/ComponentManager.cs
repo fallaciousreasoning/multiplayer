@@ -149,10 +149,18 @@ namespace MultiPlayer
 
         public virtual void Draw()
         {
+            if (!Visible) return;
+
             DrawableComponents.ForEach(d => d.Draw());
         }
 
         public object ParentObject { get; set; }
+
+
+        /// <summary>
+        /// Indicates whether the GameObject should be rendered
+        /// </summary>
+        public bool Visible { get; set; } = true;
     }
 
     public class ComponentManager : ComponentManager<object>

@@ -12,7 +12,7 @@ namespace Runner
     {
         public static void AddRunnerGamePrefabs(PrefabFactory factory)
         {
-            factory.RegisterPrefab("ground", () => ObstacleBuilder.BuildGround().Create());
+            factory.RegisterPrefab("platform", () => ObstacleBuilder.BuildGround().Create());
             factory.RegisterPrefab("player", () => PlayerBuilder.BuildPlayer().Create());
             factory.RegisterPrefab("animated", PlayerBuilder.AnimationTest);
         }
