@@ -7,14 +7,15 @@ using MultiPlayer;
 
 namespace Editor.Scripts
 {
-    public class ShadowManager
+    public class BlockInfo
     {
         private readonly Dictionary<string, GameObject> shadows = new Dictionary<string, GameObject>();
+        private readonly Dictionary<string, bool> sizeables = new Dictionary<string, bool>();
 
-        public void AddShadow(string prefabName, GameObject shadow)
+        public void AddInfo(string prefabName, GameObject shadow, bool sizable)
         {
             shadows.Add(prefabName, shadow);
-            //shadow.Visible = false;
+            sizeables.Add(prefabName, sizable);
         }
 
         public GameObject GetShadow(string prefabName)
@@ -22,15 +23,9 @@ namespace Editor.Scripts
             return shadows[prefabName];
         }
 
-        public GameObject this[string prefabName]
+        public bool IsSizable(string prefabName)
         {
-            get { return GetShadow(prefabName); }
-            set
-            {
-                if (!shadows.ContainsKey(prefabName)) AddShadow(prefabName, value);
-                else shadows[prefabName] = value;
-                //value.Visible = false;
-            }
+            return sizeables[prefabName];
         }
     }
 }

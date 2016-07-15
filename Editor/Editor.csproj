@@ -51,7 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\Placer\Placer.cs" />
     <Compile Include="Scripts\Placer\PlacerSettings.cs" />
-    <Compile Include="Scripts\ShadowManager.cs" />
+    <Compile Include="Scripts\BlockInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

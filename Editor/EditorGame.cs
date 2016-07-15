@@ -25,7 +25,7 @@ namespace Editor
         private MapInfo map;
 
         private ActionManager actionManager;
-        private ShadowManager shadowManager = new ShadowManager();
+        private BlockInfo blockInfo = new BlockInfo();
         private Placer placer;
 
         protected override void Initialize()
@@ -70,7 +70,8 @@ namespace Editor
 
         public void SetPlacing(string platform)
         {
-            placer.Settings.Shadow = shadowManager[platform];
+            placer.Settings.Shadow = blockInfo.GetShadow(platform);
+            placer.Settings.NoSize = !blockInfo.IsSizable(platform);
             placer.Settings.PlacingPrefab = platform;
         }
 
@@ -85,7 +86,7 @@ namespace Editor
                 })
                 .Create();
             PrefabFactory.Instantiate(platformShadow);
-            shadowManager["platform"] = platformShadow;
+            blockInfo.AddInfo("platform", platformShadow, true);
         }
 
         protected override void Update(GameTime gameTime)
