@@ -39,7 +39,13 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Actions\ActionManager.cs" />
+    <Compile Include="Actions\IKnowsMapInfo.cs" />
+    <Compile Include="Actions\IKnowsPrefabManager.cs" />
+    <Compile Include="Actions\IKnowsScene.cs" />
+    <Compile Include="Actions\PlaceBlockAction.cs" />
     <Compile Include="EditorGame.cs" />
+    <Compile Include="Actions\IEditorAction.cs" />
     <Compile Include="MouseComponent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

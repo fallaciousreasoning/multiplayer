@@ -93,6 +93,12 @@ namespace MultiPlayer.Core
             return gameObject;
         }
 
+        public GameObject Instantiate(GameObject gameObject, GameObject parent)
+        {
+            parent.DelayedAdd(gameObject);
+            return gameObject;
+        }
+
         public GameObject Build(string name)
         {
             return Build(name, Vector2.Zero);
