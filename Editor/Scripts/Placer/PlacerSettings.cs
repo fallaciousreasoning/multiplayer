@@ -9,7 +9,8 @@ namespace Editor.Scripts.Placer
 {
     public class PlacerSettings
     {
-        public float GridSize { get; set; } = 0.5f;
+        public float MinSize { get; set; } = 0.5f;
+        public float GridSize { get; set; } = 0.25f;
         public bool SnapToGrid { get; set; } = true;
 
         public bool NoSize { get; set; }

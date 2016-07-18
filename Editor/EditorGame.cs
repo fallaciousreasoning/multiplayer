@@ -85,6 +85,7 @@ namespace Editor
                     Tint = Color.Lerp(Color.White, Color.Transparent, 0.2f)
                 })
                 .Create();
+            platformShadow.Visible = false;
             PrefabFactory.Instantiate(platformShadow);
             blockInfo.AddInfo("platform", platformShadow, true);
         }

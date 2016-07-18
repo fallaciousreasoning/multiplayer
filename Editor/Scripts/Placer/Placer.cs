@@ -22,7 +22,26 @@ namespace Editor.Scripts.Placer
         public Vector2 TopLeft => new Vector2(Math.Min(StartPos.X, EndPos.X), Math.Min(StartPos.Y, EndPos.Y));
 
         public Vector2 Size
-        { get{var size = EndPos - StartPos;return new Vector2(Math.Max(Math.Abs(size.X), Settings.GridSize), Math.Max(Math.Abs(size.Y), Settings.GridSize));}}
+        {
+            get
+            {
+                var size = EndPos - StartPos;
+                return new Vector2(Math.Max(Math.Abs(size.X), Settings.MinSize),
+                    Math.Max(Math.Abs(size.Y), Settings.MinSize));
+            }
+        }
+
+        public Vector2 DirectedSize
+        {
+            get
+            {
+                var size = EndPos - StartPos;
+                var xMul = size.X < 0 ? -1 : 1;
+                var yMul = size.Y < 0 ? -1 : 1;
+
+                return Size*new Vector2(xMul, yMul);
+            }
+        }
 
         public Vector2 Centre => (StartPos + EndPos)*0.5f;
 
@@ -63,7 +82,7 @@ namespace Editor.Scripts.Placer
             var prefabInfo = new PrefabInfo()
             {
                 PrefabName = Settings.PlacingPrefab,
-                Position = Settings.NoSize ? EndPos : StartPos + (EndPos - StartPos) * 0.5f,
+                Position = Settings.NoSize ? EndPos : StartPos + DirectedSize * 0.5f,
                 Scale = Settings.NoSize ? Vector2.One : Size,
             };
             Manager.Do(new PlaceBlockAction(prefabInfo));
@@ -73,7 +92,7 @@ namespace Editor.Scripts.Placer
         {
             if (Settings.Shadow == null) return;
 
-            Settings.Shadow.Transform.Position = Settings.NoSize ? EndPos : StartPos + (EndPos - StartPos) * 0.5f;
+            Settings.Shadow.Transform.Position = Settings.NoSize ? EndPos : StartPos+DirectedSize*0.5f;
             Settings.Shadow.Transform.Scale = Settings.NoSize ? Vector2.One : Size;
         }
 
