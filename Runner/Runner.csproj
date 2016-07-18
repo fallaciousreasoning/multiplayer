@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Builders\CameraBuilder.cs" />
+    <Compile Include="Builders\CharacterStats.cs" />
     <Compile Include="Builders\TriggerDetector.cs" />
     <Compile Include="Builders\ObstacleBuilder.cs" />
     <Compile Include="Builders\PlayerBuilder.cs" />

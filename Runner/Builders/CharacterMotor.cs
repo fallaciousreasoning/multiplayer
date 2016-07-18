@@ -29,6 +29,11 @@ namespace Runner.Builders
         public Direction Facing { get; private set; }
 
         /// <summary>
+        /// The stats that describe how the character moves
+        /// </summary>
+        public CharacterStats Stats { get; set; } = new CharacterStats();
+
+        /// <summary>
         /// The state of the character motor
         /// </summary>
         public CharacterState State { get; private set; } = CharacterState.Normal;
@@ -57,24 +62,9 @@ namespace Runner.Builders
         }
 
         /// <summary>
-        /// The Horizontal impulse applied to the player, away from the wall when wall jumping
-        /// </summary>
-        public float WallJumpHorizontalImpulse = 5;
-
-        /// <summary>
-        /// The vertical impulse applied to the player when wall jumping
-        /// </summary>
-        public float WallJumpVerticalImpulse = -10;
-
-        /// <summary>
-        /// The minimum velocity the character needs to maintain to be counted as 'moving'
-        /// </summary>
-        public float VelocityMinForMoving = 0.01f;
-
-        /// <summary>
         /// Indicates whether the character is moving
         /// </summary>
-        public bool Moving { get { return VelocityMinForMoving*VelocityMinForMoving > Velocity.LengthSquared(); } }
+        public bool Moving { get { return Stats.VelocityMinForMoving*Stats.VelocityMinForMoving > Velocity.LengthSquared(); } }
 
         /// <summary>
         /// Determines whether the player is on the ground
@@ -90,26 +80,10 @@ namespace Runner.Builders
             get { return (LeftWallDetector.Triggered || RightWallDetector.Triggered) && !ClamberDetector.Triggered; }
         }
 
-        public float SlideJumpDelay = 0.1f;
-
-        public float JumpDelay = 0.2f;
-        private float tillJump;
-
-        public float JumpImpulse = -10;
         public Vector2 Velocity;
 
-        public float HorizontalAirAcceleration { get; set; } = 50;
-        public float HorizontalAcceleration { get; set; } = 100;
-        public float HorizontalSlideAcceleration { get; set; } = 0;
+        private float tillJump;
 
-        public float MaxXSpeed { get; set; } = 10;
-        public float MaxYSpeed { get; set; } = 10;
-
-        public float HorizontalAirDrag { get; set; } = 0.5f;
-        public float HorizontalDrag { get; set; } = 5;
-        public float HorizontalSlideDrag { get; set; } = 2.5f;
-
-        public Vector2 Gravity { get; set; } = new Vector2(0, 15);
 
         private bool shouldRoll;
 
@@ -140,11 +114,11 @@ namespace Runner.Builders
             newVelocity.X += GetHorizontalAcceleration()*dir*step;
 
             //Add the acceleration due to gravity
-            newVelocity += Gravity*step;
+            newVelocity += Stats.Gravity*step;
 
             //Clamp the x velocity to a maximum
-            newVelocity.X = MathHelper.Clamp(newVelocity.X, -MaxXSpeed, MaxXSpeed);
-            newVelocity.Y = MathHelper.Clamp(newVelocity.Y, -MaxYSpeed, MaxYSpeed);
+            newVelocity.X = MathHelper.Clamp(newVelocity.X, -Stats.MaxXSpeed, Stats.MaxXSpeed);
+            newVelocity.Y = MathHelper.Clamp(newVelocity.Y, -Stats.MaxYSpeed, Stats.MaxYSpeed);
 
             if (LeftWallDetector.Triggered && Velocity.X < 0) Velocity.X = 0;
             if (RightWallDetector.Triggered && Velocity.X > 0) Velocity.X = 0;
@@ -156,9 +130,9 @@ namespace Runner.Builders
             if (dir == 0)
                 Velocity.X -= Velocity.X*GetHorizontalDrag()*step;
 
-            if (Velocity.X < -VelocityMinForMoving)
+            if (Velocity.X < -Stats.VelocityMinForMoving)
                 Facing = Direction.Left;
-            if (Velocity.X > VelocityMinForMoving)
+            if (Velocity.X > Stats.VelocityMinForMoving)
                 Facing = Direction.Right;
 
             dir = 0;
@@ -232,7 +206,7 @@ namespace Runner.Builders
             //Jump
             if (OnGround)
             {
-                Velocity.Y = JumpImpulse;
+                Velocity.Y = Stats.JumpImpulse;
             }
             else if (CanClamber)
             {
@@ -241,11 +215,11 @@ namespace Runner.Builders
             }
             else if (CanWallJump)
             {
-                Velocity.X = WallJumpHorizontalImpulse * AwayFromWall * 10;
-                Velocity.Y = WallJumpVerticalImpulse;
+                Velocity.X = Stats.WallJumpHorizontalImpulse * AwayFromWall * 10;
+                Velocity.Y = Stats.WallJumpVerticalImpulse;
             }
 
-            tillJump = JumpDelay;
+            tillJump = Stats.JumpDelay;
         }
 
         /// <summary>
@@ -259,6 +233,7 @@ namespace Runner.Builders
             {
                 currentPhysicsAnimation = Animator.Start(Animations.Name(PlayerAnimation.SlideDown, Facing));
                 State = CharacterState.Sliding;
+                tillJump = Stats.SlideJumpDelay;
             }
             //TODO rolling
             else
@@ -267,18 +242,26 @@ namespace Runner.Builders
             }
         }
 
+        /// <summary>
+        /// Calculates the horizontal acceleration to apply
+        /// </summary>
+        /// <returns>The acceleration</returns>
         private float GetHorizontalAcceleration()
         {
-            return OnGround ? HorizontalAcceleration : HorizontalAirAcceleration;
+            return OnGround ? Stats.HorizontalAcceleration : Stats.HorizontalAirAcceleration;
         }
 
+        /// <summary>
+        /// Calculates the horizontal drag to apply
+        /// </summary>
+        /// <returns>The drag</returns>
         private float GetHorizontalDrag()
         {
             return State == CharacterState.Sliding
-                ? HorizontalSlideDrag
+                ? Stats.HorizontalSlideDrag
                 : OnGround
-                    ? HorizontalDrag
-                    : HorizontalAirDrag;
+                    ? Stats.HorizontalDrag
+                    : Stats.HorizontalAirDrag;
         }
 
         public GameObject GameObject { get; set; }
