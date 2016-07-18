@@ -30,6 +30,7 @@ namespace Runner.Builders
             var clamberSensorOffset = 1.5f;
 
             var groundDetector = new TriggerDetector() { TriggeredBy = "Ground" };
+            var ceilingDetector = new TriggerDetector() {TriggeredBy = "Ground"};
             var leftWallDetector = new TriggerDetector() { TriggeredBy = "Ground"};
             var rightWallDetector = new TriggerDetector() { TriggeredBy = "Ground" };
             var clamberDetector = new TriggerDetector() {TriggeredBy = "Ground"};
@@ -76,23 +77,13 @@ namespace Runner.Builders
                 .Add(Animations.Name(PlayerAnimation.SlideUp, Direction.Right), slideUpRightAnimation)
                 .Add(Animations.Name(PlayerAnimation.SlideDown, Direction.Left), slideDownLeftAnimation)
                 .Add(Animations.Name(PlayerAnimation.SlideUp, Direction.Left), slideUpLeftAnimation);
-
-            CharacterStats stats;
-            if (File.Exists("player_config.json"))
-            {
-                var json = File.ReadAllText("player_config.json");
-                stats = JsonConvert.DeserializeObject<CharacterStats>(json);
-            }
-            else
-            {
-                stats = new CharacterStats();
-                var json = JsonConvert.SerializeObject(stats);
-                File.WriteAllText("player_config.json", json);
-            }
-
+            
             var characterMotor = new CharacterMotor();
-            characterMotor.Stats = stats;
+            characterMotor.Stats = LoadStats();
+
             characterMotor.GroundDetector = groundDetector;
+            characterMotor.CeilingDetector = ceilingDetector;
+
             characterMotor.LeftWallDetector = leftWallDetector;
             characterMotor.RightWallDetector = rightWallDetector;
 
@@ -111,15 +102,23 @@ namespace Runner.Builders
                 .WithChild(GameObjectFactory.New()
                     .With(ColliderFactory.BoxTrigger(width*sensorLopOff, sensorWidth))
                     .With(groundDetector)
-                    //.WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
-                    .AtPosition(new Vector2(0, height * 0.5f + 0.1f))
+                    .WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
+                    .AtPosition(new Vector2(0, height * 0.5f + sensorWidth*0.5f))
+                    .Create())
+
+                //Add the ceiling detector (bar above)
+                .WithChild(GameObjectFactory.New()
+                    .With(ColliderFactory.BoxTrigger(width * sensorWidth, sensorWidth))
+                    .With(ceilingDetector)
+                    .WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
+                    .AtPosition(-new Vector2(0, height * 0.5f + sensorWidth * 0.5f))
                     .Create())
 
                 //Add the left wall detector (bar down left side)
                 .WithChild(GameObjectFactory.New()
                     .With(ColliderFactory.BoxTrigger(sensorWidth, height*sensorLopOff))
                     .With(leftWallDetector)
-                    //.WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
+                    .WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
                     .AtPosition(-new Vector2(width * 0.5f + sensorWidth*0.5f, 0))
                     .Create())
 
@@ -127,7 +126,7 @@ namespace Runner.Builders
                 .WithChild(GameObjectFactory.New()
                     .With(ColliderFactory.BoxTrigger(sensorWidth, height*sensorLopOff))
                     .With(rightWallDetector)
-                    //.WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
+                    .WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
                     .AtPosition(new Vector2(width * 0.5f + sensorWidth*0.5f, 0))
                     .Create())
 
@@ -135,7 +134,7 @@ namespace Runner.Builders
                 .WithChild(GameObjectFactory.New()
                     .With(ColliderFactory.BoxTrigger(width * 3f*sensorLopOff, sensorWidth))
                     .With(clamberDetector)
-                    //.WithTexture(TextureUtil.CreateTexture(widthPixels*3, sensorWidthPixels, Color.Red))
+                    .WithTexture(TextureUtil.CreateTexture(widthPixels*3, sensorWidthPixels, Color.Red))
                     .AtPosition(-new Vector2(0, (height * 0.5f + sensorWidth*0.5f)*clamberSensorOffset))
                     .Create())
 
@@ -151,6 +150,23 @@ namespace Runner.Builders
                 .IsRelative(true);
 
             return animator;
+        }
+
+        private static CharacterStats LoadStats(string statsFile = "player_config.json")
+        {
+            CharacterStats stats;
+            if (File.Exists(statsFile))
+            {
+                var json = File.ReadAllText(statsFile);
+                stats = JsonConvert.DeserializeObject<CharacterStats>(json);
+            }
+            else
+            {
+                stats = new CharacterStats();
+                var json = JsonConvert.SerializeObject(stats);
+                File.WriteAllText(statsFile, json);
+            }
+            return stats;
         }
 
         public static AnimationBuilder RollAnimation()

@@ -120,11 +120,15 @@ namespace Runner.Builders
             newVelocity.X = MathHelper.Clamp(newVelocity.X, -Stats.MaxXSpeed, Stats.MaxXSpeed);
             newVelocity.Y = MathHelper.Clamp(newVelocity.Y, -Stats.MaxYSpeed, Stats.MaxYSpeed);
 
-            if (LeftWallDetector.Triggered && Velocity.X < 0) Velocity.X = 0;
-            if (RightWallDetector.Triggered && Velocity.X > 0) Velocity.X = 0;
-            if (GroundDetector.Triggered && Velocity.Y > 0) Velocity.Y = 0;
+
 
             collider.Body.LinearVelocity = newVelocity;
+
+            if (LeftWallDetector.Triggered && newVelocity.X < 0) newVelocity.X = 0;
+            if (RightWallDetector.Triggered && newVelocity.X > 0) newVelocity.X = 0;
+            if (GroundDetector.Triggered && newVelocity.Y > 0) newVelocity.Y = 0;
+            if (CeilingDetector.Triggered && newVelocity.Y < 0)
+                newVelocity.Y = 0;
 
             Velocity = newVelocity;
             if (dir == 0)
@@ -193,6 +197,8 @@ namespace Runner.Builders
 
         private void SlideJump()
         {
+            if (Animator.IsPlaying) return;
+
             Animator.Start(Animations.Name(PlayerAnimation.SlideUp, Facing));
             State = CharacterState.Normal;
             tillJump = 0.5f;
@@ -272,12 +278,17 @@ namespace Runner.Builders
         public TriggerDetector GroundDetector { get; set; }
 
         /// <summary>
-        /// Detects when the gameobject is touch a wall on the left
+        /// Detects when the gameobject touches the ceiling
+        /// </summary>
+        public TriggerDetector CeilingDetector { get; set; }
+
+        /// <summary>
+        /// Detects when the gameobject is touches a wall on the left
         /// </summary>
         public TriggerDetector LeftWallDetector { get; set; }
 
         /// <summary>
-        /// Detects when the gameobject is touch a wall on the right
+        /// Detects when the gameobject is touches a wall on the right
         /// </summary>
         public TriggerDetector RightWallDetector { get; set; }
 

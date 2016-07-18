@@ -59,5 +59,7 @@ namespace MultiPlayer.GameComponents.Animation
                     animation.GameObject = gameObject;
             }
         }
+
+        public bool IsPlaying => activeAnimation != null && activeAnimation.IsPlaying;
     }
 }
