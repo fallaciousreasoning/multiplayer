@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MultiPlayer.Core;
-using OpenTK.Input;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using IUpdateable = MultiPlayer.GameComponents.IUpdateable;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using KeyboardState = Microsoft.Xna.Framework.Input.KeyboardState;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 using MouseState = Microsoft.Xna.Framework.Input.MouseState;
 
-namespace MultiPlayer
+namespace MultiPlayer.Core
 {
     public enum MouseButton
     {
         Left, Right, Middle
     }
 
-    public class InputManager : GameComponent
+    public class InputManager : IUpdateable
     {
         private KeyboardState keyboardState;
         private KeyboardState oldKeyState;
@@ -30,7 +26,7 @@ namespace MultiPlayer
         private readonly Dictionary<string, InputAxis> inputAxes = new Dictionary<string, InputAxis>();
         private readonly Dictionary<string, InputButton> inputButtons = new Dictionary<string, InputButton>(); 
 
-        public InputManager(Game game) : base(game)
+        public InputManager()
         {
             AddInputAxis("horizontal", new InputAxis()
             {
@@ -71,15 +67,13 @@ namespace MultiPlayer
             inputAxes.Add(name, axis);
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(float step)
         {
             oldKeyState = keyboardState;
             oldMouseState = mouseState;
 
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
-
-            base.Update(gameTime);
         }
 
         public Vector2 MousePosition { get { return new Vector2(mouseState.X, mouseState.Y); } }

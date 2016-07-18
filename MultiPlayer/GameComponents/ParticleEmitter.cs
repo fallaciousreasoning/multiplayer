@@ -112,7 +112,7 @@ namespace MultiPlayer.GameComponents
 
             public void Draw()
             {
-                Game1.Game.SpriteBatch.Draw(Texture, Position*Transform.PIXELS_A_METRE, null, Tint, Rotation, origin, Scale, SpriteEffects.None, 0);
+                Scene.ActiveScene.SpriteBatch.Draw(Texture, Position*Transform.PIXELS_A_METRE, null, Tint, Rotation, origin, Scale, SpriteEffects.None, 0);
             }
         }
     }

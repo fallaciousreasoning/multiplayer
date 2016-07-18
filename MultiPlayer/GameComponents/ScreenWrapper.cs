@@ -35,7 +35,7 @@ namespace MultiPlayer.GameComponents
             renderer = GameObject.GetComponent<Sprite>();
 
             Min = Vector2.Zero;
-            Max = new Vector2(Game1.Game.Device.Viewport.Width, Game1.Game.Device.Viewport.Height)*Transform.METRES_A_PIXEL;
+            Max = new Vector2(Scene.ActiveScene.Device.Viewport.Width, Scene.ActiveScene.Device.Viewport.Height)*Transform.METRES_A_PIXEL;
         }
     }
 }

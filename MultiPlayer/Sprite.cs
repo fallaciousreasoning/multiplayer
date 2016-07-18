@@ -40,7 +40,7 @@ namespace MultiPlayer
         {
             if (Texture == null) return;
 
-            Game1.Game.SpriteBatch.Draw(Texture, GameObject.Transform.DrawPosition, null, Tint, GameObject.Transform.Rotation, Origin, GameObject.Transform.Scale, Effects, 0f);
+            Scene.ActiveScene.SpriteBatch.Draw(Texture, GameObject.Transform.DrawPosition, null, Tint, GameObject.Transform.Rotation, Origin, GameObject.Transform.Scale, Effects, 0f);
         }
 
         public GameObject GameObject { get; set; }

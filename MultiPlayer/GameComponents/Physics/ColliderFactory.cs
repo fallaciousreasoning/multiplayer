@@ -13,7 +13,7 @@ namespace MultiPlayer.GameComponents.Physics
         {
             var collider = new Collider()
             {
-                Body = BodyFactory.CreateRectangle(Game1.Game.PhysicsWorld.World, width, height, 1),
+                Body = BodyFactory.CreateRectangle(Scene.ActiveScene.PhysicsWorld.World, width, height, 1),
                 BodyType = bodyType
             };
             collider.Body.Friction = 0f;
@@ -25,7 +25,7 @@ namespace MultiPlayer.GameComponents.Physics
         {
             return new Collider()
             {
-                Body = BodyFactory.CreateRectangle(Game1.Game.PhysicsWorld.World, width, height, 1),
+                Body = BodyFactory.CreateRectangle(Scene.ActiveScene.PhysicsWorld.World, width, height, 1),
                 BodyType = BodyType.Dynamic,
                 IsTrigger = true
             };

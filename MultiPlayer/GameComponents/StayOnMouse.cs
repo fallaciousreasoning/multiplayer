@@ -9,7 +9,7 @@ namespace MultiPlayer.GameComponents
     {
         public void Update(float step)
         {
-            GameObject.Transform.DrawPosition = Game1.Game.Input.MousePosition;
+            GameObject.Transform.DrawPosition = Scene.ActiveScene.Input.MousePosition;
         }
 
         public GameObject GameObject { get; set; }

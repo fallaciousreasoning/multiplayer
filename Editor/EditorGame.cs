@@ -18,7 +18,7 @@ namespace Editor
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class EditorGame : Game1
+    public class EditorGame : Scene
     {
         private GameObject camera;
         private GameObject cursor;
@@ -28,16 +28,15 @@ namespace Editor
         private BlockInfo blockInfo = new BlockInfo();
         private Placer placer;
 
-        protected override void Initialize()
+        public EditorGame()
         {
-            map = new MapInfo();
-            
-            base.Initialize();
         }
 
-        protected override void LoadContent()
+        public override void Start()
         {
-            base.LoadContent();
+            map = new MapInfo();
+
+            base.Start();
 
             PrefabInitializer.AddRunnerGamePrefabs(PrefabFactory);
 
@@ -68,7 +67,7 @@ namespace Editor
             SetPlacing("platform");
         }
 
-        public void SetPlacing(string platform)
+        private void SetPlacing(string platform)
         {
             placer.Settings.Shadow = blockInfo.GetShadow(platform);
             placer.Settings.NoSize = !blockInfo.IsSizable(platform);
@@ -90,14 +89,14 @@ namespace Editor
             blockInfo.AddInfo("platform", platformShadow, true);
         }
 
-        protected override void Update(GameTime gameTime)
+        public override void Update(float step)
         {
             if (Input.IsPressed(Keys.Z) && actionManager.CanUndo)
                 actionManager.Undo();
             if (Input.IsPressed(Keys.Y) && actionManager.CanRedo)
                 actionManager.Redo();
 
-            base.Update(gameTime);
+            base.Update(step);
         }
     }
 }

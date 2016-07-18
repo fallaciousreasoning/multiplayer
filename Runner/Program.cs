@@ -15,7 +15,8 @@ namespace Runner
         [STAThread]
         static void Main()
         {
-            using (var game = new RunnerGame())
+            var scene = new RunnerGame();
+            using (var game = new EnigmaGame(scene))
             {
                 game.Run();
             }

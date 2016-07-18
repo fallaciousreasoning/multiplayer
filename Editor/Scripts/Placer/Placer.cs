@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Editor.Actions;
 using Microsoft.Xna.Framework;
 using MultiPlayer;
+using MultiPlayer.Core;
 using MultiPlayer.GameComponents;
 using IUpdateable = MultiPlayer.GameComponents.IUpdateable;
 
@@ -16,7 +17,7 @@ namespace Editor.Scripts.Placer
         public PlacerSettings Settings { get; set; } = new PlacerSettings();
         public ActionManager Manager { get; set; }
 
-        private InputManager Input { get { return Game1.Game.Input; } }
+        private InputManager Input { get { return Scene.ActiveScene.Input; } }
         private Camera Camera { get { return Camera.ActiveCamera;} }
         
         public Vector2 TopLeft => new Vector2(Math.Min(StartPos.X, EndPos.X), Math.Min(StartPos.Y, EndPos.Y));
@@ -113,7 +114,7 @@ namespace Editor.Scripts.Placer
 
         private Vector2 WorldPos(Vector2 screenPos)
         {
-            return ((screenPos - new Vector2(Game1.Game.GraphicsDevice.Viewport.Width, Game1.Game.GraphicsDevice.Viewport.Height)*0.5f)*Transform.METRES_A_PIXEL)/Camera.GameObject.Transform.Scale + Camera.GameObject.Transform.Position;
+            return ((screenPos - new Vector2(Scene.ActiveScene.Device.Viewport.Width, Scene.ActiveScene.Device.Viewport.Height)*0.5f)*Transform.METRES_A_PIXEL)/Camera.GameObject.Transform.Scale + Camera.GameObject.Transform.Position;
         }
     }
 }

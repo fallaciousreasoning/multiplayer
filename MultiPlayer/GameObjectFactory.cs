@@ -102,7 +102,7 @@ namespace MultiPlayer
 
         public GameObjectFactory WithChild(string prefabName, Vector2 position, float rotation, Vector2 scale)
         {
-            var gameObject = Game1.Game.PrefabFactory.Build(prefabName, position, rotation, scale);
+            var gameObject = Scene.ActiveScene.PrefabFactory.Build(prefabName, position, rotation, scale);
             return WithChild(gameObject);
         }
 

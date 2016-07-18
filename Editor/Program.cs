@@ -1,4 +1,5 @@
 ﻿using System;
+using MultiPlayer;
 
 namespace Editor
 {
@@ -14,7 +15,8 @@ namespace Editor
         [STAThread]
         static void Main()
         {
-            using (var game = new EditorGame())
+            var scene = new EditorGame();
+            using (var game = new EnigmaGame(scene))
                 game.Run();
         }
     }

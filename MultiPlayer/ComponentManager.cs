@@ -83,7 +83,7 @@ namespace MultiPlayer
             return GetComponents<K>().FirstOrDefault();
         }
 
-        public void Update(float step)
+        public virtual void Update(float step)
         {
             var toRemove = new List<IDestroyable>();
 

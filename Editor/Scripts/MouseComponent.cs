@@ -1,4 +1,5 @@
 ﻿using MultiPlayer;
+using MultiPlayer.Core;
 using MultiPlayer.GameComponents;
 
 namespace Editor.Scripts
@@ -7,8 +8,8 @@ namespace Editor.Scripts
     {
         public void Update(float step)
         {
-            if (Game1.Game.Input.IsDown(MouseButton.Right))
-                GameObject.Transform.Position -= Game1.Game.Input.MouseMoved*Transform.METRES_A_PIXEL/Camera.ActiveCamera.GameObject.Transform.Scale;
+            if (Scene.ActiveScene.Input.IsDown(MouseButton.Right))
+                GameObject.Transform.Position -= Scene.ActiveScene.Input.MouseMoved*Transform.METRES_A_PIXEL/Camera.ActiveCamera.GameObject.Transform.Scale;
         }
 
         public GameObject GameObject { get; set; }

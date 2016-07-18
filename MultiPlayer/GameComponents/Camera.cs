@@ -23,7 +23,7 @@ namespace MultiPlayer.GameComponents
             World = Matrix.CreateRotationZ(GameObject.Transform.Rotation)*
                     Matrix.CreateTranslation(new Vector3(-GameObject.Transform.Position*Transform.PIXELS_A_METRE, 0))*
                     Matrix.CreateScale(new Vector3(GameObject.Transform.Scale, 0))*
-                    Matrix.CreateTranslation(new Vector3(Game1.Game.Device.Viewport.Width, Game1.Game.Device.Viewport.Height, 0) * 0.5f);
+                    Matrix.CreateTranslation(new Vector3(Scene.ActiveScene.Device.Viewport.Width, Scene.ActiveScene.Device.Viewport.Height, 0) * 0.5f);
         }
 
         public GameObject GameObject { get; set; }
