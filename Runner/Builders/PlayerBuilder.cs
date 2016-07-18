@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using FarseerPhysics.Dynamics;
@@ -8,6 +9,7 @@ using MultiPlayer;
 using MultiPlayer.GameComponents;
 using MultiPlayer.GameComponents.Animation;
 using MultiPlayer.GameComponents.Physics;
+using Newtonsoft.Json;
 
 namespace Runner.Builders
 {
@@ -75,7 +77,21 @@ namespace Runner.Builders
                 .Add(Animations.Name(PlayerAnimation.SlideDown, Direction.Left), slideDownLeftAnimation)
                 .Add(Animations.Name(PlayerAnimation.SlideUp, Direction.Left), slideUpLeftAnimation);
 
+            CharacterStats stats;
+            if (File.Exists("player_config.json"))
+            {
+                var json = File.ReadAllText("player_config.json");
+                stats = JsonConvert.DeserializeObject<CharacterStats>(json);
+            }
+            else
+            {
+                stats = new CharacterStats();
+                var json = JsonConvert.SerializeObject(stats);
+                File.WriteAllText("player_config.json", json);
+            }
+
             var characterMotor = new CharacterMotor();
+            characterMotor.Stats = stats;
             characterMotor.GroundDetector = groundDetector;
             characterMotor.LeftWallDetector = leftWallDetector;
             characterMotor.RightWallDetector = rightWallDetector;
