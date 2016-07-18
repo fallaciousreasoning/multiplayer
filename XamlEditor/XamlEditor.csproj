@@ -9,11 +9,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>XamlEditor</RootNamespace>
     <AssemblyName>XamlEditor</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -72,6 +73,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\EditorView.cs" />
     <Compile Include="Interop\D3D11Host.cs" />
     <Compile Include="Interop\D3D11Image.cs" />
     <Compile Include="Interop\D3D9.cs" />
@@ -106,6 +108,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Editor\Editor.csproj">
+      <Project>{d68e91f3-ae1f-4daa-9565-93ecf3822aac}</Project>
+      <Name>Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MultiPlayer\MultiPlayer.csproj">
+      <Project>{348807d4-6619-48af-939a-5f5570ba5475}</Project>
+      <Name>MultiPlayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Runner\Runner.csproj">
+      <Project>{8a7a2f80-b068-4a28-93cf-b829c8085c9c}</Project>
+      <Name>Runner</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

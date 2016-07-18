@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer.Core;
+using MultiPlayer.Core.InputMethods;
 using MultiPlayer.GameComponents;
 using MultiPlayer.GameComponents.Physics;
 
@@ -30,9 +31,10 @@ namespace MultiPlayer
         public ComponentManager<GameObject> GameObjectManager;
 
         public static Scene ActiveScene { get; private set; }
-
-        public Scene()
+        
+        public Scene(IMouse mouse, IKeyboard keyboard)
         {
+            Input = new InputManager(mouse, keyboard);
             ActiveScene = this;
         }
 
@@ -52,7 +54,6 @@ namespace MultiPlayer
             PrefabFactory = new PrefabFactory(GameObjectManager);
             ComponentManager.DelayedAdd(PrefabFactory);
 
-            Input = new InputManager();
             Input.AddButton("shoot", new InputButton(Keys.Space));
             ComponentManager.DelayedAdd(Input);
 

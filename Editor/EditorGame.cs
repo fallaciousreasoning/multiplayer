@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer;
 using MultiPlayer.Core;
+using MultiPlayer.Core.InputMethods;
 using MultiPlayer.GameComponents;
 using Newtonsoft.Json;
 using Runner;
@@ -28,7 +29,8 @@ namespace Editor
         private BlockInfo blockInfo = new BlockInfo();
         private Placer placer;
 
-        public EditorGame()
+        public EditorGame(IMouse mouse, IKeyboard keyboard)
+            : base(mouse, keyboard)
         {
         }
 

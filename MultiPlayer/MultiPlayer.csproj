@@ -44,6 +44,10 @@
   <ItemGroup>
     <Compile Include="Core\InputAxis.cs" />
     <Compile Include="Core\InputButton.cs" />
+    <Compile Include="Core\InputMethods\ManualKeyboard.cs" />
+    <Compile Include="Core\InputMethods\ManualMouse.cs" />
+    <Compile Include="Core\InputMethods\XnaKeyboard.cs" />
+    <Compile Include="Core\InputMethods\XnaMouse.cs" />
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\PrefabFactory.cs" />
     <Compile Include="EnigmaGame.cs" />

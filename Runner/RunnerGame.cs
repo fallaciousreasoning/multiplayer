@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer;
 using MultiPlayer.Core;
+using MultiPlayer.Core.InputMethods;
 using Newtonsoft.Json;
 using Runner.Builders;
 
@@ -17,10 +18,6 @@ namespace Runner
     public class RunnerGame : Scene
     {
         private GameObject camera;
-
-        public RunnerGame()
-        {
-        }
 
         public override void Start()
         {
@@ -44,6 +41,11 @@ namespace Runner
             }
             var map = JsonConvert.DeserializeObject<MapInfo>(json);
             PrefabFactory.Instantiate(map.Scene);
+        }
+
+        public RunnerGame(IMouse mouse, IKeyboard keyboard)
+            : base(mouse, keyboard)
+        {
         }
     }
 }

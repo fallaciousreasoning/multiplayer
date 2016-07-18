@@ -1,5 +1,6 @@
 ﻿using System;
 using MultiPlayer;
+using MultiPlayer.Core.InputMethods;
 
 namespace Runner
 {
@@ -15,7 +16,7 @@ namespace Runner
         [STAThread]
         static void Main()
         {
-            var scene = new RunnerGame();
+            var scene = new RunnerGame(new XnaMouse(), new XnaKeyboard());
             using (var game = new EnigmaGame(scene))
             {
                 game.Run();
