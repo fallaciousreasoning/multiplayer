@@ -48,6 +48,7 @@
     <Reference Include="SharpDX.XInput, Version=2.6.3.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -74,6 +75,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\EditorView.cs" />
+    <Compile Include="EditView.cs" />
     <Compile Include="Interop\D3D11Host.cs" />
     <Compile Include="Interop\D3D11Image.cs" />
     <Compile Include="Interop\D3D9.cs" />
