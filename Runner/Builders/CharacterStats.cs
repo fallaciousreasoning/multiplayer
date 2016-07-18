@@ -50,9 +50,9 @@ namespace Runner.Builders
         public float HorizontalAcceleration { get; set; } = 100;
 
         /// <summary>
-        /// The horizontal acceleration that is applied to the character while sliding
+        /// The minimum horizontal velocity the character needs to slide
         /// </summary>
-        public float HorizontalSlideAcceleration { get; set; } = 0;
+        public float MinSlideVelocity { get; set; } = 2;
 
         /// <summary>
         /// The maximum horizontal speed of the character

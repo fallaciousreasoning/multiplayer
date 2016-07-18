@@ -12,6 +12,10 @@ namespace MultiPlayer
         public const float PIXELS_A_METRE = 64.0f;
         public const float METRES_A_PIXEL = 1/PIXELS_A_METRE;
 
+        public bool IgnoreParentRotation { get; set; }
+        public bool IgnoreParentTranslation { get; set; }
+        public bool IgnoreParentScale { get; set; }
+
         public Vector2 LocalPosition
         {
             get { return localPosition; }
@@ -25,7 +29,7 @@ namespace MultiPlayer
         {
             get
             {
-                return GameObject.ParentObject is GameObject
+                return (GameObject.ParentObject is GameObject && !IgnoreParentTranslation)
                     ? (GameObject.ParentObject as GameObject).Transform.Position + Vector2.Transform(LocalPosition, Matrix.CreateRotationZ((GameObject.ParentObject as GameObject).Transform.Rotation))
                     : LocalPosition;
             }
@@ -45,7 +49,12 @@ namespace MultiPlayer
 
         public Vector2 Scale
         {
-            get { return GameObject.ParentObject is GameObject ? (GameObject.ParentObject as GameObject).Transform.Scale*LocalScale : LocalScale; }
+            get
+            {
+                return (GameObject.ParentObject is GameObject && !IgnoreParentScale)
+                    ? (GameObject.ParentObject as GameObject).Transform.Scale*LocalScale
+                    : LocalScale;
+            }
             set
             {
                 var scale = Scale;
@@ -68,7 +77,12 @@ namespace MultiPlayer
 
         public float Rotation
         {
-            get { return GameObject.ParentObject is GameObject ? (GameObject.ParentObject as GameObject).Transform.Rotation + LocalRotation : LocalRotation; }
+            get
+            {
+                return (GameObject.ParentObject is GameObject && !IgnoreParentRotation)
+                    ? (GameObject.ParentObject as GameObject).Transform.Rotation + LocalRotation
+                    : LocalRotation;
+            }
             set { LocalRotation = value - (Rotation - LocalRotation); }
         }
 

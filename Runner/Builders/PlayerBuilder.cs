@@ -29,6 +29,7 @@ namespace Runner.Builders
             var sensorWidthPixels = (int) (sensorWidth*Transform.PIXELS_A_METRE);
             var clamberSensorOffset = 1.5f;
 
+            var roomToStandDetector = new TriggerDetector() {TriggeredBy = "Ground"};
             var groundDetector = new TriggerDetector() { TriggeredBy = "Ground" };
             var ceilingDetector = new TriggerDetector() {TriggeredBy = "Ground"};
             var leftWallDetector = new TriggerDetector() { TriggeredBy = "Ground"};
@@ -83,6 +84,7 @@ namespace Runner.Builders
 
             characterMotor.GroundDetector = groundDetector;
             characterMotor.CeilingDetector = ceilingDetector;
+            characterMotor.RoomToStandDetector = roomToStandDetector;
 
             characterMotor.LeftWallDetector = leftWallDetector;
             characterMotor.RightWallDetector = rightWallDetector;
@@ -97,45 +99,56 @@ namespace Runner.Builders
                 .With(characterMotor)
                 .With(new PlayerController())
                 .With(animator)
+                .With(new RollFinishListener())
 
-                //Add the ground detector (bar below)
-                .WithChild(GameObjectFactory.New()
-                    .With(ColliderFactory.BoxTrigger(width*sensorLopOff, sensorWidth))
-                    .With(groundDetector)
-                    .WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
-                    .AtPosition(new Vector2(0, height * 0.5f + sensorWidth*0.5f))
-                    .Create())
+                .WithChild(GameObjectFactory.New(false, true, true)
+                    //Add the ground detector (bar below)
+                    .WithChild(GameObjectFactory.New()
+                        .With(ColliderFactory.BoxTrigger(width * sensorLopOff, sensorWidth))
+                        .With(groundDetector)
+                        .WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
+                        .AtPosition(new Vector2(0, height * 0.5f + sensorWidth * 0.5f))
+                        .Create())
 
-                //Add the ceiling detector (bar above)
-                .WithChild(GameObjectFactory.New()
-                    .With(ColliderFactory.BoxTrigger(width * sensorWidth, sensorWidth))
-                    .With(ceilingDetector)
-                    .WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
-                    .AtPosition(-new Vector2(0, height * 0.5f + sensorWidth * 0.5f))
-                    .Create())
+                    //Add the ceiling detector (bar above)
+                    .WithChild(GameObjectFactory.New()
+                        .With(ColliderFactory.BoxTrigger(width * sensorWidth, sensorWidth))
+                        .With(ceilingDetector)
+                        .WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
+                        .AtPosition(-new Vector2(0, height * 0.5f + sensorWidth * 0.5f))
+                        .Create())
 
-                //Add the left wall detector (bar down left side)
-                .WithChild(GameObjectFactory.New()
-                    .With(ColliderFactory.BoxTrigger(sensorWidth, height*sensorLopOff))
-                    .With(leftWallDetector)
-                    .WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
-                    .AtPosition(-new Vector2(width * 0.5f + sensorWidth*0.5f, 0))
-                    .Create())
+                    //Add the room to stand detector (box above)
+                    .WithChild(GameObjectFactory.New()
+                        .With(ColliderFactory.BoxTrigger(width * sensorWidth, sensorWidth))
+                        .With(ceilingDetector)
+                        .WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
+                        .AtPosition(-new Vector2(0, height * 0.75f + sensorWidth * 0.5f))
+                        .Create())
 
-                //Add the right wall detector (bar down right side)
-                .WithChild(GameObjectFactory.New()
-                    .With(ColliderFactory.BoxTrigger(sensorWidth, height*sensorLopOff))
-                    .With(rightWallDetector)
-                    .WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
-                    .AtPosition(new Vector2(width * 0.5f + sensorWidth*0.5f, 0))
-                    .Create())
+                    //Add the left wall detector (bar down left side)
+                    .WithChild(GameObjectFactory.New()
+                        .With(ColliderFactory.BoxTrigger(sensorWidth, height * sensorLopOff))
+                        .With(leftWallDetector)
+                        .WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
+                        .AtPosition(-new Vector2(width * 0.5f + sensorWidth * 0.5f, 0))
+                        .Create())
 
-                //Add the clamber detector (bar over top, extending out sides)
-                .WithChild(GameObjectFactory.New()
-                    .With(ColliderFactory.BoxTrigger(width * 3f*sensorLopOff, sensorWidth))
-                    .With(clamberDetector)
-                    .WithTexture(TextureUtil.CreateTexture(widthPixels*3, sensorWidthPixels, Color.Red))
-                    .AtPosition(-new Vector2(0, (height * 0.5f + sensorWidth*0.5f)*clamberSensorOffset))
+                    //Add the right wall detector (bar down right side)
+                    .WithChild(GameObjectFactory.New()
+                        .With(ColliderFactory.BoxTrigger(sensorWidth, height * sensorLopOff))
+                        .With(rightWallDetector)
+                        .WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
+                        .AtPosition(new Vector2(width * 0.5f + sensorWidth * 0.5f, 0))
+                        .Create())
+
+                    //Add the clamber detector (bar over top, extending out sides)
+                    .WithChild(GameObjectFactory.New()
+                        .With(ColliderFactory.BoxTrigger(width * 3f * sensorLopOff, sensorWidth))
+                        .With(clamberDetector)
+                        .WithTexture(TextureUtil.CreateTexture(widthPixels * 3, sensorWidthPixels, Color.Red))
+                        .AtPosition(-new Vector2(0, (height * 0.5f + sensorWidth * 0.5f) * clamberSensorOffset))
+                        .Create())
                     .Create())
 
                 .With(ColliderFactory.BoxCollider(width, height, BodyType.Dynamic, true));

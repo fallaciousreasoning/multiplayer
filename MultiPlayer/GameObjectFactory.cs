@@ -17,12 +17,17 @@ namespace MultiPlayer
 
         private string tag;
 
-        public static GameObjectFactory New()
+        public static GameObjectFactory New(bool independentTranslation=false, bool independentRotation=false, bool independentScale=false)
         {
             return new GameObjectFactory()
             {
                 renderer = new Sprite(),
-                transform = new Transform(),
+                transform = new Transform()
+                {
+                    IgnoreParentTranslation = independentTranslation,
+                    IgnoreParentRotation = independentRotation,
+                    IgnoreParentScale = independentScale
+                },
                 components = new List<object>()
             };
         }

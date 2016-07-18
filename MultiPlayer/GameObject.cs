@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MultiPlayer.GameComponents;
+using MultiPlayer.GameComponents.Animation;
 using MultiPlayer.GameComponents.Physics;
 using IUpdateable = MultiPlayer.GameComponents.IUpdateable;
 
@@ -19,6 +20,9 @@ namespace MultiPlayer
 
         public readonly List<IHearsCollision> HearCollisions = new List<IHearsCollision>();
         public readonly List<IHearsTrigger> HearTriggers = new List<IHearsTrigger>(); 
+
+        public readonly List<IHearsAnimationStart> HearsAnimationStarts = new List<IHearsAnimationStart>();
+        public readonly List<IHearsAnimationEnd> HearsAnimationEnds = new List<IHearsAnimationEnd>();
 
         private readonly List<IHearsDestroy> hearDestroy = new List<IHearsDestroy>();
         
@@ -52,6 +56,12 @@ namespace MultiPlayer
 
             if (component is IHearsCollision)
                 HearCollisions.Add(component as IHearsCollision);
+
+            if (component is IHearsAnimationStart)
+                HearsAnimationStarts.Add(component as IHearsAnimationStart);
+
+            if (component is IHearsAnimationEnd)
+                HearsAnimationEnds.Add(component as IHearsAnimationEnd);
         }
 
         /// <summary>

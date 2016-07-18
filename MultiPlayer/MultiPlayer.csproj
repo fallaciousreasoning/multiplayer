@@ -58,6 +58,8 @@
     <Compile Include="GameComponents\Animation\IAccessor.cs" />
     <Compile Include="GameComponents\Animation\IAnimationFrame.cs" />
     <Compile Include="GameComponents\Animation\ICalculator.cs" />
+    <Compile Include="GameComponents\Animation\IHearsAnimationEnd.cs" />
+    <Compile Include="GameComponents\Animation\IHearsAnimationStart.cs" />
     <Compile Include="GameComponents\Animation\KeyFrame.cs" />
     <Compile Include="GameComponents\Animation\RotationAccessor.cs" />
     <Compile Include="GameComponents\Animation\ScaleAccessor.cs" />

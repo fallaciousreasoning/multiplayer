@@ -8,6 +8,8 @@ namespace MultiPlayer.GameComponents.Animation
         private Animation activeAnimation;
         private GameObject gameObject;
 
+        private bool wasPlaying;
+
         public AnimationController(Dictionary<string, Animation> animations=null)
         {
             this.animations = animations ?? new Dictionary<string, Animation>();
@@ -30,6 +32,9 @@ namespace MultiPlayer.GameComponents.Animation
         {
             activeAnimation = animation;
             animation.Start();
+
+            GameObject.HearsAnimationStarts.ForEach(s => s.OnAnimationStarted(animation));
+            wasPlaying = true;
         }
 
         public void Pause()
@@ -40,12 +45,30 @@ namespace MultiPlayer.GameComponents.Animation
         public void Stop()
         {
             activeAnimation?.Stop();
+
+            BroadcastFinish();
+
             activeAnimation = null;
+            wasPlaying = false;
         }
 
         public void Update(float step)
         {
-            activeAnimation?.Update(step);
+            if (activeAnimation == null) return;
+
+            activeAnimation.Update(step);
+
+            if (wasPlaying && !activeAnimation.IsPlaying)
+            {
+                BroadcastFinish();
+            }
+
+            wasPlaying = activeAnimation.IsPlaying;
+        }
+
+        private void BroadcastFinish()
+        {
+            GameObject.HearsAnimationEnds.ForEach(e => e.OnAnimationEnd(activeAnimation));
         }
 
         public GameObject GameObject

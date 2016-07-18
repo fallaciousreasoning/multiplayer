@@ -36,7 +36,7 @@ namespace Runner.Builders
         /// <summary>
         /// The state of the character motor
         /// </summary>
-        public CharacterState State { get; private set; } = CharacterState.Normal;
+        public CharacterState State { get; internal set; } = CharacterState.Normal;
 
         /// <summary>
         /// Gets the direction facing away from the wall (zero if neither or both sides are walls)
@@ -70,6 +70,11 @@ namespace Runner.Builders
         /// Determines whether the player is on the ground
         /// </summary>
         public bool OnGround { get { return GroundDetector.Triggered; } }
+
+        /// <summary>
+        /// Indicates whether the player can stand
+        /// </summary>
+        public bool CanStand { get { return !CeilingDetector.Triggered && !RoomToStandDetector.Triggered; } }
 
         /// <summary>
         /// Determines whether the player can clamber onto a ledge. Ledge direction is 
@@ -120,17 +125,22 @@ namespace Runner.Builders
             newVelocity.X = MathHelper.Clamp(newVelocity.X, -Stats.MaxXSpeed, Stats.MaxXSpeed);
             newVelocity.Y = MathHelper.Clamp(newVelocity.Y, -Stats.MaxYSpeed, Stats.MaxYSpeed);
 
-
-
-            collider.Body.LinearVelocity = newVelocity;
-
-            if (LeftWallDetector.Triggered && newVelocity.X < 0) newVelocity.X = 0;
-            if (RightWallDetector.Triggered && newVelocity.X > 0) newVelocity.X = 0;
-            if (GroundDetector.Triggered && newVelocity.Y > 0) newVelocity.Y = 0;
-            if (CeilingDetector.Triggered && newVelocity.Y < 0)
-                newVelocity.Y = 0;
-
             Velocity = newVelocity;
+
+            ManageSlide();
+
+            collider.Body.LinearVelocity = Velocity;
+
+            //Hitting stuff
+            if (State != CharacterState.Sliding)
+            {
+                if (LeftWallDetector.Triggered && Velocity.X < 0) Velocity.X = 0;
+                if (RightWallDetector.Triggered && Velocity.X > 0) Velocity.X = 0;
+                if (GroundDetector.Triggered && Velocity.Y > 0) Velocity.Y = 0;
+                if (CeilingDetector.Triggered && Velocity.Y < 0) Velocity.Y = 0;
+            }
+
+            //Drag
             if (dir == 0)
                 Velocity.X -= Velocity.X*GetHorizontalDrag()*step;
 
@@ -147,14 +157,29 @@ namespace Runner.Builders
             {
                 if (shouldRoll)
                 {
-                    //State = CharacterState.Rolling;
-                    shouldRoll = false;
-
-                    Animator.Start(Animations.Name(PlayerAnimation.Roll, Facing));
+                    Roll();
                 }
             }
 
             wasOnGround = OnGround;
+        }
+
+        private void ManageSlide()
+        {
+            if (State != CharacterState.Sliding) return;
+
+            var d = (Facing == Direction.Left ? -1 : 1);
+
+            //If we aren't going fast enough
+            if (Math.Abs(Velocity.X) - Stats.MinSlideVelocity < 0)
+            {
+                if (CanStand) SlideJump();
+                else
+                {
+                    Velocity.X = d*Stats.MinSlideVelocity;
+                    
+                }
+            } 
         }
 
         /// <summary>
@@ -193,6 +218,17 @@ namespace Runner.Builders
             }
 
             shouldRoll = false;
+        }
+
+        /// <summary>
+        /// Tells the character to execute a roll
+        /// </summary>
+        public void Roll()
+        {
+            State = CharacterState.Rolling;
+            shouldRoll = false;
+
+            Animator.Start(Animations.Name(PlayerAnimation.Roll, Facing));
         }
 
         private void SlideJump()
@@ -241,7 +277,6 @@ namespace Runner.Builders
                 State = CharacterState.Sliding;
                 tillJump = Stats.SlideJumpDelay;
             }
-            //TODO rolling
             else
             {
                 shouldRoll = true;
@@ -281,6 +316,11 @@ namespace Runner.Builders
         /// Detects when the gameobject touches the ceiling
         /// </summary>
         public TriggerDetector CeilingDetector { get; set; }
+
+        /// <summary>
+        /// A trigger placed a little above the gameobject to workout when we can stand
+        /// </summary>
+        public TriggerDetector RoomToStandDetector { get; set; }
 
         /// <summary>
         /// Detects when the gameobject is touches a wall on the left
