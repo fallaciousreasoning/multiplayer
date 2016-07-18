@@ -92,7 +92,7 @@
     <Compile Include="GameComponents\ShipEngine.cs" />
     <Compile Include="GameComponents\SimpleController.cs" />
     <Compile Include="GameComponents\StayOnMouse.cs" />
-    <Compile Include="GameComponents\Tag.cs" />
+    <Compile Include="GameComponents\TagComponent.cs" />
     <Compile Include="GameComponents\VelocityController.cs" />
     <Compile Include="GameComponents\Weapon.cs" />
     <Compile Include="GameObject.cs" />

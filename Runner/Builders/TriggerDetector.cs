@@ -17,7 +17,7 @@ namespace Runner.Builders
 
         public void OnTriggerEntered(GameObject hit)
         {
-            if (hit.Tag.Name == TriggeredBy && !touchingTriggers.Contains(hit))
+            if (hit.Tag.HasTag(TriggeredBy) && !touchingTriggers.Contains(hit))
                 touchingTriggers.Add(hit);
         }
 
