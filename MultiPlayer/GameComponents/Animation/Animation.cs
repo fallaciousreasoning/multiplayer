@@ -114,8 +114,6 @@ namespace MultiPlayer.GameComponents.Animation
 
         public void Start()
         {
-            Console.WriteLine("Starting animation!");
-
             playing = true;
             reversing = false;
             currentFrame = 0;
@@ -164,7 +162,6 @@ namespace MultiPlayer.GameComponents.Animation
             lastTime = times[currentFrame];
 
             currentFrame += reversing ? -1 : 1;
-            Console.WriteLine($"Moving to frame {currentFrame}");
 
             if (currentFrame >= frames.Count || currentFrame < 0)
             {
@@ -210,7 +207,6 @@ namespace MultiPlayer.GameComponents.Animation
 
         private void Complete()
         {
-            Console.WriteLine("Completing");
             //Make sure we're on the last frame
             currentFrame = reversing ? 0 : frames.Count - 1;
             Animate(true);
