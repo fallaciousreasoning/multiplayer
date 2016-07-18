@@ -109,7 +109,7 @@ namespace MultiPlayer
         public GameObject Create()
         {
             var gameObject = new GameObject(transform, renderer, components);
-            gameObject.Tag.HasTag(tag);
+            gameObject.Tag.AddTag(tag);
 
             return gameObject;
         }
