@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using MultiPlayer;
 using MultiPlayer.Core.InputMethods;
 using XamlEditor.Interop;
+using MouseButton = MultiPlayer.Core.MouseButton;
 
 namespace XamlEditor
 {
@@ -15,63 +19,77 @@ namespace XamlEditor
     {
         private Scene scene;
 
-        private readonly IMouse mouse;
-        private readonly IKeyboard keyboard;
+        private readonly ManualMouse mouse;
+        private readonly ManualKeyboard keyboard;
 
         public EditView()
         {
             mouse = new ManualMouse();
             keyboard = new ManualKeyboard();
-
-            //Loaded += OnLoaded;
         }
 
-        //private void OnLoaded(object sender, RoutedEventArgs e)
-        //{
-        //    Focusable = true;
-        //    Focus();
+        protected override void Initialize()
+        {
+            Focusable = true;
+            Focus();
 
-        //    var window = this;
-        //    window.MouseMove += (o, args) => UpdateMouse(args);
-        //    window.MouseDown += (o, args) => UpdateMouse(args);
-        //    window.MouseUp += (o, args) => UpdateMouse(args);
-        //    window.KeyUp += (o, args) => UpdateKeyBoard(args, false);
-        //    window.KeyDown += (o, args) => UpdateKeyBoard(args, true);
-        //}
+            var window = this;
+            window.MouseMove += (o, args) => UpdateMouse(args);
+            window.MouseDown += (o, args) => UpdateMouse(args);
+            window.MouseUp += (o, args) => UpdateMouse(args);
+            window.KeyUp += (o, args) => UpdateKeyBoard(args, false);
+            window.KeyDown += (o, args) => UpdateKeyBoard(args, true);
 
-        //protected override void Initialize()
-        //{
-        //    game = new EditGame(GraphicsDevice);
+            base.Initialize();
+        }
 
-        //    game.Initialize();
-        //    EnigmaGame.Input.MouseState = mouse;
-        //    EnigmaGame.Input.KeyboardState = keyboard;
+        /// <summary>
+        /// Updates the keyboard state when a key is pressed
+        /// </summary>
+        /// <param name="args">The key</param>
+        /// <param name="p1">Whether the key is down</param>
+        private void UpdateKeyBoard(KeyEventArgs args, bool p1)
+        {
+            Keys key;
+            Enum.TryParse(args.Key.ToString(), true, out key);
 
-        //    base.Initialize();
-        //}
+            keyboard.SetKeyState(key , p1);
+        }
 
-        //protected override void LoadContent()
-        //{
-        //    game.LoadContent();
-        //    base.LoadContent();
-        //}
+        /// <summary>
+        /// Sets the mouse state based on some mouse event
+        /// </summary>
+        /// <param name="args"></param>
+        private void UpdateMouse(MouseEventArgs args)
+        {
+            var mousePos = args.GetPosition(this);
+            mouse.MousePosition = new Vector2((float)mousePos.X, (float)mousePos.Y);
 
-        //protected override void UnloadContent()
-        //{
-        //    game.UnloadContent();
-        //    base.UnloadContent();
-        //}
+            mouse.SetButtonState(MouseButton.Left, (ButtonState)Enum.Parse(typeof(ButtonState), args.LeftButton.ToString()));
+            mouse.SetButtonState(MouseButton.Right, (ButtonState)Enum.Parse(typeof(ButtonState), args.RightButton.ToString()));
+            mouse.SetButtonState(MouseButton.Middle, (ButtonState)Enum.Parse(typeof(ButtonState), args.MiddleButton.ToString()));
 
-        //protected override void Update(GameTime gameTime)
-        //{
-        //    game.Update(gameTime);
-        //    base.Update(gameTime);
-        //}
+            Debug.WriteLine($"{mousePos}, {mouse.IsKeyDown(MouseButton.Left)}");
+        }
 
-        //protected override void Draw(GameTime gameTime)
-        //{
-        //    base.Draw(gameTime);
-        //    game.Draw(gameTime);
-        //}
+        protected override void Load()
+        {
+            base.Load();
+        }
+
+        protected override void Unload()
+        {
+            base.Unload();
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+        }
     }
 }
