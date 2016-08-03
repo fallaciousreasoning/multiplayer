@@ -7,17 +7,19 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer;
 using MultiPlayer.Core.InputMethods;
 using XamlEditor.Interop;
+using XamlEditor.Scenes;
 using MouseButton = MultiPlayer.Core.MouseButton;
 
 namespace XamlEditor
 {
     public class EditView : D3D11Host
     {
-        private Scene scene;
+        private EditScene scene;
 
         private readonly ManualMouse mouse;
         private readonly ManualKeyboard keyboard;
@@ -74,6 +76,9 @@ namespace XamlEditor
 
         protected override void Load()
         {
+            scene = new EditScene(mouse, keyboard);
+            scene.Device = GraphicsDevice;
+            scene.Start();
             base.Load();
         }
 
@@ -84,11 +89,18 @@ namespace XamlEditor
 
         protected override void Update(GameTime gameTime)
         {
+            var seconds = (float) gameTime.ElapsedGameTime.TotalSeconds;
+            scene.Update(seconds);
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.SteelBlue);
+            
+            //scene.Draw();
+
             base.Draw(gameTime);
         }
     }

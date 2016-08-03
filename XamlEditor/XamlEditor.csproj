@@ -101,6 +101,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Scenes\EditScene.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -147,10 +148,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Editor\Editor.csproj">
-      <Project>{d68e91f3-ae1f-4daa-9565-93ecf3822aac}</Project>
-      <Name>Editor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MultiPlayer\MultiPlayer.csproj">
       <Project>{348807d4-6619-48af-939a-5f5570ba5475}</Project>
       <Name>MultiPlayer</Name>
