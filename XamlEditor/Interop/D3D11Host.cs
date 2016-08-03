@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,6 +34,8 @@ namespace XamlEditor.Interop
 
         // Render timing:
         private readonly Stopwatch _timer;
+        private TimeSpan lastRender;
+
         private TimeSpan _lastRenderingTime;
         #endregion
 
@@ -76,6 +79,7 @@ namespace XamlEditor.Interop
         public D3D11Host()
         {
             _timer = new Stopwatch();
+            
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
         }
@@ -92,6 +96,8 @@ namespace XamlEditor.Interop
             InitializeImageSource();
             Initialize();
             StartRendering();
+
+            Load();
         }
 
 
@@ -104,6 +110,8 @@ namespace XamlEditor.Interop
             Unitialize();
             UnitializeImageSource();
             UninitializeGraphicsDevice();
+
+            Unload();
         }
 
 
@@ -120,7 +128,7 @@ namespace XamlEditor.Interop
                         // Do not associate graphics device with window.
                         DeviceWindowHandle = IntPtr.Zero,
                     };
-                    _graphicsDevice = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, GraphicsProfile.HiDef, presentationParameters);
+                    _graphicsDevice = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, GraphicsProfile.HiDef, presentationParameters);//new GraphicsDevice(GraphicsProfile.HiDef, presentationParameters);
                 }
             }
         }
@@ -212,6 +220,9 @@ namespace XamlEditor.Interop
             if (_resetBackBuffer)
                 CreateBackBuffer();
 
+            var gameTime = new GameTime(_timer.Elapsed, _timer.Elapsed - lastRender);
+            Update(gameTime);
+
             // CompositionTarget.Rendering event may be raised multiple times per frame
             // (e.g. during window resizing).
             var renderingEventArgs = (RenderingEventArgs)eventArgs;
@@ -220,14 +231,15 @@ namespace XamlEditor.Interop
                 _lastRenderingTime = renderingEventArgs.RenderingTime;
 
                 GraphicsDevice.SetRenderTarget(_renderTarget);
-                Render(_timer.Elapsed);
-                //GraphicsDevice..Flush();
+                Draw(gameTime);
+                GraphicsDevice.Flush();
             }
 
             _d3D11Image.Invalidate(); // Always invalidate D3DImage to reduce flickering
                                       // during window resizing.
 
             _resetBackBuffer = false;
+            lastRender = _timer.Elapsed;
         }
 
 
@@ -273,7 +285,7 @@ namespace XamlEditor.Interop
         BasicEffect _basicEffect;
 
 
-        private void Initialize()
+        protected virtual void Initialize()
         {
             float tilt = MathHelper.ToRadians(0);  // 0 degree angle
             // Use the world matrix to tilt the cube along x and y axes.
@@ -414,7 +426,7 @@ namespace XamlEditor.Interop
         }
 
 
-        private void Unitialize()
+        protected void Unitialize()
         {
             _vertexBuffer.Dispose();
             _vertexBuffer = null;
@@ -426,15 +438,30 @@ namespace XamlEditor.Interop
             _basicEffect = null;
         }
 
+        protected virtual void Load()
+        {
+            
+        }
 
-        private void Render(TimeSpan time)
+        protected virtual void Unload()
+        {
+            
+        }
+
+        protected virtual void Update(GameTime gameTime)
+        {
+            
+        }
+
+
+        protected virtual void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.SteelBlue);
             GraphicsDevice.RasterizerState = RasterizerState.CullNone;
             GraphicsDevice.SetVertexBuffer(_vertexBuffer);
 
             // Rotate cube around up-axis.
-            _basicEffect.World = Matrix.CreateRotationY((float)time.Milliseconds / 1000 * MathHelper.TwoPi) * _worldMatrix;
+            _basicEffect.World = Matrix.CreateRotationY((float)gameTime.TotalGameTime.TotalSeconds * MathHelper.TwoPi) * _worldMatrix;
 
             foreach (var pass in _basicEffect.CurrentTechnique.Passes)
             {
