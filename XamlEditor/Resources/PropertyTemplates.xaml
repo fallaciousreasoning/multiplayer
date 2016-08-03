@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:templateSelectors="clr-namespace:XamlEditor.TemplateSelectors">
+    <DataTemplate x:Key="SimplePropertyTemplate">
+        <StackPanel>
+            <TextBlock Text="{Binding PropertyName}"/>
+            <TextBox Text="{Binding Value, Mode=TwoWay}"/>
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="BoolDataTemplate">
+        <StackPanel>
+            <TextBlock Text="{Binding PropertyName}"/>
+            <CheckBox IsChecked="{Binding Value}"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <templateSelectors:PropertyTemplateSelector x:Key="PropertyTemplateSelector"
+                                                NumericDataTemplate="{StaticResource SimplePropertyTemplate}"
+                                                StringDataTemplate="{StaticResource SimplePropertyTemplate}"
+                                                BoolDataTemplate="{StaticResource BoolDataTemplate}"/>
+</ResourceDictionary>
