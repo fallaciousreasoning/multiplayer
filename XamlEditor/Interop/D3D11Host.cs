@@ -181,7 +181,7 @@ namespace XamlEditor.Interop
                 _renderTarget.Dispose();
                 _renderTarget = null;
             }
-
+            
             int width = Math.Max((int)ActualWidth, 1);
             int height = Math.Max((int)ActualHeight, 1);
             _renderTarget = new RenderTarget2D(_graphicsDevice, width, height, false, SurfaceFormat.Bgr32, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents, true);

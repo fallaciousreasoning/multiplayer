@@ -6,7 +6,16 @@
         xmlns:local="clr-namespace:XamlEditor"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <local:EditView></local:EditView>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Column="0">
+            
+        </ListBox>
+        <ListBox Grid.Column="2"></ListBox>
+        <local:EditView Margin="10,0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Fill"/>
     </Grid>
 </Window>

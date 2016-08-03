@@ -99,7 +99,7 @@ namespace XamlEditor
         {
             GraphicsDevice.Clear(Color.SteelBlue);
             
-            //scene.Draw();
+            scene.Draw();
 
             base.Draw(gameTime);
         }
