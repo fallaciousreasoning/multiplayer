@@ -70,7 +70,10 @@ namespace XamlEditor.ViewModels
                 else if (recur > 0)
                 {
                     var value = property.GetValue(Object);
-                    Properties.Add(new ComplexViewModel(value, recur - 1));
+                    Properties.Add(new ComplexViewModel(value, recur - 1)
+                    {
+                        Name = property.Name
+                    });
                 }
             }
 
@@ -85,7 +88,10 @@ namespace XamlEditor.ViewModels
                 else if (recur > 0)
                 {
                     var value = field.GetValue(Object);
-                    Properties.Add(new ComplexViewModel(value, recur - 1));
+                    Properties.Add(new ComplexViewModel(value, recur - 1)
+                    {
+                        Name = field.Name
+                    });
                 }
             }
         }

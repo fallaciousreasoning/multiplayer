@@ -67,17 +67,18 @@ namespace XamlEditor.ViewModels
 
         public object Value
         {
-            get { return propertyInfo.GetValue(Object); }
+            get { return propertyInfo?.GetValue(Object) ?? fieldInfo.GetValue(Object); }
             set
             {
                 try
                 {
                     var convertedValue = GetConvertedValue(value);
-                    propertyInfo.SetValue(Object, convertedValue);
+                    propertyInfo?.SetValue(Object, convertedValue);
+                    fieldInfo?.SetValue(Object, convertedValue);
                 }
                 catch (ArgumentException)
                 {
-                    throw new Exception($"{propertyInfo.Name} must be a {propertyInfo.PropertyType.Name}");
+                    throw new Exception($"{value.GetType().Name} must be a {ValueType.Name}");
                 }
             }
         }

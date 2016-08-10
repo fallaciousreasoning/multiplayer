@@ -29,7 +29,7 @@ namespace XamlEditor.TemplateSelectors
         
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var type = (item as PrimitiveViewModel)?.PropertyInfo?.PropertyType ?? item?.GetType();
+            var type = (item as PrimitiveViewModel)?.ValueType ?? item?.GetType();
             if (type == null) return base.SelectTemplate(null, container);
 
             if (type == typeof(string) && StringDataTemplate != null) return StringDataTemplate;
