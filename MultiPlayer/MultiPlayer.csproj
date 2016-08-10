@@ -42,6 +42,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Annotations\EditorIgnoreAttribute.cs" />
     <Compile Include="Core\InputAxis.cs" />
     <Compile Include="Core\InputButton.cs" />
     <Compile Include="Core\InputMethods\ManualKeyboard.cs" />

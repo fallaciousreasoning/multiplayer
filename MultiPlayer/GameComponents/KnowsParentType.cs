@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MultiPlayer.Annotations;
 
 namespace MultiPlayer.GameComponents
 {
     public abstract class KnowsParentType<T> : IKnowsParent where T : class
     {
+        [EditorIgnore]
         public object ParentObject { get; set; }
 
         /// <summary>

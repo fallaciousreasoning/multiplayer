@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using MultiPlayer.Annotations;
 
 namespace XamlEditor.ViewModels
 {
@@ -67,7 +69,7 @@ namespace XamlEditor.ViewModels
 
                 if (PrimitiveViewModel.CanConvert(property.PropertyType))
                     Properties.Add(PrimitiveViewModel.Create(Object, property));
-                else if (recur > 0)
+                else if (recur > 0 && !ShouldIgnore(property.GetCustomAttributes(true)))
                 {
                     var value = property.GetValue(Object);
                     Properties.Add(new ComplexViewModel(value, recur - 1)
@@ -85,7 +87,7 @@ namespace XamlEditor.ViewModels
                 
                 if (PrimitiveViewModel.CanConvert(field.FieldType))
                     Properties.Add(PrimitiveViewModel.Create(Object, field));
-                else if (recur > 0)
+                else if (recur > 0 && !ShouldIgnore(field.GetCustomAttributes(true)))
                 {
                     var value = field.GetValue(Object);
                     Properties.Add(new ComplexViewModel(value, recur - 1)
@@ -94,6 +96,13 @@ namespace XamlEditor.ViewModels
                     });
                 }
             }
+        }
+
+        private bool ShouldIgnore(object[] attributes)
+        {
+            foreach (var attribute in attributes)
+                if (attribute is EditorIgnoreAttribute) return true;
+            return false;
         }
     }
 }
