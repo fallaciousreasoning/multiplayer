@@ -69,9 +69,7 @@ namespace XamlEditor
 
             mouse.SetButtonState(MouseButton.Left, (ButtonState)Enum.Parse(typeof(ButtonState), args.LeftButton.ToString()));
             mouse.SetButtonState(MouseButton.Right, (ButtonState)Enum.Parse(typeof(ButtonState), args.RightButton.ToString()));
-            mouse.SetButtonState(MouseButton.Middle, (ButtonState)Enum.Parse(typeof(ButtonState), args.MiddleButton.ToString()));
-
-            Debug.WriteLine($"{mousePos}, {mouse.IsKeyDown(MouseButton.Left)}");
+            mouse.SetButtonState(MouseButton.Middle, (ButtonState)Enum.Parse(typeof(ButtonState), args.MiddleButton.ToString()));          
         }
 
         protected override void Load()

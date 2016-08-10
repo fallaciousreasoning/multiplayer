@@ -101,6 +101,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\StringStringConverter.cs" />
     <Compile Include="Converters\StringBooleanConverter.cs" />
     <Compile Include="Converters\StringNumberConverter.cs" />
     <Compile Include="Converters\ISupportableConverter.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="TemplateSelectors\PropertyTemplateSelector.cs" />
     <Compile Include="ViewModels\ArrayViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\ComplexViewModel.cs" />
     <Compile Include="ViewModels\PrimitiveViewModel.cs" />
     <Compile Include="ViewModels\SceneViewModel.cs" />
     <Compile Include="ViewModels\GameObjectViewModel.cs" />

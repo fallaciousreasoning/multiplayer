@@ -21,6 +21,8 @@ namespace XamlEditor.TemplateSelectors
 
         public DataTemplate ArrayDataTemplate { get; set; }
 
+        public DataTemplate ComplexDataTemplate { get; set; }
+
         public DataTemplate NumericDataTemplate { get; set; }
         public DataTemplate StringDataTemplate { get; set; }
         public DataTemplate BoolDataTemplate { get; set; }
@@ -28,12 +30,13 @@ namespace XamlEditor.TemplateSelectors
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             var type = (item as PrimitiveViewModel)?.PropertyInfo?.PropertyType ?? item?.GetType();
+            if (type == null) return base.SelectTemplate(null, container);
 
             if (type == typeof(string) && StringDataTemplate != null) return StringDataTemplate;
             if (numerics.Contains(type) && NumericDataTemplate != null) return NumericDataTemplate;
             if (type == typeof(bool) && BoolDataTemplate != null) return BoolDataTemplate;
 
-            return base.SelectTemplate(item, container);
+            return ComplexDataTemplate ?? base.SelectTemplate(item, container);
         }
     }
 }

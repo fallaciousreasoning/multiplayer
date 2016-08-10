@@ -27,10 +27,7 @@ namespace XamlEditor.ViewModels
                 //Add all the scripts to the view model
                 gameObject.Components.Where(c => c.Key != typeof(GameObject))
                     .Foreach(list =>
-                        list.Value.Foreach(script => Scripts.Add(new ScriptViewModel()
-                        {
-                            Script = script
-                        }))
+                        list.Value.Foreach(script => Scripts.Add(new ScriptViewModel(script)))
                     );
             }
         }

@@ -3,19 +3,32 @@
                     xmlns:templateSelectors="clr-namespace:XamlEditor.TemplateSelectors">
     <DataTemplate x:Key="SimplePropertyTemplate">
         <StackPanel>
-            <TextBlock Text="{Binding PropertyName}"/>
+            <TextBlock Text="{Binding Name}"/>
             <TextBox Text="{Binding Value, Mode=TwoWay}"/>
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="BoolDataTemplate">
         <StackPanel>
-            <TextBlock Text="{Binding PropertyName}"/>
+            <TextBlock Text="{Binding Name}"/>
             <CheckBox IsChecked="{Binding Value}"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <templateSelectors:PropertyTemplateSelector x:Key="PropertyTemplateSelectorNoRecursion"
+                                                NumericDataTemplate="{StaticResource SimplePropertyTemplate}"
+                                                StringDataTemplate="{StaticResource SimplePropertyTemplate}"
+                                                BoolDataTemplate="{StaticResource BoolDataTemplate}"/>
+
+    <DataTemplate x:Key="ComplexDataTemplate">
+        <StackPanel>
+            <TextBlock Text="{Binding Name}"/>
+            <ItemsControl ItemsSource="{Binding Properties}" ItemTemplateSelector="{DynamicResource PropertyTemplateSelector}" Margin="10,0,0,0"/>
         </StackPanel>
     </DataTemplate>
 
     <templateSelectors:PropertyTemplateSelector x:Key="PropertyTemplateSelector"
                                                 NumericDataTemplate="{StaticResource SimplePropertyTemplate}"
                                                 StringDataTemplate="{StaticResource SimplePropertyTemplate}"
-                                                BoolDataTemplate="{StaticResource BoolDataTemplate}"/>
+                                                BoolDataTemplate="{StaticResource BoolDataTemplate}"
+                                                ComplexDataTemplate="{StaticResource ComplexDataTemplate}"/>
 </ResourceDictionary>
