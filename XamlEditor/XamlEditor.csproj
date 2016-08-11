@@ -106,6 +106,7 @@
     <Compile Include="Converters\StringNumberConverter.cs" />
     <Compile Include="Converters\ISupportableConverter.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Scenes\EditScene.cs" />
     <Compile Include="TemplateSelectors\PropertyTemplateSelector.cs" />

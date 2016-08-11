@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer.Annotations;
+using XamlEditor.Extensions;
 
 namespace XamlEditor.ViewModels
 {
@@ -65,11 +66,12 @@ namespace XamlEditor.ViewModels
             foreach (var property in properties)
             {
                 //We're only interested in properties we can read and write to
-                if (!property.CanWrite || !property.CanRead) continue;
+                if (!property.CanWrite || !property.CanRead || ShouldIgnore(type.GetAllAttributes(property)))
+                    continue;
 
                 if (PrimitiveViewModel.CanConvert(property.PropertyType))
                     Properties.Add(PrimitiveViewModel.Create(Object, property));
-                else if (recur > 0 && !ShouldIgnore(property.GetCustomAttributes(true)))
+                else if (recur > 0)
                 {
                     var value = property.GetValue(Object);
                     Properties.Add(new ComplexViewModel(value, recur - 1)
@@ -98,10 +100,11 @@ namespace XamlEditor.ViewModels
             }
         }
 
-        private bool ShouldIgnore(object[] attributes)
+        private bool ShouldIgnore(IEnumerable<object> attributes)
         {
             foreach (var attribute in attributes)
-                if (attribute is EditorIgnoreAttribute) return true;
+                if (attribute is EditorIgnoreAttribute)
+                    return true;
             return false;
         }
     }

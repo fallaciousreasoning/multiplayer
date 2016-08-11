@@ -10,7 +10,7 @@ namespace XamlEditor.ViewModels
     public class ScriptViewModel : ComplexViewModel
     {
         public ScriptViewModel(object o)
-            : base(o, 2)
+            : base(o, 1)
         {
         }
     }
