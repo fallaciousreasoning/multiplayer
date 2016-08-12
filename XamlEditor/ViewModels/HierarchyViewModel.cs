@@ -60,8 +60,12 @@ namespace XamlEditor.ViewModels
                 if (value == isSelected) return;
                 isSelected = value;
                 OnPropertyChanged();
+
+                OnSelected?.Invoke(Root);
             }
         }
+
+        public Action<GameObject> OnSelected;
 
         public ObservableCollection<HierarchyViewModel> Children { get; } = new ObservableCollection<HierarchyViewModel>();
 
@@ -86,6 +90,7 @@ namespace XamlEditor.ViewModels
                 Children.Add(new HierarchyViewModel()
                 {
                     Root = child,
+                    OnSelected = OnSelected
                 });
             });
         }

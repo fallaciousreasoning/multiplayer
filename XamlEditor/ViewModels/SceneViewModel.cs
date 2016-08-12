@@ -48,6 +48,16 @@ namespace XamlEditor.ViewModels
         public GameObjectViewModel GameObjectViewModel { get; } = new GameObjectViewModel();
         public HierarchyViewModel HierarchyViewModel { get; } = new HierarchyViewModel();
 
+        public SceneViewModel()
+        {
+            HierarchyViewModel.OnSelected = OnGameObjectSelected;
+        }
+
+        public void OnGameObjectSelected(GameObject gameObject)
+        {
+            GameObjectViewModel.GameObject = gameObject;
+        }
+
         public void HeardEditPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Scene.SceneRoot))

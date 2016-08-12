@@ -67,7 +67,7 @@ namespace XamlEditor.ViewModels
 
         public object Value
         {
-            get { return propertyInfo?.GetValue(Object) ?? fieldInfo.GetValue(Object); }
+            get { return propertyInfo != null ? propertyInfo.GetValue(Object) : fieldInfo.GetValue(Object); }
             set
             {
                 try
@@ -98,7 +98,7 @@ namespace XamlEditor.ViewModels
         private object GetConvertedValue(object value)
         {
             if (value.GetType() == ValueType) return value;
-            return converter.Convert(value, ValueType, null, CultureInfo.CurrentCulture);
+            return GetConverter(ValueType).Convert(value, ValueType, null, CultureInfo.CurrentCulture);
         }
 
         private static ISupportableConverter GetConverter(Type type)
