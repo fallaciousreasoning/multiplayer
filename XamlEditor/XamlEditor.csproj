@@ -108,6 +108,8 @@
     <Compile Include="Converters\ISupportableConverter.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="GameComponents\StickTo.cs" />
+    <Compile Include="GameComponents\UpdateNotifier.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Scenes\EditScene.cs" />
     <Compile Include="TemplateSelectors\PropertyTemplateSelector.cs" />
@@ -127,7 +129,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\EditorView.cs" />
     <Compile Include="EditView.cs" />
     <Compile Include="Interop\D3D11Host.cs" />
     <Compile Include="Interop\D3D11Image.cs" />
@@ -136,6 +137,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\GameObjectTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\PropertyTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -178,7 +183,9 @@
       <Name>Runner</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controls\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

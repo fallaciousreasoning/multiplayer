@@ -18,6 +18,7 @@ namespace MultiPlayer
         public List<IStartable> StartableComponents { get; private set; }
         public List<IDestroyable> DestroyableComponents { get; private set; }
         public List<IDrawable> DrawableComponents { get; private set; }
+        public List<IHearsChildDestroyed> HearsChildDestroy { get; private set; }
 
         public ComponentManager()
         {
@@ -27,6 +28,7 @@ namespace MultiPlayer
             StartableComponents = new List<IStartable>();
             DrawableComponents = new List<IDrawable>();
             DestroyableComponents = new List<IDestroyable>();
+            HearsChildDestroy = new List<IHearsChildDestroyed>();
         }
 
         public void DelayedAdd(T component)
@@ -69,6 +71,8 @@ namespace MultiPlayer
                 destroyable.ShouldRemove = false;
                 DestroyableComponents.Add(destroyable);
             }
+            if (component is IHearsChildDestroyed)
+                HearsChildDestroy.Add(component as IHearsChildDestroyed);
         }
 
         public IEnumerable<K> GetComponents<K>() where K : T
@@ -130,6 +134,9 @@ namespace MultiPlayer
                 var remove = toRemove[i];
                 
                 (remove as IHearsDestroy)?.OnDestroy();
+
+                //Notify all the scripts that want to know
+                HearsChildDestroy.ForEach(c => c.OnChildDestroyed(remove));
 
                 //TODO improve this. It's not as nice as I'd like
                 if (remove is IDrawable)

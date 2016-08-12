@@ -52,6 +52,8 @@
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\PrefabFactory.cs" />
     <Compile Include="EnigmaGame.cs" />
+    <Compile Include="GameComponents\IHearsAdd.cs" />
+    <Compile Include="GameComponents\IHearsChildDestroyed.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="GameComponents\AABB.cs" />
     <Compile Include="GameComponents\Animation\Animation.cs" />

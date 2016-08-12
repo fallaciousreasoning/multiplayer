@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,15 +13,24 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer;
 using MultiPlayer.Core.InputMethods;
+using XamlEditor.Annotations;
 using XamlEditor.Interop;
 using XamlEditor.Scenes;
 using MouseButton = MultiPlayer.Core.MouseButton;
 
 namespace XamlEditor
 {
-    public class EditView : D3D11Host
+    public class EditView : D3D11Host, INotifyPropertyChanged
     {
-        private EditScene scene;
+        public static readonly DependencyProperty SceneProperty =
+        DependencyProperty.Register("Scene", typeof(EditScene),
+        typeof(EditView), new FrameworkPropertyMetadata(null));
+
+        public EditScene Scene
+        {
+            get { return (EditScene)GetValue(SceneProperty); }
+            set { SetValue(SceneProperty, value); }
+        }
 
         private readonly ManualMouse mouse;
         private readonly ManualKeyboard keyboard;
@@ -74,9 +85,9 @@ namespace XamlEditor
 
         protected override void Load()
         {
-            scene = new EditScene(mouse, keyboard);
-            scene.Device = GraphicsDevice;
-            scene.Start();
+            Scene = new EditScene(mouse, keyboard);
+            Scene.Device = GraphicsDevice;
+            Scene.Start();
             base.Load();
         }
 
@@ -88,7 +99,7 @@ namespace XamlEditor
         protected override void Update(GameTime gameTime)
         {
             var seconds = (float) gameTime.ElapsedGameTime.TotalSeconds;
-            scene.Update(seconds);
+            Scene.Update(seconds);
 
             base.Update(gameTime);
         }
@@ -97,9 +108,17 @@ namespace XamlEditor
         {
             GraphicsDevice.Clear(Color.SteelBlue);
             
-            scene.Draw();
+            Scene.Draw();
 
             base.Draw(gameTime);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -23,12 +23,7 @@ namespace XamlEditor.ViewModels
                 gameObject = value;
                 OnPropertyChanged();
 
-                Scripts.Clear();
-                //Add all the scripts to the view model
-                gameObject.Components.Where(c => c.Key != typeof(GameObject))
-                    .Foreach(list =>
-                        list.Value.Foreach(script => Scripts.Add(new ScriptViewModel(script)))
-                    );
+                Reload();
             }
         }
 
@@ -39,6 +34,16 @@ namespace XamlEditor.ViewModels
                 .AtPosition(new Vector2(20, 10))
                 .AtScale(2);
             GameObject = g.Create();
+        }
+
+        public void Reload()
+        {
+            Scripts.Clear();
+            //Add all the scripts to the view model
+            gameObject?.Components.Where(c => c.Key != typeof(GameObject))
+                .Foreach(list =>
+                    list.Value.Foreach(script => Scripts.Add(new ScriptViewModel(script)))
+                );
         }
 
         public ObservableCollection<ScriptViewModel> Scripts { get; private set; } = new ObservableCollection<ScriptViewModel>();

@@ -11,6 +11,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/PropertyTemplates.xaml"/>
+                <ResourceDictionary Source="Resources/GameObjectTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -24,9 +25,23 @@
             <ViewModels:SceneViewModel/>
         </Grid.DataContext>
 
-        <ListBox Grid.Column="0" ItemsSource="{Binding HierarchyViewModel.Children}">
-            
-        </ListBox>
+        <TreeView Grid.Column="0" ItemsSource="{Binding HierarchyViewModel.Children}" ItemTemplate="{StaticResource HierarchyGameObjectTemplate}">
+            <TreeView.ItemContainerStyle>
+                <!-- 
+                    This Style binds a TreeViewItem to a TreeViewItemViewModel. 
+                -->
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <Setter Property="FontWeight" Value="Normal" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="FontWeight" Value="Bold" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
         <ListBox Grid.Column="2" ItemsSource="{Binding GameObjectViewModel.Scripts}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -37,6 +52,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <local:EditView Margin="10,0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Fill"/>
+        <local:EditView x:Name="EditView" Scene="{Binding Scene, Mode=OneWayToSource}" Margin="10,0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Fill"/>
     </Grid>
 </Window>

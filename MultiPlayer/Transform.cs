@@ -95,5 +95,12 @@ namespace MultiPlayer
         }
 
         public GameObject GameObject { get; set; }
+
+        public void Set(Transform transform)
+        {
+            Position = transform.Position;
+            Rotation = transform.Rotation;
+            Scale = transform.Scale;
+        }
     }
 }

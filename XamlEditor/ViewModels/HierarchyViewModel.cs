@@ -13,6 +13,8 @@ namespace XamlEditor.ViewModels
     public class HierarchyViewModel : BaseViewModel
     {
         private GameObject root;
+        private bool isExpanded;
+        private bool isSelected;
 
         public GameObject Root
         {
@@ -22,18 +24,54 @@ namespace XamlEditor.ViewModels
                 if (Equals(value, root)) return;
                 root = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(Name));
 
                 LoadChildren();
             }
         }
 
-        public ObservableCollection<HierarchyViewModel> Children { get; } = new ObservableCollection<HierarchyViewModel>();
+        public string Name
+        {
+            get { return Root.Name; }
+            set
+            {
+                if (Equals(value, root.Name)) return;
+                Root.Name = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public RoutedCommand SelectedCommand;
-        public RoutedCommand DeselectedCommand;
+        public bool IsExpanded
+        {
+            get { return isExpanded; }
+            set
+            {
+                if (value == isExpanded) return;
+                isExpanded = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                if (value == isSelected) return;
+                isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<HierarchyViewModel> Children { get; } = new ObservableCollection<HierarchyViewModel>();
 
         public HierarchyViewModel()
         {
+        }
+
+        public void Reload()
+        {
+            LoadChildren();
         }
 
         private void LoadChildren()
