@@ -16,15 +16,17 @@
     </Window.Resources>
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="250"/>
         </Grid.ColumnDefinitions>
         <Grid.DataContext>
             <ViewModels:SceneViewModel/>
         </Grid.DataContext>
-        
-        <ListBox Grid.Column="0"/>
+
+        <ListBox Grid.Column="0" ItemsSource="{Binding HierarchyViewModel.Children}">
+            
+        </ListBox>
         <ListBox Grid.Column="2" ItemsSource="{Binding GameObjectViewModel.Scripts}">
             <ListBox.ItemTemplate>
                 <DataTemplate>

@@ -14,6 +14,7 @@ namespace XamlEditor.ViewModels
     {
         public EditScene Scene { get; set; }
 
-        public GameObjectViewModel GameObjectViewModel { get; set; } = new GameObjectViewModel();
+        public GameObjectViewModel GameObjectViewModel { get; } = new GameObjectViewModel();
+        public HierarchyViewModel HierarchyViewModel { get; } = new HierarchyViewModel();
     }
 }
