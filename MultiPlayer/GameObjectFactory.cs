@@ -52,7 +52,7 @@ namespace MultiPlayer
 
         public GameObjectFactory AtPosition(Vector2 position)
         {
-            transform.LocalPosition = position;
+            transform.Position = position;
             return this;
         }
 
@@ -63,13 +63,13 @@ namespace MultiPlayer
 
         public GameObjectFactory AtScale(Vector2 scale)
         {
-            transform.LocalScale = scale;
+            transform.Scale = scale;
             return this;
         }
 
         public GameObjectFactory WithRotation(float rotation)
         {
-            transform.LocalRotation = rotation;
+            transform.Rotation = rotation;
             return this;
         }
 

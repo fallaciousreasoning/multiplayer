@@ -15,7 +15,7 @@ namespace MultiPlayer.GameComponents
 
         public void Start()
         {
-            StartingPosition = GameObject.Transform.LocalPosition;
+            StartingPosition = GameObject.Transform.Position;
 
             var dir = GameObject.Transform.FacingDirection;
             GameObject.GetComponent<VelocityController>().Velocity = dir*Speed;
