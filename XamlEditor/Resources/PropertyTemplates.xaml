@@ -10,14 +10,9 @@
     <DataTemplate x:Key="BoolDataTemplate">
         <StackPanel>
             <TextBlock Text="{Binding Name}"/>
-            <CheckBox IsChecked="{Binding Value}"/>
+            <CheckBox IsChecked="{Binding Value, Mode=TwoWay}"/>
         </StackPanel>
     </DataTemplate>
-
-    <templateSelectors:PropertyTemplateSelector x:Key="PropertyTemplateSelectorNoRecursion"
-                                                NumericDataTemplate="{StaticResource SimplePropertyTemplate}"
-                                                StringDataTemplate="{StaticResource SimplePropertyTemplate}"
-                                                BoolDataTemplate="{StaticResource BoolDataTemplate}"/>
 
     <DataTemplate x:Key="ComplexDataTemplate">
         <StackPanel>
