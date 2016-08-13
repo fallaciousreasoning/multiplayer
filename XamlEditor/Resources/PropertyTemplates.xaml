@@ -14,10 +14,16 @@
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="UnknownDataTemplate">
-        <StackPanel>
+        <StackPanel Margin="0,0,10,0">
             <TextBlock Text="{Binding Name}"/>
             <TextBlock Text="Unsupported Type:"/>
             <TextBlock Text="{Binding PropertyInfo.PropertyType.FullName}"/>
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="EnumDataTemplate">
+        <StackPanel Margin="0,0,10,0">
+            <TextBlock Text="{Binding Name}"/>
+            <ComboBox ItemsSource="{Binding Values}" SelectedItem="{Binding Value, Mode=TwoWay}"/>
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="Vector2DataTemplate">
@@ -56,5 +62,6 @@
                                                 StringDataTemplate="{StaticResource SimplePropertyTemplate}"
                                                 BoolDataTemplate="{StaticResource BoolDataTemplate}"
                                                 ComplexDataTemplate="{StaticResource ComplexDataTemplate}"
+                                                EnumDataTemplate="{StaticResource EnumDataTemplate}"
                                                 Vector2DataTemplate="{StaticResource Vector2DataTemplate}"/>
 </ResourceDictionary>

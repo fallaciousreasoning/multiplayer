@@ -14,7 +14,7 @@ namespace MultiPlayer
         private Vector2 origin;
         private Texture2D texture;
 
-        public SpriteEffects Effects = SpriteEffects.None;
+        public SpriteEffects Effects { get; set; } = SpriteEffects.None;
         public Color Tint = Color.White;
 
         public AABB TextureSize { get; private set; }
