@@ -30,17 +30,11 @@ namespace MultiPlayer
             }
         }
 
-        public Vector2 Origin
-        {
-            get { return origin; }
-            set { origin = value; }
-        }
-
         public void Draw()
         {
             if (Texture == null) return;
 
-            Scene.ActiveScene.SpriteBatch.Draw(Texture, GameObject.Transform.DrawPosition, null, Tint, GameObject.Transform.Rotation, Origin, GameObject.Transform.Scale, Effects, 0f);
+            Scene.ActiveScene.SpriteBatch.Draw(Texture, GameObject.Transform.DrawPosition, null, Tint, GameObject.Transform.Rotation, origin, GameObject.Transform.Scale, Effects, 0f);
         }
 
         public GameObject GameObject { get; set; }
