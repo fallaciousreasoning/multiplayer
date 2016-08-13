@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using MultiPlayer;
+using MultiPlayer.Annotations;
 using XamlEditor.Extensions;
 
 namespace XamlEditor.ViewModels
@@ -40,7 +42,12 @@ namespace XamlEditor.ViewModels
         {
             Scripts.Clear();
             //Add all the scripts to the view model
-            gameObject?.Components.Where(c => c.Key != typeof(GameObject))
+            gameObject?.Components
+                .Where(
+                    c => 
+                        c.Key != typeof(GameObject) &&
+                        !c.Key.GetAllAttributes().Any(a => a is EditorIgnoreAttribute)
+                    )
                 .Foreach(list =>
                     list.Value.Foreach(script => Scripts.Add(new ScriptViewModel(script)))
                 );

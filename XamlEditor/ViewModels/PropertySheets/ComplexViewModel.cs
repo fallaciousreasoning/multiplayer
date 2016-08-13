@@ -13,11 +13,6 @@ namespace XamlEditor.ViewModels
 {
     public class ComplexViewModel : BaseViewModel, IPropertyViewModel
     {
-        /// <summary>
-        /// Indicates whether this complex view model should have complex children
-        /// </summary>
-        private readonly int recur;
-
         private string name;
 
         private object value;
@@ -75,12 +70,6 @@ namespace XamlEditor.ViewModels
 
         public ObservableCollection<IPropertyViewModel> Children { get; } = new ObservableCollection<IPropertyViewModel>();
 
-        public ComplexViewModel(object o, int recur=0)
-        {
-            this.recur = recur;
-            Value = o;
-        }
-
         private void LoadProperties()
         {
             Children.Clear();
@@ -93,6 +82,9 @@ namespace XamlEditor.ViewModels
                 //We're only interested in properties we can read and write to
                 if (!property.CanWrite || !property.CanRead || ShouldIgnore(type.GetAllAttributes(property)))
                     continue;
+
+                //If we shouldn't ever add a property for this type, continue
+                if (ShouldIgnore(property.PropertyType.GetAllAttributes())) continue;
 
                 var viewModel = PropertySheetManager.GetViewModelFor(property.PropertyType);
                 if (viewModel == null) continue;
