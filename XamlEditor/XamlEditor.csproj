@@ -119,6 +119,8 @@
     <Compile Include="ViewModels\HierarchyViewModel.cs" />
     <Compile Include="ViewModels\PropertySheets\PrimitiveViewModel.cs" />
     <Compile Include="ViewModels\PropertySheets\IPropertyViewModel.cs" />
+    <Compile Include="ViewModels\PropertySheets\PropertySheetManager.cs" />
+    <Compile Include="ViewModels\PropertySheets\Vector2ViewModel.cs" />
     <Compile Include="ViewModels\SceneViewModel.cs" />
     <Compile Include="ViewModels\GameObjectViewModel.cs" />
     <Compile Include="ViewModels\ScriptViewModel.cs" />

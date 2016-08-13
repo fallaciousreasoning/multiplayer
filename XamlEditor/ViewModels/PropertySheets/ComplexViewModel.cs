@@ -20,15 +20,17 @@ namespace XamlEditor.ViewModels
 
         private string name;
 
+        private object value;
         private object o;
+        private PropertyInfo propertyInfo;
 
         public object Value
         {
-            get { return o; }
+            get { return value; }
             set
             {
-                if (Equals(value, o)) return;
-                o = value;
+                if (Equals(value, this.value)) return;
+                this.value = value;
 
                 LoadProperties();
 
@@ -39,12 +41,34 @@ namespace XamlEditor.ViewModels
 
         public string Name
         {
-            get { return name ?? Value?.GetType().Name; }
+            get { return name ?? PropertyInfo?.Name ?? Value?.GetType().Name; }
             set
             {
                 if (Equals(name, value)) return;
 
                 name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public object Object
+        {
+            get { return o; }
+            set
+            {
+                if (Equals(value, o)) return;
+                o = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public PropertyInfo PropertyInfo
+        {
+            get { return propertyInfo; }
+            set
+            {
+                if (Equals(value, propertyInfo)) return;
+                propertyInfo = value;
                 OnPropertyChanged();
             }
         }
@@ -70,34 +94,13 @@ namespace XamlEditor.ViewModels
                 if (!property.CanWrite || !property.CanRead || ShouldIgnore(type.GetAllAttributes(property)))
                     continue;
 
-                if (PrimitiveViewModel.CanConvert(property.PropertyType))
-                    Children.Add(PrimitiveViewModel.Create(Value, property));
-                else if (recur > 0)
-                {
-                    var value = property.GetValue(Value);
-                    Children.Add(new ComplexViewModel(value, recur - 1)
-                    {
-                        Name = property.Name
-                    });
-                }
-            }
+                var viewModel = PropertySheetManager.GetViewModelFor(property.PropertyType);
+                if (viewModel == null) continue;
 
-            var fields = type.GetFields();
-            foreach (var field in fields)
-            {
-                //We're only interested in properties we can read and write to
-                if (!field.IsPublic || field.IsStatic || field.IsInitOnly || field.IsLiteral) continue;
-                
-                if (PrimitiveViewModel.CanConvert(field.FieldType))
-                    Children.Add(PrimitiveViewModel.Create(Value, field));
-                else if (recur > 0 && !ShouldIgnore(field.GetCustomAttributes(true)))
-                {
-                    var value = field.GetValue(Value);
-                    Children.Add(new ComplexViewModel(value, recur - 1)
-                    {
-                        Name = field.Name
-                    });
-                }
+                viewModel.PropertyInfo = property;
+                viewModel.Object = Value;
+
+                Children.Add(viewModel);
             }
         }
 

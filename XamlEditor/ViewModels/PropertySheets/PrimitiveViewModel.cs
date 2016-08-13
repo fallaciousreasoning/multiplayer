@@ -38,7 +38,7 @@ namespace XamlEditor.ViewModels
         public PropertyInfo PropertyInfo
         {
             get { return propertyInfo; }
-            private set
+            set
             {
                 converter = GetConverter(value.PropertyType);
                 if (converter == null) throw new ArgumentException($"Unsupported type {value.PropertyType.Name}");
@@ -54,7 +54,7 @@ namespace XamlEditor.ViewModels
         public FieldInfo FieldInfo
         {
             get { return fieldInfo; }
-            private set
+            set
             {
                 converter = GetConverter(value.FieldType);
                 if (converter == null) throw new ArgumentException($"Unsupported type {value.FieldType.Name}");
@@ -91,7 +91,7 @@ namespace XamlEditor.ViewModels
         public object Object
         {
             get { return o; }
-            private set
+            set
             {
                 if (Equals(value, o)) return;
                 o = value;
@@ -115,26 +115,6 @@ namespace XamlEditor.ViewModels
         public static bool CanConvert(Type type)
         {
             return GetConverter(type) != null;
-        }
-
-        private PrimitiveViewModel() { }
-
-        public static PrimitiveViewModel Create(object o, PropertyInfo propertyInfo)
-        {
-            return new PrimitiveViewModel()
-            {
-                Object = o,
-                propertyInfo = propertyInfo
-            };
-        }
-
-        public static PrimitiveViewModel Create(object o, FieldInfo fieldInfo)
-        {
-            return new PrimitiveViewModel()
-            {
-                Object = o,
-                fieldInfo = fieldInfo
-            };
         }
     }
 }

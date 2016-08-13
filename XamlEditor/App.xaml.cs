@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Xna.Framework;
+using XamlEditor.ViewModels.PropertySheets;
 
 namespace XamlEditor
 {
@@ -13,5 +15,10 @@ namespace XamlEditor
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            PropertySheetManager.Initialize();
+            PropertySheetManager.RegisterViewModelForType(typeof(Vector2), typeof(Vector2ViewModel));
+        }
     }
 }
