@@ -89,8 +89,8 @@ namespace XamlEditor.ViewModels
             {
                 Children.Add(new HierarchyViewModel()
                 {
-                    Root = child,
-                    OnSelected = OnSelected
+                    OnSelected = OnSelected,
+                    Root = child
                 });
             });
         }
