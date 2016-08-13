@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer.Annotations;
 using XamlEditor.Extensions;
+using XamlEditor.ViewModels.PropertySheets;
 
 namespace XamlEditor.ViewModels
 {
-    public class ComplexViewModel : BaseViewModel
+    public class ComplexViewModel : BaseViewModel, IPropertyViewModel
     {
         /// <summary>
         /// Indicates whether this complex view model should have complex children
@@ -21,7 +22,7 @@ namespace XamlEditor.ViewModels
 
         private object o;
 
-        public object Object
+        public object Value
         {
             get { return o; }
             set
@@ -38,7 +39,7 @@ namespace XamlEditor.ViewModels
 
         public string Name
         {
-            get { return name ?? Object?.GetType().Name; }
+            get { return name ?? Value?.GetType().Name; }
             set
             {
                 if (Equals(name, value)) return;
@@ -48,19 +49,19 @@ namespace XamlEditor.ViewModels
             }
         }
 
-        public ObservableCollection<BaseViewModel> Properties { get; } = new ObservableCollection<BaseViewModel>();
+        public ObservableCollection<IPropertyViewModel> Children { get; } = new ObservableCollection<IPropertyViewModel>();
 
         public ComplexViewModel(object o, int recur=0)
         {
             this.recur = recur;
-            Object = o;
+            Value = o;
         }
 
         private void LoadProperties()
         {
-            Properties.Clear();
+            Children.Clear();
 
-            var type = Object.GetType();
+            var type = Value.GetType();
             var properties = type.GetProperties();
 
             foreach (var property in properties)
@@ -70,11 +71,11 @@ namespace XamlEditor.ViewModels
                     continue;
 
                 if (PrimitiveViewModel.CanConvert(property.PropertyType))
-                    Properties.Add(PrimitiveViewModel.Create(Object, property));
+                    Children.Add(PrimitiveViewModel.Create(Value, property));
                 else if (recur > 0)
                 {
-                    var value = property.GetValue(Object);
-                    Properties.Add(new ComplexViewModel(value, recur - 1)
+                    var value = property.GetValue(Value);
+                    Children.Add(new ComplexViewModel(value, recur - 1)
                     {
                         Name = property.Name
                     });
@@ -88,11 +89,11 @@ namespace XamlEditor.ViewModels
                 if (!field.IsPublic || field.IsStatic || field.IsInitOnly || field.IsLiteral) continue;
                 
                 if (PrimitiveViewModel.CanConvert(field.FieldType))
-                    Properties.Add(PrimitiveViewModel.Create(Object, field));
+                    Children.Add(PrimitiveViewModel.Create(Value, field));
                 else if (recur > 0 && !ShouldIgnore(field.GetCustomAttributes(true)))
                 {
-                    var value = field.GetValue(Object);
-                    Properties.Add(new ComplexViewModel(value, recur - 1)
+                    var value = field.GetValue(Value);
+                    Children.Add(new ComplexViewModel(value, recur - 1)
                     {
                         Name = field.Name
                     });

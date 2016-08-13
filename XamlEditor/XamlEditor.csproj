@@ -113,11 +113,12 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Scenes\EditScene.cs" />
     <Compile Include="TemplateSelectors\PropertyTemplateSelector.cs" />
-    <Compile Include="ViewModels\ArrayViewModel.cs" />
+    <Compile Include="ViewModels\PropertySheets\ArrayViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\ComplexViewModel.cs" />
+    <Compile Include="ViewModels\PropertySheets\ComplexViewModel.cs" />
     <Compile Include="ViewModels\HierarchyViewModel.cs" />
-    <Compile Include="ViewModels\PrimitiveViewModel.cs" />
+    <Compile Include="ViewModels\PropertySheets\PrimitiveViewModel.cs" />
+    <Compile Include="ViewModels\PropertySheets\IPropertyViewModel.cs" />
     <Compile Include="ViewModels\SceneViewModel.cs" />
     <Compile Include="ViewModels\GameObjectViewModel.cs" />
     <Compile Include="ViewModels\ScriptViewModel.cs" />

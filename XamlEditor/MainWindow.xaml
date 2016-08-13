@@ -47,7 +47,7 @@
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding Name}"/>
-                        <ItemsControl Margin="10,0,0,10" ItemsSource="{Binding Properties}" ItemTemplateSelector="{StaticResource PropertyTemplateSelector}"/>
+                        <ItemsControl Margin="10,0,0,10" ItemsSource="{Binding Children}" ItemTemplateSelector="{StaticResource PropertyTemplateSelector}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

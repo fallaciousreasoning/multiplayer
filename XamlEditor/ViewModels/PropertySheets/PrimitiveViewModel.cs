@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using XamlEditor.Annotations;
 using XamlEditor.Converters;
+using XamlEditor.ViewModels.PropertySheets;
 
 namespace XamlEditor.ViewModels
 {
-    public class PrimitiveViewModel : BaseViewModel
+    public class PrimitiveViewModel : BaseViewModel, IPropertyViewModel
     {
         private static readonly List<ISupportableConverter> converters = new List<ISupportableConverter>()
         {
@@ -82,6 +85,8 @@ namespace XamlEditor.ViewModels
                 }
             }
         }
+
+        public ObservableCollection<IPropertyViewModel> Children { get; } = null;
 
         public object Object
         {

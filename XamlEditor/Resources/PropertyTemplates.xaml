@@ -15,10 +15,9 @@
     </DataTemplate>
 
     <DataTemplate x:Key="ComplexDataTemplate">
-        <StackPanel>
-            <TextBlock Text="{Binding Name}"/>
-            <ItemsControl ItemsSource="{Binding Properties}" ItemTemplateSelector="{DynamicResource PropertyTemplateSelector}" Margin="10,0,0,5"/>
-        </StackPanel>
+        <Expander IsExpanded="True" Header="{Binding Name}">
+            <ItemsControl ItemsSource="{Binding Children}" ItemTemplateSelector="{DynamicResource PropertyTemplateSelector}" Margin="10,0,0,5"/>
+        </Expander>
     </DataTemplate>
 
     <templateSelectors:PropertyTemplateSelector x:Key="PropertyTemplateSelector"
