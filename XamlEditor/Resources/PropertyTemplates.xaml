@@ -13,6 +13,36 @@
             <CheckBox IsChecked="{Binding Value, Mode=TwoWay}"/>
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="UnknownDataTemplate">
+        <StackPanel>
+            <TextBlock Text="{Binding Name}"/>
+            <TextBlock Text="Unsupported Type:"/>
+            <TextBlock Text="{Binding PropertyInfo.PropertyType.FullName}"/>
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="Vector2DataTemplate">
+        <StackPanel>
+            <TextBlock Text="{Binding Name}"/>
+            <StackPanel Margin="10,0,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="X:" Margin="0,0,10,0" Grid.Column="0"/>
+                    <TextBox Text="{Binding X, Mode=TwoWay}" Grid.Column="1"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Y:" Margin="0,0,10,0" Grid.Column="0"/>
+                    <TextBox Text="{Binding Y, Mode=TwoWay}" Grid.Column="1"/>
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
 
     <DataTemplate x:Key="ComplexDataTemplate">
         <Expander IsExpanded="True" Header="{Binding Name}">
@@ -21,8 +51,10 @@
     </DataTemplate>
 
     <templateSelectors:PropertyTemplateSelector x:Key="PropertyTemplateSelector"
+                                                UnknownDataTemplate="{StaticResource UnknownDataTemplate}"
                                                 NumericDataTemplate="{StaticResource SimplePropertyTemplate}"
                                                 StringDataTemplate="{StaticResource SimplePropertyTemplate}"
                                                 BoolDataTemplate="{StaticResource BoolDataTemplate}"
-                                                ComplexDataTemplate="{StaticResource ComplexDataTemplate}"/>
+                                                ComplexDataTemplate="{StaticResource ComplexDataTemplate}"
+                                                Vector2DataTemplate="{StaticResource Vector2DataTemplate}"/>
 </ResourceDictionary>
