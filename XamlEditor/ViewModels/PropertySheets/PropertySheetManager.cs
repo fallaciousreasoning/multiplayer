@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using XamlEditor.Annotations;
 
 namespace XamlEditor.ViewModels.PropertySheets
 {
@@ -24,9 +25,13 @@ namespace XamlEditor.ViewModels.PropertySheets
             ViewModelMap.Add(type, viewModelType);
         }
 
-        public static IPropertyViewModel GetViewModelFor(Type type)
+        public static IPropertyViewModel GetViewModelFor([NotNull] Type type)
         {
-            if (!ViewModelMap.ContainsKey(type)) return null;
+            while (!ViewModelMap.ContainsKey(type))
+            {
+                if (type.BaseType != typeof(object) && type.BaseType != null) type = type.BaseType;
+                else return null;
+            }
 
             var viewModelType = ViewModelMap[type];
             return (IPropertyViewModel) Activator.CreateInstance(viewModelType);
@@ -45,6 +50,8 @@ namespace XamlEditor.ViewModels.PropertySheets
             RegisterViewModelForType(typeof(string), typeof(PrimitiveViewModel));
 
             RegisterViewModelForType(typeof(bool), typeof(PrimitiveViewModel));
+
+            RegisterViewModelForType(typeof(Enum), typeof(EnumViewModel));
         }
     }
 }
