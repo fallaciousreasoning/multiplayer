@@ -67,6 +67,11 @@ namespace MultiPlayer.GameComponents
             return other.Min.X > Min.X && other.Max.X < Max.X && other.Min.Y > Min.Y && other.Max.Y < Max.Y;
         }
 
+        public bool Contains(Vector2 point)
+        {
+            return point.X > Min.X && point.Y > Min.Y && point.X < Max.X && point.Y < Max.Y;
+        }
+
         public bool Intersects(AABB other)
         {
             return !(Min.X > other.Max.X || Min.Y > other.Max.Y || Max.X < other.Min.X || Max.Y < other.Min.Y);
