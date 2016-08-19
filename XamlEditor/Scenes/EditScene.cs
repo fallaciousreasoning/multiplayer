@@ -73,6 +73,11 @@ namespace XamlEditor.Scenes
 
         private GameObject BuildEditNode(GameObject toEdit)
         {
+            var dragger = new Dragger()
+            {
+                Drag = toEdit,
+            };
+
             return GameObjectFactory
                 .New()
                 .With(new StickTo()
@@ -83,6 +88,7 @@ namespace XamlEditor.Scenes
                 {
                     Texture = TextureUtil.CreateTexture(32, 32, Color.Red)
                 })
+                .With(dragger)
                 .Create();
         }
 
