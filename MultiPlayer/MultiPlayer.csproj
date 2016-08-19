@@ -14,7 +14,7 @@
     <MonoGamePlatform>WindowsGL</MonoGamePlatform>
     <MonoGameContentBuilderExe>
     </MonoGameContentBuilderExe>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -115,7 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FarseerPhysics MonoGame">
-      <HintPath>..\..\References\FarseerPhysics MonoGame.dll</HintPath>
+      <HintPath>..\dependencies\FarseerPhysics MonoGame.dll</HintPath>
     </Reference>
     <Reference Include="Lidgren.Network, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
