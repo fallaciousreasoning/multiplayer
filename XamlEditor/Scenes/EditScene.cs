@@ -42,12 +42,15 @@ namespace XamlEditor.Scenes
         private GameObject editRoot;
         private GameObject sceneRoot;
 
+        private GameObject selectedGameObject;
+        private readonly Dictionary<GameObject, GameObject> sceneToEditMap = new Dictionary<GameObject, GameObject>();
+
         public event ChildEvent ChildAdded;
         public event ScriptEvent ScriptAdded;
         public event ChildEvent ChildRemoved;
         public event ScriptEvent ScriptRemoved;
 
-        public GameObject AddGameObject(string prefabName, GameObject parent=null)
+        public GameObject AddGameObject(string prefabName, GameObject parent = null)
         {
             if (parent == null)
                 parent = SceneRoot;
@@ -64,6 +67,8 @@ namespace XamlEditor.Scenes
             gameObject.DelayedAdd(UpdateNotifier);
 
             var editNode = BuildEditNode(gameObject);
+
+            sceneToEditMap.Add(gameObject, editNode);
 
             parent.DelayedAdd(gameObject);
             EditRoot.DelayedAdd(editNode);
@@ -84,12 +89,22 @@ namespace XamlEditor.Scenes
                 {
                     To = toEdit
                 })
+                .With(new EditSelector())
                 .With(new Sprite()
                 {
                     Texture = TextureUtil.CreateTexture(32, 32, Color.Red)
                 })
                 .With(dragger)
                 .Create();
+        }
+
+        public void SelectGameObject(GameObject gameObject)
+        {
+            selectedGameObject?.GetComponent<EditSelector>()?.Deselect();
+
+            var editNode = sceneToEditMap[gameObject];
+            editNode.GetComponent<EditSelector>()?.Select();
+            selectedGameObject = editNode;
         }
 
         public EditScene(IMouse mouse, IKeyboard keyboard)

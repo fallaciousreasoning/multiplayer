@@ -109,6 +109,7 @@
     <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="GameComponents\Dragger.cs" />
+    <Compile Include="GameComponents\EditSelector.cs" />
     <Compile Include="GameComponents\StickTo.cs" />
     <Compile Include="GameComponents\UpdateNotifier.cs" />
     <Compile Include="Properties\Annotations.cs" />

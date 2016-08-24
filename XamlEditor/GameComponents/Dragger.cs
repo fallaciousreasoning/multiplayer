@@ -19,6 +19,8 @@ namespace XamlEditor.GameComponents
 
         public GameObject Drag { get; set; }
 
+        public bool Enabled { get; set; }
+
         public float Thickness { get; set; } = 0.2f;
         public float Length { get; set; } = 2f;
 
@@ -51,6 +53,8 @@ namespace XamlEditor.GameComponents
 
         public void LateUpdate(float step)
         {
+            if (!Enabled) return;
+
             xDragBounds.Centre = GameObject.Transform.Position - xDragBounds.HalfSize;
             yDragBounds.Centre = GameObject.Transform.Position - yDragBounds.HalfSize;
 
@@ -94,6 +98,8 @@ namespace XamlEditor.GameComponents
 
         public void Draw()
         {
+            if (!Enabled) return;
+
             var size = new Vector2(Thickness, Length) * Transform.PIXELS_A_METRE;
 
             Scene.ActiveScene.SpriteBatch.Draw(DrawTool, GameObject.Transform.DrawPosition, null, XAxisColor, MathHelper.PiOver2, new Vector2(0.5f, 0), size, SpriteEffects.None, 0);

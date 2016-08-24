@@ -56,6 +56,7 @@ namespace XamlEditor.ViewModels
         public void OnGameObjectSelected(GameObject gameObject)
         {
             GameObjectViewModel.GameObject = gameObject;
+            Scene.SelectGameObject(gameObject);
         }
 
         public void HeardEditPropertyChanged(object sender, PropertyChangedEventArgs e)
