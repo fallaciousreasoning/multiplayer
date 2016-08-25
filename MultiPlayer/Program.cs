@@ -1,4 +1,5 @@
 ﻿using System;
+using MultiPlayer.Core.InputMethods;
 
 namespace MultiPlayer
 {
@@ -14,8 +15,8 @@ namespace MultiPlayer
         [STAThread]
         static void Main()
         {
-            //using (var game = new Game1())
-            //    game.Run();
+            using (var game = new EnigmaGame(new Scene(new XnaMouse(), new XnaKeyboard())))
+                game.Run();
         }
     }
 #endif

@@ -37,6 +37,16 @@ namespace MultiPlayer.Core
             return components.ContainsKey(type) ? (T)components[type] : null;
         }
 
+        public bool HasComponent<T>()
+        {
+            return HasComponent(typeof(T));
+        }
+
+        internal bool HasComponent(Type type)
+        {
+            return components.ContainsKey(type);
+        }
+
         public Action<Entity, object> ComponentAdded;
         public Action<Entity, object> ComponentRemoved;
 

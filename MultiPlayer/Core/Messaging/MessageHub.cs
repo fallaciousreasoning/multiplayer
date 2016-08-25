@@ -41,6 +41,8 @@ namespace MultiPlayer.Core.Messaging
         public void SendMessage(IMessage message)
         {
             var type = message.GetType();
+            if (!messageRecievers.ContainsKey(type)) return;
+
             var recievers = messageRecievers[type];
             SendMessage(message, recievers);
         }

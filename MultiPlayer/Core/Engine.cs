@@ -28,6 +28,11 @@ namespace MultiPlayer.Core
             Systems = systems;
         }
 
+        public void Start()
+        {
+            MessageHub.BroadcastMessage(new StartMessage());
+        }
+
         public void AddEntity(Entity entity)
         {
             entity.Id = nextId;
@@ -96,6 +101,11 @@ namespace MultiPlayer.Core
             MessageHub.SendMessage(new UpdateMessage(time));
 
             Updating = false;
+        }
+
+        public void Draw()
+        {
+            MessageHub.SendMessage(new DrawMessage());
         }
 
         public MessageHub MessageHub { get; }

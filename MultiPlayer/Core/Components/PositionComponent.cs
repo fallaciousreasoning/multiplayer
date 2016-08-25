@@ -12,7 +12,7 @@ namespace MultiPlayer.Core.Components
         public PositionComponent Parent;
 
         public Vector2 Position;
-        public Vector2 Scale;
+        public Vector2 Scale = Vector2.One;
         public float Rotation;
 
         public Vector2 WorldPosition

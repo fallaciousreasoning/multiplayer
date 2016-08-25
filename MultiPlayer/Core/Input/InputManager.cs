@@ -1,22 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer.Core.InputMethods;
-using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-using IUpdateable = MultiPlayer.GameComponents.IUpdateable;
-using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
-using KeyboardState = Microsoft.Xna.Framework.Input.KeyboardState;
-using Mouse = Microsoft.Xna.Framework.Input.Mouse;
-using MouseState = Microsoft.Xna.Framework.Input.MouseState;
+using MultiPlayer.Core.Systems;
 
-namespace MultiPlayer.Core
+namespace MultiPlayer.Core.Input
 {
     public enum MouseButton
     {
         Left, Right, Middle
     }
 
-    public class InputManager : IUpdateable
+    public class InputManager : UpdatableSystem
     {
         private IKeyboard keyboardState;
         private IKeyboard oldKeyState;
@@ -28,6 +24,7 @@ namespace MultiPlayer.Core
         private readonly Dictionary<string, InputButton> inputButtons = new Dictionary<string, InputButton>(); 
 
         public InputManager(IMouse mouse, IKeyboard keyboard)
+            :base(new Type[0])
         {
             this.mouseState = mouse;
             this.keyboardState = keyboard;
@@ -71,7 +68,7 @@ namespace MultiPlayer.Core
             inputAxes.Add(name, axis);
         }
 
-        public void Update(float step)
+        protected override void Update(Time time)
         {
             oldKeyState = keyboardState.Clone();
             oldMouseState = mouseState.Clone();
@@ -80,9 +77,9 @@ namespace MultiPlayer.Core
             mouseState.Update();
         }
 
-        public Vector2 MousePosition { get { return new Vector2(mouseState.MousePosition.X, mouseState.MousePosition.Y); } }
-        public Vector2 LastMousePosition { get { return new Vector2(oldMouseState.MousePosition.X, oldMouseState.MousePosition.Y); } }
-        public Vector2 MouseMoved { get { return MousePosition - LastMousePosition; } }
+        public Vector2 MousePosition => new Vector2(mouseState.MousePosition.X, mouseState.MousePosition.Y);
+        public Vector2 LastMousePosition => new Vector2(oldMouseState.MousePosition.X, oldMouseState.MousePosition.Y);
+        public Vector2 MouseMoved => MousePosition - LastMousePosition;
 
         public bool IsDown(MouseButton button)
         {
