@@ -14,7 +14,7 @@ namespace MultiPlayer
             var colors = new Color[width*height];
             for (var i = 0; i < colors.Length; ++i) colors[i] = color;
 
-            var texture = new Texture2D(Game1.Game.Device, width, height);
+            var texture = new Texture2D(Scene.ActiveScene.Device, width, height);
             texture.SetData(colors);
 
             return texture;

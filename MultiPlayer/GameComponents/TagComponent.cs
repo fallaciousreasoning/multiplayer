@@ -9,6 +9,11 @@ namespace MultiPlayer.GameComponents
     {
         public HashSet<string> Tags { get; set; } = new HashSet<string>();
 
+        public void AddTag(string tag)
+        {
+            Tags.Add(tag);
+        }
+
         public bool HasTag(string tag)
         {
             return Tags.Contains(tag);

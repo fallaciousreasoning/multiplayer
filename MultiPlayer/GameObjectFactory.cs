@@ -52,7 +52,7 @@ namespace MultiPlayer
 
         public GameObjectFactory AtPosition(Vector2 position)
         {
-            transform.LocalPosition = position;
+            transform.Position = position;
             return this;
         }
 
@@ -63,13 +63,13 @@ namespace MultiPlayer
 
         public GameObjectFactory AtScale(Vector2 scale)
         {
-            transform.LocalScale = scale;
+            transform.Scale = scale;
             return this;
         }
 
         public GameObjectFactory WithRotation(float rotation)
         {
-            transform.LocalRotation = rotation;
+            transform.Rotation = rotation;
             return this;
         }
 
@@ -102,14 +102,14 @@ namespace MultiPlayer
 
         public GameObjectFactory WithChild(string prefabName, Vector2 position, float rotation, Vector2 scale)
         {
-            var gameObject = Game1.Game.PrefabFactory.Build(prefabName, position, rotation, scale);
+            var gameObject = Scene.ActiveScene.PrefabFactory.Build(prefabName, position, rotation, scale);
             return WithChild(gameObject);
         }
 
         public GameObject Create()
         {
             var gameObject = new GameObject(transform, renderer, components);
-            gameObject.Tag.HasTag(tag);
+            gameObject.Tag.AddTag(tag);
 
             return gameObject;
         }

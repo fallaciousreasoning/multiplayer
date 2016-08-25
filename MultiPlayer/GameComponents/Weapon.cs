@@ -16,13 +16,13 @@ namespace MultiPlayer.GameComponents
         public void Update(float step)
         {
             tillFire -= step;
-            if (Game1.Game.Input.GetButtonDown("shoot") && tillFire < 0)
+            if (Scene.ActiveScene.Input.GetButtonDown("shoot") && tillFire < 0)
                 Shoot();
         }
 
         private void Shoot()
         {
-            var bullet = Game1.Game.PrefabFactory.Instantiate(BulletPrefab, GameObject.Transform.Position, GameObject.Transform.Rotation);
+            var bullet = Scene.ActiveScene.PrefabFactory.Instantiate(BulletPrefab, GameObject.Transform.Position, GameObject.Transform.Rotation);
             tillFire = FireRate;
         }
 

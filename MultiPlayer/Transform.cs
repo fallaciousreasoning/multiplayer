@@ -16,74 +16,53 @@ namespace MultiPlayer
         public bool IgnoreParentTranslation { get; set; }
         public bool IgnoreParentScale { get; set; }
 
-        public Vector2 LocalPosition
-        {
-            get { return localPosition; }
-            set
-            {
-                localPosition = value;
-            }
-        }
+        private Vector2 localPosition;
 
         public Vector2 Position
         {
             get
             {
-                return (GameObject.ParentObject is GameObject && !IgnoreParentTranslation)
-                    ? (GameObject.ParentObject as GameObject).Transform.Position + Vector2.Transform(LocalPosition, Matrix.CreateRotationZ((GameObject.ParentObject as GameObject).Transform.Rotation))
-                    : LocalPosition;
+                return (GameObject != null && GameObject.ParentObject is GameObject && !IgnoreParentTranslation)
+                    ? (GameObject.ParentObject as GameObject).Transform.Position + Vector2.Transform(localPosition, Matrix.CreateRotationZ((GameObject.ParentObject as GameObject).Transform.Rotation))
+                    : localPosition;
             }
             set
             {
-                LocalPosition = value - (Position - LocalPosition);
+                localPosition = value - (Position - localPosition);
             }
         }
 
-        public Vector2 DrawPosition
-        {
-            get { return Position*PIXELS_A_METRE; }
-            set { Position = value*METRES_A_PIXEL; }
-        }
+        public Vector2 DrawPosition => Position*PIXELS_A_METRE;
 
-        public Vector2 LocalScale = Vector2.One;
+        private Vector2 localScale = Vector2.One;
 
         public Vector2 Scale
         {
             get
             {
-                return (GameObject.ParentObject is GameObject && !IgnoreParentScale)
-                    ? (GameObject.ParentObject as GameObject).Transform.Scale*LocalScale
-                    : LocalScale;
+                return (GameObject != null && GameObject.ParentObject is GameObject && !IgnoreParentScale)
+                    ? (GameObject.ParentObject as GameObject).Transform.Scale*localScale
+                    : localScale;
             }
             set
             {
                 var scale = Scale;
-                if (value.X != 0 && scale.X != 0) LocalScale.X = value.X/(scale.X/LocalScale.X);
-                if (value.Y != 0 && scale.Y != 0) LocalScale.Y = value.Y/(scale.Y/LocalScale.Y);
+                if (value.X != 0 && scale.X != 0) localScale.X = value.X/(scale.X/localScale.X);
+                if (value.Y != 0 && scale.Y != 0) localScale.Y = value.Y/(scale.Y/localScale.Y);
             }
         }
 
-        public float LocalRotation
-        {
-            get { return localRotation; }
-            set
-            {
-                localRotation = value;
-            }
-        }
-
-        private Vector2 localPosition;
         private float localRotation;
 
         public float Rotation
         {
             get
             {
-                return (GameObject.ParentObject is GameObject && !IgnoreParentRotation)
-                    ? (GameObject.ParentObject as GameObject).Transform.Rotation + LocalRotation
-                    : LocalRotation;
+                return (GameObject != null && GameObject.ParentObject is GameObject && !IgnoreParentRotation)
+                    ? (GameObject.ParentObject as GameObject).Transform.Rotation + localRotation
+                    : localRotation;
             }
-            set { LocalRotation = value - (Rotation - LocalRotation); }
+            set { localRotation = value - (Rotation - localRotation); }
         }
 
         public Vector2 FacingDirection
@@ -95,5 +74,12 @@ namespace MultiPlayer
         }
 
         public GameObject GameObject { get; set; }
+
+        public void Set(Transform transform)
+        {
+            Position = transform.Position;
+            Rotation = transform.Rotation;
+            Scale = transform.Scale;
+        }
     }
 }

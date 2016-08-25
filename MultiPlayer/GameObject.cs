@@ -13,6 +13,8 @@ namespace MultiPlayer
 {
     public class GameObject : ComponentManager<object>, IHearsDestroy, IDestroyable
     {
+        public string Name { get; set; } = "GameObject";
+
         public VelocityController Velocity { get; private set; }
         public Transform Transform { get; private set; }
         public TagComponent Tag { get; private set; }
@@ -25,8 +27,9 @@ namespace MultiPlayer
         public readonly List<IHearsAnimationEnd> HearsAnimationEnds = new List<IHearsAnimationEnd>();
 
         private readonly List<IHearsDestroy> hearDestroy = new List<IHearsDestroy>();
-        
-        internal GameObject(Transform transform, Sprite sprite, List<object> components)
+        private readonly List<IHearsAdd> hearAdd = new List<IHearsAdd>();
+
+        public GameObject(Transform transform, Sprite sprite, List<object> components)
         {
             this.Transform = transform;
             this.Renderer = sprite;
@@ -62,6 +65,11 @@ namespace MultiPlayer
 
             if (component is IHearsAnimationEnd)
                 HearsAnimationEnds.Add(component as IHearsAnimationEnd);
+
+            hearAdd.ForEach(h => h.OnAdded(component));
+
+            if (component is IHearsAdd)
+                hearAdd.Add(component as IHearsAdd);
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
 ﻿using System;
+using MultiPlayer;
+using MultiPlayer.Core.InputMethods;
 
 namespace Editor
 {
@@ -14,7 +16,8 @@ namespace Editor
         [STAThread]
         static void Main()
         {
-            using (var game = new EditorGame())
+            var scene = new EditorGame(new XnaMouse(), new XnaKeyboard());
+            using (var game = new EnigmaGame(scene))
                 game.Run();
         }
     }

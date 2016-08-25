@@ -20,10 +20,10 @@ namespace MultiPlayer.GameComponents
             if (Velocity.LengthSquared() > MaxSpeed*MaxSpeed)
                 Velocity = Vector2.Normalize(Velocity)*MaxSpeed;
 
-            GameObject.Transform.LocalPosition += Velocity*step;
+            GameObject.Transform.Position += Velocity*step;
 
             AngularVelocity = MathHelper.Clamp(AngularVelocity, -MaxAngularVelocity, MaxAngularVelocity);
-            GameObject.Transform.LocalRotation -= AngularVelocity*step;
+            GameObject.Transform.Rotation -= AngularVelocity*step;
         }
 
         public GameObject GameObject { get; set; }

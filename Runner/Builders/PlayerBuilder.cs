@@ -150,6 +150,7 @@ namespace Runner.Builders
                         .AtPosition(-new Vector2(0, (height * 0.5f + sensorWidth * 0.5f) * clamberSensorOffset))
                         .Create())
                     .Create())
+                .AtPosition(new Vector2(0, -10))
 
                 .With(ColliderFactory.BoxCollider(width, height, BodyType.Dynamic, true));
         }

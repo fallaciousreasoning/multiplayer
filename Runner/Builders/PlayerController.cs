@@ -19,14 +19,14 @@ namespace Runner.Builders
 
         public void Update(float step)
         {
-            var x = Game1.Game.Input.GetAxis("horizontal");
+            var x = Scene.ActiveScene.Input.GetAxis("horizontal");
             if (x < 0) motor.AccelerateLeft();
             if (x > 0) motor.AccelerateRight();
 
-            if (Game1.Game.Input.GetButtonDown("jump"))
+            if (Scene.ActiveScene.Input.GetButtonDown("jump"))
                 motor.Jump();
 
-            if (Game1.Game.Input.GetButtonDown("slide"))
+            if (Scene.ActiveScene.Input.GetButtonDown("slide"))
                 motor.Slide();
         }
 

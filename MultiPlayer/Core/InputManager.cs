@@ -1,37 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MultiPlayer.Core;
-using OpenTK.Input;
+using MultiPlayer.Core.InputMethods;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using IUpdateable = MultiPlayer.GameComponents.IUpdateable;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using KeyboardState = Microsoft.Xna.Framework.Input.KeyboardState;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 using MouseState = Microsoft.Xna.Framework.Input.MouseState;
 
-namespace MultiPlayer
+namespace MultiPlayer.Core
 {
     public enum MouseButton
     {
         Left, Right, Middle
     }
 
-    public class InputManager : GameComponent
+    public class InputManager : IUpdateable
     {
-        private KeyboardState keyboardState;
-        private KeyboardState oldKeyState;
+        private IKeyboard keyboardState;
+        private IKeyboard oldKeyState;
 
-        private MouseState mouseState;
-        private MouseState oldMouseState;
+        private IMouse mouseState;
+        private IMouse oldMouseState;
 
         private readonly Dictionary<string, InputAxis> inputAxes = new Dictionary<string, InputAxis>();
         private readonly Dictionary<string, InputButton> inputButtons = new Dictionary<string, InputButton>(); 
 
-        public InputManager(Game game) : base(game)
+        public InputManager(IMouse mouse, IKeyboard keyboard)
         {
+            this.mouseState = mouse;
+            this.keyboardState = keyboard;
+
             AddInputAxis("horizontal", new InputAxis()
             {
                 PositiveKeys = new[]
@@ -71,32 +71,22 @@ namespace MultiPlayer
             inputAxes.Add(name, axis);
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(float step)
         {
-            oldKeyState = keyboardState;
-            oldMouseState = mouseState;
+            oldKeyState = keyboardState.Clone();
+            oldMouseState = mouseState.Clone();
 
-            keyboardState = Keyboard.GetState();
-            mouseState = Mouse.GetState();
-
-            base.Update(gameTime);
+            keyboardState.Update();
+            mouseState.Update();
         }
 
-        public Vector2 MousePosition { get { return new Vector2(mouseState.X, mouseState.Y); } }
-        public Vector2 LastMousePosition { get { return new Vector2(oldMouseState.X, oldMouseState.Y); } }
+        public Vector2 MousePosition { get { return new Vector2(mouseState.MousePosition.X, mouseState.MousePosition.Y); } }
+        public Vector2 LastMousePosition { get { return new Vector2(oldMouseState.MousePosition.X, oldMouseState.MousePosition.Y); } }
         public Vector2 MouseMoved { get { return MousePosition - LastMousePosition; } }
 
         public bool IsDown(MouseButton button)
         {
-            switch (button)
-            {
-                case MouseButton.Middle:
-                    return mouseState.MiddleButton == ButtonState.Pressed;
-                case MouseButton.Right:
-                    return mouseState.RightButton == ButtonState.Pressed;
-                default:
-                    return mouseState.LeftButton == ButtonState.Pressed;
-            }
+            return mouseState.IsKeyDown(button);
         }
 
         public bool IsDown(Keys key)
@@ -106,15 +96,7 @@ namespace MultiPlayer
 
         public bool IsUp(MouseButton button)
         {
-            switch (button)
-            {
-                case MouseButton.Middle:
-                    return mouseState.MiddleButton == ButtonState.Released;
-                case MouseButton.Right:
-                    return mouseState.RightButton == ButtonState.Released;
-                default:
-                    return mouseState.LeftButton == ButtonState.Released;
-            }
+            return mouseState.IsKeyUp(button);
         }
 
         public bool IsUp(Keys key)
@@ -124,15 +106,7 @@ namespace MultiPlayer
 
         public bool IsPressed(MouseButton button)
         {
-            switch (button)
-            {
-                case MouseButton.Middle:
-                    return mouseState.MiddleButton == ButtonState.Pressed && oldMouseState.MiddleButton == ButtonState.Released;
-                case MouseButton.Right:
-                    return mouseState.RightButton == ButtonState.Pressed && oldMouseState.RightButton == ButtonState.Released;
-                default:
-                    return mouseState.LeftButton == ButtonState.Pressed && oldMouseState.LeftButton == ButtonState.Released;
-            }
+            return mouseState.IsKeyDown(button) && oldMouseState.IsKeyUp(button);
         }
 
         public bool IsPressed(Keys key)
@@ -142,15 +116,7 @@ namespace MultiPlayer
 
         public bool IsReleased(MouseButton button)
         {
-            switch (button)
-            {
-                case MouseButton.Middle:
-                    return mouseState.MiddleButton == ButtonState.Released && oldMouseState.MiddleButton == ButtonState.Pressed;
-                case MouseButton.Right:
-                    return mouseState.RightButton == ButtonState.Released && oldMouseState.RightButton == ButtonState.Pressed;
-                default:
-                    return mouseState.LeftButton == ButtonState.Released && oldMouseState.LeftButton == ButtonState.Pressed;
-            }
+            return oldMouseState.IsKeyDown(button) && mouseState.IsKeyUp(button);
         }
 
         public bool IsReleased(Keys key)

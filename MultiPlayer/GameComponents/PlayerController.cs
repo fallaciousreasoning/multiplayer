@@ -17,15 +17,15 @@ namespace MultiPlayer.GameComponents
 
         public void Update(float step)
         {
-            if (Game1.Game.Input.GetButtonDown("shoot"))
+            if (Scene.ActiveScene.Input.GetButtonDown("shoot"))
             {
                 //TODO shoot
             }
 
-            var horizontal = Game1.Game.Input.GetAxis("horizontal");
+            var horizontal = Scene.ActiveScene.Input.GetAxis("horizontal");
             velocityController.AngularVelocity -= horizontal*AngularAcceleration*step;
 
-            if (Game1.Game.Input.GetAxis("vertical") < 0)
+            if (Scene.ActiveScene.Input.GetAxis("vertical") < 0)
                 engine.ApplyThrust(step);
         }
 

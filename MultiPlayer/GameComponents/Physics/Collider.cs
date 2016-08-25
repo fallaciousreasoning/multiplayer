@@ -114,7 +114,7 @@ namespace MultiPlayer.GameComponents.Physics
 
         public void OnDestroy()
         {
-            Game1.Game.PhysicsWorld.Remove(this);
+            Scene.ActiveScene.PhysicsWorld.Remove(this);
 
             Body.OnCollision -= OnCollided;
             Body.OnSeparation -= OnSeperated;

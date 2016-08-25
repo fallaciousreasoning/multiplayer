@@ -68,10 +68,10 @@ namespace MultiPlayer.Core
             var spacing = 20;
             for (var i = 0; i < messages.Count; ++i)
             {
-                var y = Game1.Game.Device.Viewport.Height - spacing*(messages.Count - i);
+                var y = Scene.ActiveScene.Device.Viewport.Height - spacing*(messages.Count - i);
                 var x = 10;
 
-                Game1.Game.SpriteBatch.DrawString(Game1.Game.DefaultFont, messages[i].ToString(), new Vector2(x, y), messages[i].Color);
+                Scene.ActiveScene.SpriteBatch.DrawString(Scene.ActiveScene.DefaultFont, messages[i].ToString(), new Vector2(x, y), messages[i].Color);
             }
         }
 
