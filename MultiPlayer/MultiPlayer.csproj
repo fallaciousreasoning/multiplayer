@@ -43,15 +43,38 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Annotations\EditorIgnoreAttribute.cs" />
-    <Compile Include="Core\InputAxis.cs" />
-    <Compile Include="Core\InputButton.cs" />
-    <Compile Include="Core\InputMethods\ManualKeyboard.cs" />
-    <Compile Include="Core\InputMethods\ManualMouse.cs" />
-    <Compile Include="Core\InputMethods\XnaKeyboard.cs" />
-    <Compile Include="Core\InputMethods\XnaMouse.cs" />
-    <Compile Include="Core\Logger.cs" />
+    <Compile Include="Core\Components\IKnowsNode.cs" />
+    <Compile Include="Core\Components\PositionComponent.cs" />
+    <Compile Include="Core\Engine.cs" />
+    <Compile Include="Core\Entity.cs" />
+    <Compile Include="Core\Families\FamilyManager.cs" />
+    <Compile Include="Core\Families\IFamily.cs" />
+    <Compile Include="Core\Input\InputAxis.cs" />
+    <Compile Include="Core\Input\InputButton.cs" />
+    <Compile Include="Core\Input\InputMethods\ManualKeyboard.cs" />
+    <Compile Include="Core\Input\InputMethods\ManualMouse.cs" />
+    <Compile Include="Core\Input\InputMethods\XnaKeyboard.cs" />
+    <Compile Include="Core\Input\InputMethods\XnaMouse.cs" />
+    <Compile Include="Core\Logging\Logger.cs" />
+    <Compile Include="Core\Messaging\DrawMessage.cs" />
+    <Compile Include="Core\Messaging\EntityAddedMessage.cs" />
+    <Compile Include="Core\Messaging\EntityRemovedMessage.cs" />
+    <Compile Include="Core\Messaging\IMessage.cs" />
+    <Compile Include="Core\Messaging\ITargetedMessage.cs" />
+    <Compile Include="Core\Messaging\MessageHub.cs" />
+    <Compile Include="Core\Messaging\UpdateMessage.cs" />
     <Compile Include="Core\PrefabFactory.cs" />
+    <Compile Include="Core\ReadOnlyEnumerable.cs" />
+    <Compile Include="Core\Systems\IKnowsEngine.cs" />
+    <Compile Include="Core\Systems\IRegistrableSystem.cs" />
+    <Compile Include="Core\Systems\IRequiresFamilies.cs" />
+    <Compile Include="Core\Systems\SystemManager.cs" />
+    <Compile Include="Core\Systems\BasicSystem.cs" />
+    <Compile Include="Core\Systems\ISystem.cs" />
+    <Compile Include="Core\Systems\UpdateSystem.cs" />
+    <Compile Include="Core\Time.cs" />
     <Compile Include="EnigmaGame.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="GameComponents\IHearsAdd.cs" />
     <Compile Include="GameComponents\IHearsChildDestroyed.cs" />
     <Compile Include="Scene.cs" />
@@ -105,13 +128,13 @@
     <Compile Include="GameObject.cs" />
     <Compile Include="GameObjectFactory.cs" />
     <Compile Include="ComponentManager.cs" />
-    <Compile Include="Core\InputManager.cs" />
+    <Compile Include="Core\Input\InputManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomUtil.cs" />
-    <Compile Include="Sprite.cs" />
-    <Compile Include="TextureUtil.cs" />
-    <Compile Include="Transform.cs" />
+    <Compile Include="GameComponents\Sprite.cs" />
+    <Compile Include="Core\Content\TextureUtil.cs" />
+    <Compile Include="GameComponents\Transform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FarseerPhysics MonoGame">
@@ -174,6 +197,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Content\Default.spritefont" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Nodes\" />
   </ItemGroup>
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
   <Target Name="BeforeResolveReferences">

@@ -185,10 +185,6 @@
       <Project>{348807d4-6619-48af-939a-5f5570ba5475}</Project>
       <Name>MultiPlayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Runner\Runner.csproj">
-      <Project>{8a7a2f80-b068-4a28-93cf-b829c8085c9c}</Project>
-      <Name>Runner</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
