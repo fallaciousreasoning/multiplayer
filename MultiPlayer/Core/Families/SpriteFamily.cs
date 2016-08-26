@@ -11,7 +11,7 @@ namespace MultiPlayer.Core.Families
     {
         public SpriteFamily() : base(new []
         {
-            typeof(PositionComponent),
+            typeof(TransformComponent),
             typeof(SpriteComponent)
         })
 

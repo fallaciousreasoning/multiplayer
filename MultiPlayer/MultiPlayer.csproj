@@ -45,7 +45,7 @@
     <Compile Include="Annotations\EditorIgnoreAttribute.cs" />
     <Compile Include="Core\Components\SpriteComponent.cs" />
     <Compile Include="Core\Components\IKnowsNode.cs" />
-    <Compile Include="Core\Components\PositionComponent.cs" />
+    <Compile Include="Core\Components\TransformComponent.cs" />
     <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\Entity.cs" />
     <Compile Include="Core\Families\BasicFamily.cs" />

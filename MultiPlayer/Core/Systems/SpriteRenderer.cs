@@ -23,10 +23,10 @@ namespace MultiPlayer.Core.Systems
             var family = Engine.FamilyManager.Get(typeof(SpriteFamily));
             foreach (var drawable in family.Entities)
             {
-                var position = drawable.Get<PositionComponent>();
+                var position = drawable.Get<TransformComponent>();
                 var sprite = drawable.Get<SpriteComponent>();
 
-                Scene.ActiveScene.SpriteBatch.Draw(sprite.Texture, position.WorldPosition, null, sprite.Tint,
+                Scene.ActiveScene.SpriteBatch.Draw(sprite.Texture, position.WorldPosition*TransformComponent.PIXELS_A_METRE, null, sprite.Tint,
                     position.WorldRotation, sprite.Origin, position.WorldScale, sprite.Effects, 0);
             }
 

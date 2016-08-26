@@ -41,9 +41,9 @@ namespace MultiPlayer
             scene.Engine.AddSystem(new SpriteRenderer());
 
             var test = new Entity();
-            var transform = new PositionComponent()
+            var transform = new TransformComponent()
             {
-                Position = new Vector2(50)
+                Position = new Vector2(1)
             };
             test.Add(transform);
             var sprite = new SpriteComponent()
