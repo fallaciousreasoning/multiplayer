@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MultiPlayer.Core;
-using MultiPlayer.Core.Components;
+﻿using MultiPlayer.Core;
 using MultiPlayer.Core.Systems;
 using MultiPlayer.Test.Families;
 
-namespace MultiPlayer.Test
+namespace MultiPlayer.Test.Systems
 {
     public class StayOnMouseSystem : UpdatableSystem
     {
@@ -21,9 +15,9 @@ namespace MultiPlayer.Test
             var input = Engine.Scene.Input;
             var family = Engine.FamilyManager.Get<StayOnMouseFamily>();
 
-            foreach (var entity in family.Entities)
+            foreach (var node in family.Nodes)
             {
-                entity.Get<Transform>().Position = input.MousePosition;
+                node.Transform.Position = input.MousePosition;
             }
         }
     }

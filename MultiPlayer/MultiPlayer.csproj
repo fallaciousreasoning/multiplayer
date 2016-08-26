@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Annotations\EditorIgnoreAttribute.cs" />
+    <Compile Include="Collections\ObservableLinkedList.cs" />
     <Compile Include="Core\Components\Camera.cs" />
     <Compile Include="Core\Components\Collider.cs" />
     <Compile Include="Core\Components\SpriteComponent.cs" />
@@ -50,11 +51,11 @@
     <Compile Include="Core\Components\Transform.cs" />
     <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\Entity.cs" />
-    <Compile Include="Core\Families\BasicFamily.cs" />
-    <Compile Include="Core\Families\CameraFamily.cs" />
-    <Compile Include="Core\Families\CollidableFamily.cs" />
-    <Compile Include="Core\Families\INode.cs" />
-    <Compile Include="Core\Families\SpriteFamily.cs" />
+    <Compile Include="Core\Nodes\CameraNode.cs" />
+    <Compile Include="Core\Nodes\CollidableNode.cs" />
+    <Compile Include="Core\Families\ICanLoad.cs" />
+    <Compile Include="Core\Families\SophisticatedFamily.cs" />
+    <Compile Include="Core\Nodes\SpriteNode.cs" />
     <Compile Include="Core\Families\FamilyManager.cs" />
     <Compile Include="Core\Families\IFamily.cs" />
     <Compile Include="Core\Input\InputAxis.cs" />

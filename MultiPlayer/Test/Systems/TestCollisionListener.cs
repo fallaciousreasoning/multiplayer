@@ -6,13 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer.Core.Families;
 using MultiPlayer.Core.Messaging;
+using MultiPlayer.Core.Nodes;
 using MultiPlayer.Core.Systems;
 
 namespace MultiPlayer.Test.Systems
 {
     public class TestCollisionListener : CollidableSystem
     {
-        public TestCollisionListener() : base(new [] {typeof(CollidableFamily)})
+        public TestCollisionListener() : base(new [] {typeof(CollidableNode)})
         {
         }
 

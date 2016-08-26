@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer.Extensions;
@@ -12,23 +13,26 @@ namespace MultiPlayer.Core.Families
         private readonly Dictionary<Type, IFamily> familyTypes = new Dictionary<Type, IFamily>();
         private readonly LinkedList<IFamily> families = new LinkedList<IFamily>();
 
+        private readonly Type defaultFamilyType=typeof(SophisticatedFamily<>);
+
         public void Register<T>()
-            where T : IFamily, new()
+            where T : class, new()
         {
-            var family = new T();
-            familyTypes.Add(typeof(T), family);
+            var type = typeof(T);
+            if (familyTypes.ContainsKey(type)) return;
+
+            var family = new SophisticatedFamily<T>();
+            familyTypes.Add(type, family);
             families.AddLast(family);
         }
 
         internal void Register(Type type)
         {
-            if (!typeof(IFamily).IsAssignableFrom(type)) throw new ArgumentException($"{type.Name} does not implement IFamily!");
             if (familyTypes.ContainsKey(type)) return;
 
-            var constructor = type.GetConstructor(new Type[0]);
-            if (constructor == null) throw new ArgumentException($"{type.Name} does not contain a default constructor!");
+            var genericType = defaultFamilyType.MakeGenericType(type);
 
-            var instance = (IFamily)Activator.CreateInstance(type);
+            var instance = (IFamily)Activator.CreateInstance(genericType);
             familyTypes.Add(type, instance);
             families.AddLast(instance);
         }
@@ -53,10 +57,10 @@ namespace MultiPlayer.Core.Families
             families.Foreach(f => f.OnComponentRemoved(entity, component));
         }
 
-        public T Get<T>()
-            where T : IFamily
+        public IFamily<T> Get<T>()
+            where T : class, new()
         {
-            return (T) Get(typeof(T));
+            return (IFamily<T>) Get(typeof(T));
         }
 
         public IFamily Get(Type type)

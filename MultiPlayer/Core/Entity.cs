@@ -34,7 +34,12 @@ namespace MultiPlayer.Core
             where T : class
         {
             var type = typeof(T);
-            return components.ContainsKey(type) ? (T)components[type] : null;
+            return (T)Get(type);
+        }
+
+        public object Get(Type t)
+        {
+            return components.ContainsKey(t) ? components[t] : null;
         }
 
         public bool HasComponent<T>()

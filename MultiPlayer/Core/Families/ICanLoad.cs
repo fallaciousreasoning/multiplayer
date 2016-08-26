@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace MultiPlayer.Core.Families
 {
-    public interface INode<T>
+    public interface ICanLoad<T>
     {
-        T CreateFrom(Entity entity);
+        void LoadFrom(Entity source);
     }
 }

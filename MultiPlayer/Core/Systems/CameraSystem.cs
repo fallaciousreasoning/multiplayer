@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Families;
+using MultiPlayer.Core.Nodes;
 
 namespace MultiPlayer.Core.Systems
 {
@@ -21,18 +22,18 @@ namespace MultiPlayer.Core.Systems
         public float ScreenHeight => Scene.ActiveScene.Device.Viewport.Height*Transform.METRES_A_PIXEL;
 
         public CameraSystem()
-            : base(new []{typeof(CameraFamily)})
+            : base(new []{typeof(CameraNode)})
         {
             Active = this;
         }
 
         protected override void Update(Time time)
         {
-            var nodes = Engine.FamilyManager.Get<CameraFamily>().Entities;
+            var nodes = Engine.FamilyManager.Get<CameraNode>().Nodes;
             foreach (var node in nodes)
             {
-                var transform = node.Get<Transform>();
-                var camera = node.Get<Camera>();
+                var transform = node.Transform;
+                var camera = node.Camera;
 
                 camera.World = Matrix.CreateRotationZ(transform.Rotation) *
                     Matrix.CreateTranslation(new Vector3(-transform.Position * Transform.PIXELS_A_METRE, 0)) *

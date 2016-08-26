@@ -9,10 +9,9 @@ using MultiPlayer.Test.Components;
 
 namespace MultiPlayer.Test.Families
 {
-    public class StayOnMouseFamily : BasicFamily
+    public class StayOnMouseFamily
     {
-        public StayOnMouseFamily() : base(new [] {typeof(Transform), typeof(StayOnMouse)})
-        {
-        }
+        public Transform Transform;
+        public StayOnMouse StayOnMouse;
     }
 }

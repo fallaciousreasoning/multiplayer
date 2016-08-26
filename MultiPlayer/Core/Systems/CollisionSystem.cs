@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Families;
 using MultiPlayer.Core.Messaging;
+using MultiPlayer.Core.Nodes;
 
 namespace MultiPlayer.Core.Systems
 {
@@ -24,7 +25,7 @@ namespace MultiPlayer.Core.Systems
 
         private readonly World world = new World(Vector2.Zero);
 
-        public CollisionSystem() : base(new [] {typeof(CollidableFamily)})
+        public CollisionSystem() : base(new [] {typeof(CollidableNode)})
         {
             CanReceive.Add(typeof(EntityAddedMessage));
             CanReceive.Add(typeof(EntityRemovedMessage));
