@@ -43,12 +43,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Annotations\EditorIgnoreAttribute.cs" />
+    <Compile Include="Core\Components\Camera.cs" />
+    <Compile Include="Core\Components\Collider.cs" />
     <Compile Include="Core\Components\SpriteComponent.cs" />
     <Compile Include="Core\Components\IKnowsNode.cs" />
-    <Compile Include="Core\Components\TransformComponent.cs" />
+    <Compile Include="Core\Components\Transform.cs" />
     <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\Entity.cs" />
     <Compile Include="Core\Families\BasicFamily.cs" />
+    <Compile Include="Core\Families\CameraFamily.cs" />
+    <Compile Include="Core\Families\CollidableFamily.cs" />
+    <Compile Include="Core\Families\INode.cs" />
     <Compile Include="Core\Families\SpriteFamily.cs" />
     <Compile Include="Core\Families\FamilyManager.cs" />
     <Compile Include="Core\Families\IFamily.cs" />
@@ -58,6 +63,7 @@
     <Compile Include="Core\Input\InputMethods\ManualMouse.cs" />
     <Compile Include="Core\Input\InputMethods\XnaKeyboard.cs" />
     <Compile Include="Core\Input\InputMethods\XnaMouse.cs" />
+    <Compile Include="Core\Messaging\CollisionMessage.cs" />
     <Compile Include="Core\Messaging\DrawMessage.cs" />
     <Compile Include="Core\Messaging\EntityAddedMessage.cs" />
     <Compile Include="Core\Messaging\EntityRemovedMessage.cs" />
@@ -68,6 +74,9 @@
     <Compile Include="Core\Messaging\UpdateMessage.cs" />
     <Compile Include="Core\ReadOnlyEnumerable.cs" />
     <Compile Include="Core\Systems\BasicSystem.cs" />
+    <Compile Include="Core\Systems\CameraSystem.cs" />
+    <Compile Include="Core\Systems\CollidableSystem.cs" />
+    <Compile Include="Core\Systems\CollisionSystem.cs" />
     <Compile Include="Core\Systems\DrawableSystem.cs" />
     <Compile Include="Core\Systems\IKnowsEngine.cs" />
     <Compile Include="Core\Systems\IRegistrableSystem.cs" />
@@ -80,6 +89,7 @@
     <Compile Include="EnigmaGame.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Core\Input\InputManager.cs" />
+    <Compile Include="Factories\ColliderFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomUtil.cs" />
@@ -148,9 +158,7 @@
     <None Include="app.config" />
     <None Include="Content\Default.spritefont" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\Nodes\" />
-  </ItemGroup>
+  <ItemGroup />
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
   <Target Name="BeforeResolveReferences">
     <CreateProperty Value="$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows;$(AssemblySearchPaths)">

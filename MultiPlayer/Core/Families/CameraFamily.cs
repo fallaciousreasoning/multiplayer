@@ -7,14 +7,9 @@ using MultiPlayer.Core.Components;
 
 namespace MultiPlayer.Core.Families
 {
-    public class SpriteFamily : BasicFamily
+    public class CameraFamily : BasicFamily
     {
-        public SpriteFamily() : base(new []
-        {
-            typeof(Transform),
-            typeof(SpriteComponent)
-        })
-
+        public CameraFamily() : base(new [] {typeof(Camera), typeof(Transform)})
         {
         }
     }

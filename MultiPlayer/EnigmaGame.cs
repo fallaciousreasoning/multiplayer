@@ -9,6 +9,7 @@ using MultiPlayer.Core;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Input;
 using MultiPlayer.Core.Systems;
+using MultiPlayer.Factories;
 
 namespace MultiPlayer
 {
@@ -38,10 +39,12 @@ namespace MultiPlayer
 
             scene.Start();
 
+            scene.Engine.AddSystem(new CameraSystem());
+            scene.Engine.AddSystem(new CollisionSystem());
             scene.Engine.AddSystem(new SpriteRenderer());
 
             var test = new Entity();
-            var transform = new TransformComponent()
+            var transform = new Transform()
             {
                 Position = new Vector2(1)
             };
@@ -51,6 +54,11 @@ namespace MultiPlayer
                 Texture = TextureUtil.CreateTexture(64, 64, Color.Red)
             };
             test.Add(sprite);
+
+            var collider = ColliderFactory.New()
+                .Create();
+            test.Add(collider);
+
             scene.Engine.AddEntity(test);
         }
 

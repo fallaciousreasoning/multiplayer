@@ -7,14 +7,10 @@ using MultiPlayer.Core.Components;
 
 namespace MultiPlayer.Core.Families
 {
-    public class SpriteFamily : BasicFamily
+    public class CollidableFamily : BasicFamily
     {
-        public SpriteFamily() : base(new []
-        {
-            typeof(Transform),
-            typeof(SpriteComponent)
-        })
-
+        public CollidableFamily()
+            : base(new [] {typeof(Transform), typeof(Collider)})
         {
         }
     }

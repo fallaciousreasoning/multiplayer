@@ -7,12 +7,12 @@ using Microsoft.Xna.Framework;
 
 namespace MultiPlayer.Core.Components
 {
-    public class TransformComponent
+    public class Transform
     {
         public const float PIXELS_A_METRE = 64;
         public const float METRES_A_PIXEL = 1/PIXELS_A_METRE;
 
-        public TransformComponent Parent;
+        public Transform Parent;
 
         public Vector2 Position;
         public Vector2 Scale = Vector2.One;
