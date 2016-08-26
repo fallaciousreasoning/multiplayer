@@ -81,6 +81,7 @@
     <Compile Include="Core\Systems\CollidableSystem.cs" />
     <Compile Include="Core\Systems\CollisionSystem.cs" />
     <Compile Include="Core\Systems\DrawableSystem.cs" />
+    <Compile Include="Core\Systems\GenericSystem.cs" />
     <Compile Include="Core\Systems\IHearsMessageTypes.cs" />
     <Compile Include="Core\Systems\IKnowsEngine.cs" />
     <Compile Include="Core\Systems\IRequiresFamily.cs" />
