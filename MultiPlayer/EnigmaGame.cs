@@ -55,7 +55,7 @@ namespace MultiPlayer
             {
                 Texture = TextureUtil.CreateTexture(32, 32, Color.Black)
             });
-            cursor.Add(ColliderFactory.New().BoxShape(0.5f, 0.5f).Create());
+            cursor.Add(ColliderBuilder.New().BoxShape(0.5f, 0.5f).Create());
             cursor.Add(new StayOnMouse());
 
             var test = new Entity();
@@ -70,7 +70,7 @@ namespace MultiPlayer
             };
             test.Add(sprite);
             
-            var collider = ColliderFactory.New().IsDynamic()
+            var collider = ColliderBuilder.New().IsDynamic()
                 .Create();
             test.Add(collider);
 

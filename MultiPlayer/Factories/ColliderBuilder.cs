@@ -12,7 +12,7 @@ using MultiPlayer.Core.Components;
 
 namespace MultiPlayer.Factories
 {
-    public class ColliderFactory
+    public class ColliderBuilder
     {
         private Vertices vertices;
         private bool isTrigger;
@@ -20,32 +20,32 @@ namespace MultiPlayer.Factories
         private BodyType bodyType = BodyType.Kinematic;
         private float density = 1;
 
-        private ColliderFactory()
+        private ColliderBuilder()
         {
             
         }
 
-        public static ColliderFactory New() { return new ColliderFactory().BoxShape(1,1); }
+        public static ColliderBuilder New() { return new ColliderBuilder().BoxShape(1,1); }
 
-        public ColliderFactory AtDensity(float density)
+        public ColliderBuilder AtDensity(float density)
         {
             this.density = density;
             return this;
         }
 
-        public ColliderFactory IsFixedRotation(bool fixedRotation)
+        public ColliderBuilder IsFixedRotation(bool fixedRotation)
         {
             this.fixedRotation = fixedRotation;
             return this;
         }
 
-        public ColliderFactory IsTrigger(bool isTrigger = true)
+        public ColliderBuilder IsTrigger(bool isTrigger = true)
         {
             this.isTrigger = isTrigger;
             return this;
         }
 
-        public ColliderFactory BoxShape(float width, float height)
+        public ColliderBuilder BoxShape(float width, float height)
         {
             var halfWidth = width*0.5f;
             var halfHeight = height*0.5f;
@@ -63,21 +63,21 @@ namespace MultiPlayer.Factories
             return this;
         }
 
-        public ColliderFactory IsDynamic()
+        public ColliderBuilder IsDynamic()
         {
             return WithBodyType(BodyType.Dynamic);
         }
-        public ColliderFactory IsStatic()
+        public ColliderBuilder IsStatic()
         {
             return WithBodyType(BodyType.Static);
         }
 
-        public ColliderFactory IsKinematic()
+        public ColliderBuilder IsKinematic()
         {
             return WithBodyType(BodyType.Kinematic);
         }
 
-        public ColliderFactory WithBodyType(BodyType bodyType)
+        public ColliderBuilder WithBodyType(BodyType bodyType)
         {
             this.bodyType = bodyType;
             return this;
