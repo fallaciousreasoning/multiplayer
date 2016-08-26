@@ -18,7 +18,7 @@ namespace MultiPlayer.Core.Systems
 
         protected override void Draw()
         {
-            Scene.ActiveScene.SpriteBatch.Begin();
+            Scene.ActiveScene.SpriteBatch.Begin(0, null, null, null, null, null, Engine.Systems.Get<CameraSystem>().CameraWorld);
 
             var family = Engine.FamilyManager.Get(typeof(SpriteFamily));
             foreach (var drawable in family.Entities)

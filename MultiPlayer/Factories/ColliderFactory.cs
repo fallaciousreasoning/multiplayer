@@ -17,8 +17,8 @@ namespace MultiPlayer.Factories
         private Vertices vertices;
         private bool isTrigger;
         private bool fixedRotation;
-        private BodyType bodyType;
-        private float density;
+        private BodyType bodyType = BodyType.Kinematic;
+        private float density = 1;
 
         private ColliderFactory()
         {

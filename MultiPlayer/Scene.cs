@@ -15,9 +15,10 @@ namespace MultiPlayer
     {
         public Scene(IMouse mouse, IKeyboard keyboard)
         {
-            Input = new InputManager(mouse, keyboard);
+            Engine = new Engine(this);
 
-            Engine = new Engine();
+            Input = new InputManager(mouse, keyboard);
+            Engine.AddSystem(Input);
         }
 
         public virtual void Start()

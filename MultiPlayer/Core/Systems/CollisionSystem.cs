@@ -14,7 +14,7 @@ using MultiPlayer.Core.Messaging;
 
 namespace MultiPlayer.Core.Systems
 {
-    public class CollisionSystem : UpdatableSystem
+    public class CollisionSystem : LateUpdatableSystem
     {
         public Vector2 Gravity
         {
@@ -45,18 +45,19 @@ namespace MultiPlayer.Core.Systems
 
         protected void OnEntityAdded(Entity entity)
         {
-            if (entity.HasComponent<Collider>()) return;
+            if (!entity.HasComponent<Collider>()) return;
 
             var collider = entity.Get<Collider>();
             
             collider.Body = CreateBody(entity, collider);
+            collider.Body.UserData = entity;
             collider.Body.OnCollision += OnCollided;
             collider.Body.OnSeparation += OnSeperated;
         }
 
         protected void OnEntityRemoved(Entity entity)
         {
-            if (entity.HasComponent<Collider>()) return;
+            if (!entity.HasComponent<Collider>()) return;
 
             var collider = entity.Get<Collider>();
 
@@ -66,7 +67,7 @@ namespace MultiPlayer.Core.Systems
             world.RemoveBody(collider.Body);
         }
 
-        protected override void Update(Time time)
+        protected override void LateUpdate(Time time)
         {
             world.BodyList.ForEach(b =>
             {

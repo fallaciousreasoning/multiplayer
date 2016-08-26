@@ -69,6 +69,7 @@
     <Compile Include="Core\Messaging\EntityRemovedMessage.cs" />
     <Compile Include="Core\Messaging\IMessage.cs" />
     <Compile Include="Core\Messaging\ITargetedMessage.cs" />
+    <Compile Include="Core\Messaging\LateUpdateMessage.cs" />
     <Compile Include="Core\Messaging\MessageHub.cs" />
     <Compile Include="Core\Messaging\StartMessage.cs" />
     <Compile Include="Core\Messaging\UpdateMessage.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Core\Systems\SpriteRenderer.cs" />
     <Compile Include="Core\Systems\SystemManager.cs" />
     <Compile Include="Core\Systems\ISystem.cs" />
+    <Compile Include="Core\Systems\LateUpdateableSystem.cs" />
     <Compile Include="Core\Systems\UpdatableSystem.cs" />
     <Compile Include="Core\Time.cs" />
     <Compile Include="EnigmaGame.cs" />
@@ -95,6 +97,9 @@
     <Compile Include="RandomUtil.cs" />
     <Compile Include="Core\Content\TextureUtil.cs" />
     <Compile Include="Scene.cs" />
+    <Compile Include="Test\Components\StayOnMouse.cs" />
+    <Compile Include="Test\Families\StayOnMouseFamily.cs" />
+    <Compile Include="Test\Systems\StayOnMouseSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FarseerPhysics MonoGame">

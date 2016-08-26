@@ -10,6 +10,8 @@ using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Input;
 using MultiPlayer.Core.Systems;
 using MultiPlayer.Factories;
+using MultiPlayer.Test;
+using MultiPlayer.Test.Components;
 
 namespace MultiPlayer
 {
@@ -43,6 +45,17 @@ namespace MultiPlayer
             scene.Engine.AddSystem(new CollisionSystem());
             scene.Engine.AddSystem(new SpriteRenderer());
 
+            scene.Engine.AddSystem(new StayOnMouseSystem());
+
+            var cursor = new Entity();
+            cursor.Add(new Transform());
+            cursor.Add(new SpriteComponent()
+            {
+                Texture = TextureUtil.CreateTexture(32, 32, Color.Black)
+            });
+            cursor.Add(ColliderFactory.New().BoxShape(0.5f, 0.5f).Create());
+            cursor.Add(new StayOnMouse());
+
             var test = new Entity();
             var transform = new Transform()
             {
@@ -54,12 +67,19 @@ namespace MultiPlayer
                 Texture = TextureUtil.CreateTexture(64, 64, Color.Red)
             };
             test.Add(sprite);
-
-            var collider = ColliderFactory.New()
+            
+            var collider = ColliderFactory.New().IsDynamic()
                 .Create();
             test.Add(collider);
 
+            var camera = new Entity();
+            camera.Add(new Transform());
+            camera.Add(new Camera());
+
+            scene.Engine.AddEntity(cursor);
             scene.Engine.AddEntity(test);
+            scene.Engine.AddEntity(camera);
+            scene.Engine.Systems.Get<CameraSystem>().ActiveCamera = camera;
         }
 
         protected override void Update(GameTime gameTime)

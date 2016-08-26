@@ -19,8 +19,10 @@ namespace MultiPlayer.Core
         private readonly Dictionary<int, Entity> entityIds = new Dictionary<int, Entity>();
         private int nextId = 1;
 
-        public Engine()
+        public Engine(Scene scene)
         {
+            Scene = scene;
+
             MessageHub = new MessageHub(this);
             FamilyManager = new FamilyManager();
 
@@ -30,7 +32,7 @@ namespace MultiPlayer.Core
 
         public void Start()
         {
-            MessageHub.BroadcastMessage(new StartMessage());
+            MessageHub.SendMessage(new StartMessage());
         }
 
         public void AddEntity(Entity entity)
@@ -99,6 +101,7 @@ namespace MultiPlayer.Core
             Updating = true;
             
             MessageHub.SendMessage(new UpdateMessage(time));
+            MessageHub.SendMessage(new LateUpdateMessage(time));
 
             Updating = false;
         }
@@ -108,6 +111,7 @@ namespace MultiPlayer.Core
             MessageHub.SendMessage(new DrawMessage());
         }
 
+        public Scene Scene { get; }
         public MessageHub MessageHub { get; }
         public FamilyManager FamilyManager { get; }
 

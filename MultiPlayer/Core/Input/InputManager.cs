@@ -77,8 +77,12 @@ namespace MultiPlayer.Core.Input
             mouseState.Update();
         }
 
-        public Vector2 MousePosition => new Vector2(mouseState.MousePosition.X, mouseState.MousePosition.Y);
-        public Vector2 LastMousePosition => new Vector2(oldMouseState.MousePosition.X, oldMouseState.MousePosition.Y);
+        public Vector2 MouseScreenPosition => new Vector2(mouseState.MousePosition.X, mouseState.MousePosition.Y);
+        public Vector2 LastMouseScreenPosition => new Vector2(oldMouseState.MousePosition.X, oldMouseState.MousePosition.Y);
+        public Vector2 MouseScreenMoved => MouseScreenPosition - LastMouseScreenPosition;
+
+        public Vector2 MousePosition => CameraSystem.Active.ScreenToWorld(MouseScreenPosition);
+        public Vector2 LastMousePosition => CameraSystem.Active.ScreenToWorld(LastMouseScreenPosition);
         public Vector2 MouseMoved => MousePosition - LastMousePosition;
 
         public bool IsDown(MouseButton button)
