@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace MultiPlayer.Core.Systems
 {
-    public interface IRequiresFamilies
+    public interface IRequiresFamily
     {
-        IEnumerable<Type> RequiredFamilies { get; }
+        Type FamilyType { get; }
     }
 }

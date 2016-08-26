@@ -7,10 +7,10 @@ using MultiPlayer.Core.Messaging;
 
 namespace MultiPlayer.Core.Systems
 {
-    public abstract class DrawableSystem : BasicSystem
+    public abstract class DrawableSystem<T> : BasicSystem<T>
     {
-        protected DrawableSystem(IEnumerable<Type> requires)
-            : base(new[] {typeof(DrawMessage)}, requires)
+        protected DrawableSystem()
+            : base(new[] {typeof(DrawMessage)})
         {
         }
 

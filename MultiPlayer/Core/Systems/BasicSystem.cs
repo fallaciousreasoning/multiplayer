@@ -8,15 +8,14 @@ using MultiPlayer.Extensions;
 
 namespace MultiPlayer.Core.Systems
 {
-    public abstract class BasicSystem : IRegistrableSystem, IRequiresFamilies, IKnowsEngine
+    public abstract class BasicSystem<T> : IRegistrableSystem, IRequiresFamily, IKnowsEngine 
     {
         protected readonly HashSet<Type> CanReceive = new HashSet<Type>();
-        protected readonly HashSet<Type> Requires = new HashSet<Type>();
 
-        protected BasicSystem(IEnumerable<Type> canRecieve, IEnumerable<Type> requires)
+        protected BasicSystem(IEnumerable<Type> canRecieve)
         {
             canRecieve.Foreach(c => CanReceive.Add(c));
-            requires.Foreach(c => Requires.Add(c));
+            FamilyType = typeof(T);
         }
 
         public virtual void RecieveMessage(IMessage message)
@@ -30,7 +29,7 @@ namespace MultiPlayer.Core.Systems
         protected abstract void Handle(IMessage message);
 
         public IEnumerable<Type> Receives => CanReceive;
-        public IEnumerable<Type> RequiredFamilies => Requires;
         public Engine Engine { get; set; }
+        public Type FamilyType { get; }
     }
 }

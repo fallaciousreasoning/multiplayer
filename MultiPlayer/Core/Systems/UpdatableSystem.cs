@@ -7,10 +7,11 @@ using MultiPlayer.Core.Messaging;
 
 namespace MultiPlayer.Core.Systems
 {
-    public abstract class UpdatableSystem : BasicSystem
+    public abstract class UpdatableSystem<T> : BasicSystem<T> 
+        where T : class, new()
     {
-        protected UpdatableSystem(IEnumerable<Type> requires)
-            : base(new [] {typeof(UpdateMessage)}, requires)
+        protected UpdatableSystem()
+            : base(new [] {typeof(UpdateMessage)})
         {
         }
 

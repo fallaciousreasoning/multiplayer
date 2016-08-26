@@ -7,10 +7,10 @@ using MultiPlayer.Core.Messaging;
 
 namespace MultiPlayer.Core.Systems
 {
-    public abstract class CollidableSystem : BasicSystem
+    public abstract class CollidableSystem<T> : BasicSystem<T>
     {
-        protected CollidableSystem(IEnumerable<Type> requires)
-            : base(new[] {typeof(CollisionMessage)}, requires)
+        protected CollidableSystem()
+            : base(new[] {typeof(CollisionMessage)})
         {
         }
 

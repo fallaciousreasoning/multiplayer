@@ -10,13 +10,8 @@ using MultiPlayer.Core.Nodes;
 
 namespace MultiPlayer.Core.Systems
 {
-    public class SpriteRenderer : DrawableSystem
+    public class SpriteRenderer : DrawableSystem<SpriteNode>
     {
-        public SpriteRenderer()
-            : base(new [] {typeof(SpriteNode)})
-        {
-        }
-
         protected override void Draw()
         {
             Scene.ActiveScene.SpriteBatch.Begin(0, null, null, null, null, null, Engine.Systems.Get<CameraSystem>().CameraWorld);

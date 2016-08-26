@@ -82,7 +82,7 @@
     <Compile Include="Core\Systems\DrawableSystem.cs" />
     <Compile Include="Core\Systems\IKnowsEngine.cs" />
     <Compile Include="Core\Systems\IRegistrableSystem.cs" />
-    <Compile Include="Core\Systems\IRequiresFamilies.cs" />
+    <Compile Include="Core\Systems\IRequiresFamily.cs" />
     <Compile Include="Core\Systems\SpriteRenderer.cs" />
     <Compile Include="Core\Systems\SystemManager.cs" />
     <Compile Include="Core\Systems\ISystem.cs" />

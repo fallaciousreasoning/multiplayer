@@ -85,11 +85,11 @@ namespace MultiPlayer.Core
                 types.Foreach(t => MessageHub.Register(systemType, t));
             }
 
-            var requiresFamilies = system as IRequiresFamilies;
+            var requiresFamilies = system as IRequiresFamily;
             if (requiresFamilies != null)
             {
-                var requiredTypes = requiresFamilies.RequiredFamilies;
-                requiredTypes.Foreach(FamilyManager.Register);
+                var requiredType = requiresFamilies.FamilyType;
+                FamilyManager.Register(requiredType);
             }
 
             if (system is IKnowsEngine)

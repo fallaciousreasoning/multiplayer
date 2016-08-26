@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer.Core.InputMethods;
+using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
 
 namespace MultiPlayer.Core.Input
@@ -12,7 +13,7 @@ namespace MultiPlayer.Core.Input
         Left, Right, Middle
     }
 
-    public class InputManager : UpdatableSystem
+    public class InputManager : ISystem, IRegistrableSystem
     {
         private IKeyboard keyboardState;
         private IKeyboard oldKeyState;
@@ -24,7 +25,6 @@ namespace MultiPlayer.Core.Input
         private readonly Dictionary<string, InputButton> inputButtons = new Dictionary<string, InputButton>(); 
 
         public InputManager(IMouse mouse, IKeyboard keyboard)
-            :base(new Type[0])
         {
             this.mouseState = mouse;
             this.keyboardState = keyboard;
@@ -68,7 +68,7 @@ namespace MultiPlayer.Core.Input
             inputAxes.Add(name, axis);
         }
 
-        protected override void Update(Time time)
+        protected void Update()
         {
             oldKeyState = keyboardState.Clone();
             oldMouseState = mouseState.Clone();
@@ -134,5 +134,12 @@ namespace MultiPlayer.Core.Input
         {
             return inputAxes[name].GetValue(this);
         }
+
+        public void RecieveMessage(IMessage message)
+        {
+            if (message is UpdateMessage) Update();
+        }
+
+        public IEnumerable<Type> Receives { get; } = new[] {typeof(UpdateMessage)};
     }
 }

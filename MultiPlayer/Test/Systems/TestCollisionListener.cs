@@ -11,12 +11,8 @@ using MultiPlayer.Core.Systems;
 
 namespace MultiPlayer.Test.Systems
 {
-    public class TestCollisionListener : CollidableSystem
+    public class TestCollisionListener : CollidableSystem<CollidableNode>
     {
-        public TestCollisionListener() : base(new [] {typeof(CollidableNode)})
-        {
-        }
-
         protected override void OnCollisionEnter(CollisionMessage message)
         {
             Debug.WriteLine($"Collision Enter {message.Target.Id}");

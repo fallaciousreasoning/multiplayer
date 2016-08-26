@@ -10,7 +10,7 @@ using MultiPlayer.Core.Nodes;
 
 namespace MultiPlayer.Core.Systems
 {
-    public class CameraSystem : UpdatableSystem
+    public class CameraSystem : UpdatableSystem<CameraNode>
     {
         public static CameraSystem Active { get; private set; }
 
@@ -22,7 +22,6 @@ namespace MultiPlayer.Core.Systems
         public float ScreenHeight => Scene.ActiveScene.Device.Viewport.Height*Transform.METRES_A_PIXEL;
 
         public CameraSystem()
-            : base(new []{typeof(CameraNode)})
         {
             Active = this;
         }

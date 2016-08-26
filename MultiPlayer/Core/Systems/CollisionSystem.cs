@@ -15,7 +15,7 @@ using MultiPlayer.Core.Nodes;
 
 namespace MultiPlayer.Core.Systems
 {
-    public class CollisionSystem : LateUpdatableSystem
+    public class CollisionSystem : LateUpdatableSystem<CollidableNode>
     {
         public Vector2 Gravity
         {
@@ -25,7 +25,7 @@ namespace MultiPlayer.Core.Systems
 
         private readonly World world = new World(Vector2.Zero);
 
-        public CollisionSystem() : base(new [] {typeof(CollidableNode)})
+        public CollisionSystem()
         {
             CanReceive.Add(typeof(EntityAddedMessage));
             CanReceive.Add(typeof(EntityRemovedMessage));

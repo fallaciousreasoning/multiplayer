@@ -4,12 +4,8 @@ using MultiPlayer.Test.Families;
 
 namespace MultiPlayer.Test.Systems
 {
-    public class StayOnMouseSystem : UpdatableSystem
+    public class StayOnMouseSystem : UpdatableSystem<StayOnMouseFamily>
     {
-        public StayOnMouseSystem() : base(new [] {typeof(StayOnMouseFamily)})
-        {
-        }
-
         protected override void Update(Time time)
         {
             var input = Engine.Scene.Input;
