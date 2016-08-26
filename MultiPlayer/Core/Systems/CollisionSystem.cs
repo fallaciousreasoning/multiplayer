@@ -135,6 +135,10 @@ namespace MultiPlayer.Core.Systems
             var hit = (b.Body.UserData as Entity);
 
             var colliderA = target.Get<Collider>();
+            var colliderB = hit.Get<Collider>();
+
+            //If we hit a trigger but are a collider, don't broadcast an event
+            if (!colliderA.IsTrigger && colliderB.IsTrigger) return true;
 
             Engine.MessageHub.SendMessage(new CollisionMessage(target, hit, colliderA.IsTrigger, CollisionMode.Entered));
             return true;
@@ -145,7 +149,11 @@ namespace MultiPlayer.Core.Systems
             var target = (a.Body.UserData as Entity);
             var hit = (b.Body.UserData as Entity);
 
+            var colliderB = hit.Get<Collider>();
             var colliderA = target.Get<Collider>();
+
+            //If we hit a trigger but are a collider, don't broadcast an event
+            if (!colliderA.IsTrigger && colliderB.IsTrigger) return;
 
             Engine.MessageHub.SendMessage(new CollisionMessage(target, hit, colliderA.IsTrigger, CollisionMode.Exited));
         }

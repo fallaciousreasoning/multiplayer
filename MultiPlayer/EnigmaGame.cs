@@ -12,6 +12,7 @@ using MultiPlayer.Core.Systems;
 using MultiPlayer.Factories;
 using MultiPlayer.Test;
 using MultiPlayer.Test.Components;
+using MultiPlayer.Test.Systems;
 
 namespace MultiPlayer
 {
@@ -46,6 +47,7 @@ namespace MultiPlayer
             scene.Engine.AddSystem(new SpriteRenderer());
 
             scene.Engine.AddSystem(new StayOnMouseSystem());
+            scene.Engine.AddSystem(new TestCollisionListener());
 
             var cursor = new Entity();
             cursor.Add(new Transform());

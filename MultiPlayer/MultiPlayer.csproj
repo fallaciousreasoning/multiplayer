@@ -100,6 +100,7 @@
     <Compile Include="Test\Components\StayOnMouse.cs" />
     <Compile Include="Test\Families\StayOnMouseFamily.cs" />
     <Compile Include="Test\Systems\StayOnMouseSystem.cs" />
+    <Compile Include="Test\Systems\TestCollisionListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FarseerPhysics MonoGame">

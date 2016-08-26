@@ -23,6 +23,8 @@ namespace MultiPlayer.Core.Families
         internal void Register(Type type)
         {
             if (!typeof(IFamily).IsAssignableFrom(type)) throw new ArgumentException($"{type.Name} does not implement IFamily!");
+            if (familyTypes.ContainsKey(type)) return;
+
             var constructor = type.GetConstructor(new Type[0]);
             if (constructor == null) throw new ArgumentException($"{type.Name} does not contain a default constructor!");
 
