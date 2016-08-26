@@ -77,13 +77,9 @@ namespace MultiPlayer.Core
         {
             systems.Add(system);
 
-            var registrableSystem = system as IRegistrableSystem;
-            if (registrableSystem != null)
-            {
-                var types = registrableSystem.Receives;
-                var systemType = registrableSystem.GetType();
-                types.Foreach(t => MessageHub.Register(systemType, t));
-            }
+            var systemType = system.GetType();
+            var messageTypes = system.HearsMessages();
+            messageTypes.Foreach(t => MessageHub.Register(systemType, t));
 
             var requiresFamilies = system as IRequiresFamily;
             if (requiresFamilies != null)

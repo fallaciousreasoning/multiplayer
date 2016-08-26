@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MultiPlayer.Annotations;
 using MultiPlayer.Core.InputMethods;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
@@ -13,7 +14,8 @@ namespace MultiPlayer.Core.Input
         Left, Right, Middle
     }
 
-    public class InputManager : ISystem, IRegistrableSystem
+    [HearsMessage(typeof(UpdateMessage))]
+    public class InputManager : ISystem
     {
         private IKeyboard keyboardState;
         private IKeyboard oldKeyState;
@@ -139,7 +141,5 @@ namespace MultiPlayer.Core.Input
         {
             if (message is UpdateMessage) Update();
         }
-
-        public IEnumerable<Type> Receives { get; } = new[] {typeof(UpdateMessage)};
     }
 }

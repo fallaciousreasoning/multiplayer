@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Annotations\EditorIgnoreAttribute.cs" />
+    <Compile Include="Annotations\HearsMessageAttribute.cs" />
     <Compile Include="Collections\ObservableLinkedList.cs" />
     <Compile Include="Core\Components\Camera.cs" />
     <Compile Include="Core\Components\Collider.cs" />
@@ -80,9 +81,10 @@
     <Compile Include="Core\Systems\CollidableSystem.cs" />
     <Compile Include="Core\Systems\CollisionSystem.cs" />
     <Compile Include="Core\Systems\DrawableSystem.cs" />
+    <Compile Include="Core\Systems\IHearsMessageTypes.cs" />
     <Compile Include="Core\Systems\IKnowsEngine.cs" />
-    <Compile Include="Core\Systems\IRegistrableSystem.cs" />
     <Compile Include="Core\Systems\IRequiresFamily.cs" />
+    <Compile Include="Core\Systems\ISystemExtensions.cs" />
     <Compile Include="Core\Systems\SpriteRenderer.cs" />
     <Compile Include="Core\Systems\SystemManager.cs" />
     <Compile Include="Core\Systems\ISystem.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="EnigmaGame.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Core\Input\InputManager.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Factories\ColliderFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

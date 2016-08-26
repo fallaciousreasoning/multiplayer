@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MultiPlayer.Annotations;
 using MultiPlayer.Core.Messaging;
 
 namespace MultiPlayer.Core.Systems
 {
+    [HearsMessage(typeof(CollisionMessage))]
     public abstract class CollidableSystem<T> : BasicSystem<T>
     {
-        protected CollidableSystem()
-            : base(new[] {typeof(CollisionMessage)})
-        {
-        }
-
         protected override void Handle(IMessage message)
         {
             if (!(message is CollisionMessage)) return;

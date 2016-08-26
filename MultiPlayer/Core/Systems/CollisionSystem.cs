@@ -8,6 +8,7 @@ using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Contacts;
 using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
+using MultiPlayer.Annotations;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Families;
 using MultiPlayer.Core.Messaging;
@@ -15,6 +16,8 @@ using MultiPlayer.Core.Nodes;
 
 namespace MultiPlayer.Core.Systems
 {
+    [HearsMessage(typeof(EntityAddedMessage))]
+    [HearsMessage(typeof(EntityRemovedMessage))]
     public class CollisionSystem : LateUpdatableSystem<CollidableNode>
     {
         public Vector2 Gravity
@@ -24,12 +27,6 @@ namespace MultiPlayer.Core.Systems
         }
 
         private readonly World world = new World(Vector2.Zero);
-
-        public CollisionSystem()
-        {
-            CanReceive.Add(typeof(EntityAddedMessage));
-            CanReceive.Add(typeof(EntityRemovedMessage));
-        }
 
         protected override void Handle(IMessage message)
         {

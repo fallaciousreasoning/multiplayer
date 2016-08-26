@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace MultiPlayer.Core.Systems
 {
-    public interface IRegistrableSystem : ISystem
+    public interface IHearsMessageTypes
     {
-        IEnumerable<Type> Receives { get; }
+        IEnumerable<Type> HearsMessages { get; }
     }
 }

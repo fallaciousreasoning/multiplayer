@@ -1,4 +1,5 @@
-﻿using MultiPlayer.Core.Messaging;
+﻿using MultiPlayer.Annotations;
+using MultiPlayer.Core.Messaging;
 
 namespace MultiPlayer.Core.Systems
 {
