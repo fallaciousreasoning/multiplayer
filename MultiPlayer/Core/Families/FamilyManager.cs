@@ -5,35 +5,26 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer.Extensions;
+using MultiPlayer.Reflection;
 
 namespace MultiPlayer.Core.Families
 {
     public class FamilyManager
     {
-        private readonly Dictionary<Type, IFamily> familyTypes = new Dictionary<Type, IFamily>();
+        private readonly Dictionary<Type, INodeFamily> nodeFamilyTypes = new Dictionary<Type, INodeFamily>();
+        private readonly LinkedList<INodeFamily> nodeFamilies = new LinkedList<INodeFamily>();
+
+        private readonly Dictionary<ISet<Type>, IFamily> familyTypes = new Dictionary<ISet<Type>, IFamily>();
         private readonly LinkedList<IFamily> families = new LinkedList<IFamily>();
 
-        private readonly Type defaultFamilyType=typeof(SophisticatedFamily<>);
+        private readonly ObjectActivator<SophisticatedFamily> defaultFamilyActivator = ObjectActivatorHelpers.GetActivator<SophisticatedFamily>();
 
-        public void Register<T>()
-            where T : class, new()
+        internal void Register(ISet<Type> types)
         {
-            var type = typeof(T);
-            if (familyTypes.ContainsKey(type)) return;
+            if (familyTypes.ContainsKey(types)) return;
 
-            var family = new SophisticatedFamily<T>();
-            familyTypes.Add(type, family);
-            families.AddLast(family);
-        }
-
-        internal void Register(Type type)
-        {
-            if (familyTypes.ContainsKey(type)) return;
-
-            var genericType = defaultFamilyType.MakeGenericType(type);
-
-            var instance = (IFamily)Activator.CreateInstance(genericType);
-            familyTypes.Add(type, instance);
+            var instance = defaultFamilyActivator();
+            familyTypes.Add(types, instance);
             families.AddLast(instance);
         }
 
@@ -57,15 +48,25 @@ namespace MultiPlayer.Core.Families
             families.Foreach(f => f.OnComponentRemoved(entity, component));
         }
 
-        public IFamily<T> Get<T>()
-            where T : class, new()
+        public IFamily Get(ISet<Type> constituentTypes)
         {
-            return (IFamily<T>) Get(typeof(T));
+            return familyTypes[constituentTypes];
         }
 
-        public IFamily Get(Type type)
+        public void RegisterNodeFamily<T>()
         {
-            return familyTypes[type];
+            var type = typeof(T);
+            var nodeFamily = new NodeFamily<T>();
+
+            nodeFamilies.AddLast(nodeFamily);
+            nodeFamilyTypes.Add(type, nodeFamily);
+
+            nodeFamily.Register(this);
+        }
+
+        public INodeFamily<T> GetNodes<T>()
+        {
+            return (INodeFamily<T>)nodeFamilyTypes[typeof(T)];
         }
     }
 }

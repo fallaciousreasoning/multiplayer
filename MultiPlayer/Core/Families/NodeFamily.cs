@@ -10,10 +10,25 @@ using MultiPlayer.Reflection;
 
 namespace MultiPlayer.Core.Families
 {
-    public class NodeFamily<T>
+    public interface INodeFamily
     {
-        public ObservableLinkedList<T> Nodes { get; } = new ObservableLinkedList<T>();
-        public ImmutableHashSet<Type> ConstituentTypes { get; }
+        IObservableLinkedList UntypedNodes { get; }
+        ISet<Type> ConstituentTypes { get; }
+
+        void Register(FamilyManager familyManager);
+    }
+
+    public interface INodeFamily<T> : INodeFamily
+    {
+        IObservableLinkedList<T> Nodes { get; }
+    }
+
+    public class NodeFamily<T> : INodeFamily<T>
+    {
+        public IObservableLinkedList UntypedNodes => Nodes;
+        public IObservableLinkedList<T> Nodes { get; } = new ObservableLinkedList<T>();
+
+        public ISet<Type> ConstituentTypes { get; } = new HashSet<Type>();
 
         private readonly ObjectActivator<T> activator;
 
@@ -21,6 +36,8 @@ namespace MultiPlayer.Core.Families
 
         private readonly ISet<FieldInfo> fieldSet = new HashSet<FieldInfo>();
         private readonly List<FieldInfo> fieldTypes = new List<FieldInfo>();
+
+        private readonly Dictionary<Entity, LinkedListNode<T>> entityNodeMap = new Dictionary<Entity, LinkedListNode<T>>();
 
         public NodeFamily()
         {
@@ -36,10 +53,33 @@ namespace MultiPlayer.Core.Families
             foreach (var field in fields)
             {
                 if (field.IsInitOnly || field.IsLiteral || field.IsStatic || !field.IsPublic) continue;
-                
+
                 fieldTypes.Add(field);
                 fieldSet.Add(field);
+                ConstituentTypes.Add(field.FieldType);
             }
+        }
+
+        public void Register(FamilyManager familyManager)
+        {
+            var relevantFamily = familyManager.Get(ConstituentTypes);
+            relevantFamily.Entities.ItemAdded += (source, item) => Add((Entity)item);
+            relevantFamily.Entities.ItemRemoved += (source, item) => Remove((Entity)item);
+        }
+
+        private void Add(Entity entity)
+        {
+            var item = CreateFromEntity(entity);
+            var node = Nodes.AddLast(item);
+            entityNodeMap.Add(entity, node);
+        }
+
+        private void Remove(Entity entity)
+        {
+            var node = entityNodeMap[entity];
+            Nodes.Remove(node);
+
+            entityNodeMap.Remove(entity);
         }
 
         private T CreateFromEntity(Entity entity)
