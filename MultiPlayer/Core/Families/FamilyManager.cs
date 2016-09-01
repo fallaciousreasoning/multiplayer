@@ -24,9 +24,9 @@ namespace MultiPlayer.Core.Families
         {
             if (familyTypes.ContainsKey(types)) return;
 
-            var instance = defaultFamilyActivator();
-            familyTypes.Add(types, instance);
-            families.AddLast(instance);
+            //var instance = defaultFamilyActivator(types);
+            //familyTypes.Add(types, instance);
+            //families.AddLast(instance);
         }
 
         public void OnEntityCreated(Entity entity)
