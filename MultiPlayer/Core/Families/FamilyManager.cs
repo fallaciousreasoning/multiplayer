@@ -22,11 +22,13 @@ namespace MultiPlayer.Core.Families
 
         internal void Register(ISet<Type> types)
         {
+            if (types.Count == 0) return;
+
             if (familyTypes.ContainsKey(types)) return;
 
-            //var instance = defaultFamilyActivator(types);
-            //familyTypes.Add(types, instance);
-            //families.AddLast(instance);
+            var instance = defaultFamilyActivator(types);
+            familyTypes.Add(types, instance);
+            families.AddLast(instance);
         }
 
         public void OnEntityCreated(Entity entity)
@@ -51,6 +53,7 @@ namespace MultiPlayer.Core.Families
 
         public IFamily Get(ISet<Type> constituentTypes)
         {
+            //TODO Sets don't hash to the same value
             return familyTypes[constituentTypes];
         }
 
