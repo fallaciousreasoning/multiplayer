@@ -36,5 +36,12 @@ namespace MultiPlayer.Extensions
 
             return addTo;
         }
+
+        public static IEnumerable<Type> ComposingTypes(this Type type)
+        {
+            return
+                type.GetFields()
+                    .Where(field => !(field.IsInitOnly || field.IsLiteral || field.IsStatic || !field.IsPublic)).Select(field => field.FieldType);
+        }
     }
 }

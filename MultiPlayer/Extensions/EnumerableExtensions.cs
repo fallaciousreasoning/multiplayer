@@ -13,5 +13,10 @@ namespace MultiPlayer.Extensions
             foreach (var item in source)
                 action.Invoke(item);
         }
+
+        public static ISet<T> ToSet<T>(this IEnumerable<T> source)
+        {
+            return new HashSet<T>(source);
+        }
     }
 }

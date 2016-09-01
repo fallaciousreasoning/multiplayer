@@ -81,12 +81,13 @@ namespace MultiPlayer.Core
             var messageTypes = system.HearsMessages();
             messageTypes.Foreach(t => MessageHub.Register(systemType, t));
 
-            var requiresFamilies = system as IRequiresFamily;
-            if (requiresFamilies != null)
-            {
-                var requiredType = requiresFamilies.FamilyType;
-                FamilyManager.Register(requiredType);
-            }
+            var requiredTypes = system.RequiredTypes();
+            FamilyManager.Register(requiredTypes);
+
+            var nodeType = system.NodeType();
+            if (nodeType != null)
+                FamilyManager.RegisterNodeFamily(nodeType);
+            
 
             if (system is IKnowsEngine)
                 (system as IKnowsEngine).Engine = this;

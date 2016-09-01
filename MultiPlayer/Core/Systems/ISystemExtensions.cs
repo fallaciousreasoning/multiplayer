@@ -30,5 +30,38 @@ namespace MultiPlayer.Core.Systems
 
             return receives;
         }
+
+        public static ISet<Type> RequiredTypes(this ISystem system)
+        {
+            var type = system.GetType();
+            var types= new HashSet<Type>();
+
+            var requiresFamily = system as IRequiresFamily;
+            if (requiresFamily != null)
+                return requiresFamily.FamilyType.ComposingTypes().ToSet();
+
+            var attributes = type.GetAllCustomAttributes();
+
+            foreach (var attribute in attributes)
+            {
+                if (!(attribute is NodeTypeAttribute)) continue;
+
+                var nodeTypeAttr = ((NodeTypeAttribute) attribute);
+                nodeTypeAttr.Expects.ComposingTypes().Foreach(t => types.Add(t));
+            }
+
+            return types;
+        }
+
+        public static Type NodeType(this ISystem system)
+        {
+            var type = system.GetType();
+
+            var requiresFamily = system as IRequiresFamily;
+            if (requiresFamily != null)
+                return requiresFamily.FamilyType;
+
+            return (type.GetAllCustomAttributes().FirstOrDefault(a => a is NodeTypeAttribute) as NodeTypeAttribute)?.Expects;
+        }
     }
 }

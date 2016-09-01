@@ -18,6 +18,7 @@ namespace MultiPlayer.Core.Families
         private readonly LinkedList<IFamily> families = new LinkedList<IFamily>();
 
         private readonly ObjectActivator<SophisticatedFamily> defaultFamilyActivator = ObjectActivatorHelpers.GetActivator<SophisticatedFamily>();
+        private readonly Type nodeType = typeof(NodeFamily<>);
 
         internal void Register(ISet<Type> types)
         {
@@ -53,9 +54,24 @@ namespace MultiPlayer.Core.Families
             return familyTypes[constituentTypes];
         }
 
+        public void RegisterNodeFamily(Type type)
+        {
+            if (nodeFamilyTypes.ContainsKey(type)) return;
+
+            var genericNodeType = nodeType.MakeGenericType(type);
+            var nodeFamily = (INodeFamily)Activator.CreateInstance(genericNodeType);
+
+            nodeFamilies.AddLast(nodeFamily);
+            nodeFamilyTypes.Add(type, nodeFamily);
+
+            nodeFamily.Register(this);
+        }
+
         public void RegisterNodeFamily<T>()
         {
             var type = typeof(T);
+            if (nodeFamilyTypes.ContainsKey(type)) return;
+
             var nodeFamily = new NodeFamily<T>();
 
             nodeFamilies.AddLast(nodeFamily);
@@ -64,7 +80,7 @@ namespace MultiPlayer.Core.Families
             nodeFamily.Register(this);
         }
 
-        public INodeFamily<T> GetNodes<T>()
+        public INodeFamily<T> GetNodeFamily<T>()
         {
             return (INodeFamily<T>)nodeFamilyTypes[typeof(T)];
         }

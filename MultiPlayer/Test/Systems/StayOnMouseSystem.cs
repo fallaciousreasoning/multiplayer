@@ -9,9 +9,9 @@ namespace MultiPlayer.Test.Systems
         protected override void Update(Time time)
         {
             var input = Engine.Scene.Input;
-            var family = Engine.FamilyManager.Get<StayOnMouseFamily>();
+            var family = Engine.FamilyManager.GetNodeFamily<StayOnMouseFamily>();
 
-            foreach (var node in family.Entities)
+            foreach (var node in family.Nodes)
             {
                 node.Transform.Position = input.MousePosition;
             }
