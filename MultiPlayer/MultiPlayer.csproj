@@ -51,6 +51,7 @@
     <Compile Include="Core\Animation\Messages\AnimationStartedMessage.cs" />
     <Compile Include="Core\Animation\Messages\PauseAnimationMessage.cs" />
     <Compile Include="Core\Animation\Messages\StopAnimationMessage.cs" />
+    <Compile Include="Core\Systems\EntityProcessingSystem.cs" />
     <Compile Include="Factories\AnimationBuilder.cs" />
     <Compile Include="Core\Animation\Components\AnimationController.cs" />
     <Compile Include="Core\Animation\Components\BasicAccessor.cs" />
