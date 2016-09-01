@@ -17,7 +17,7 @@ namespace MultiPlayer.Core.Systems
             Scene.ActiveScene.SpriteBatch.Begin(0, null, null, null, null, null, Engine.Systems.Get<CameraSystem>().CameraWorld);
 
             var family = Engine.FamilyManager.Get<SpriteNode>();
-            foreach (var drawable in family.Nodes)
+            foreach (var drawable in family.Entities)
             {
                 var position = drawable.Transform;
                 var sprite = drawable.Sprite;

@@ -11,7 +11,7 @@ namespace MultiPlayer.Test.Systems
             var input = Engine.Scene.Input;
             var family = Engine.FamilyManager.Get<StayOnMouseFamily>();
 
-            foreach (var node in family.Nodes)
+            foreach (var node in family.Entities)
             {
                 node.Transform.Position = input.MousePosition;
             }

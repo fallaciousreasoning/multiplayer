@@ -28,7 +28,7 @@ namespace MultiPlayer.Core.Systems
 
         protected override void Update(Time time)
         {
-            var nodes = Engine.FamilyManager.Get<CameraNode>().Nodes;
+            var nodes = Engine.FamilyManager.Get<CameraNode>().Entities;
             foreach (var node in nodes)
             {
                 var transform = node.Transform;
