@@ -10,6 +10,7 @@ using MultiPlayer;
 using MultiPlayer.Core;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.InputMethods;
+using MultiPlayer.Core.Systems;
 using SharpDX.Direct3D9;
 using XamlEditor.Annotations;
 using XamlEditor.Scene.Components;
@@ -29,10 +30,14 @@ namespace XamlEditor.Scenes
 
         public Entity AddEntity(Entity entity, Transform parent = null)
         {
+            entity.FriendlyName = entity.FriendlyName ?? "GameObject";
+
             if (!entity.HasComponent<Transform>())
                 entity.Add(new Transform());
 
             entity.Get<Transform>().Parent = parent;
+
+            entity.Add(new Dragger());
 
             Engine.AddEntity(entity);
 
@@ -58,8 +63,22 @@ namespace XamlEditor.Scenes
         {
             base.Start();
 
-            Engine.AddSystem(new UpdateNotifier());
+            Engine.AddSystem(new SpriteRenderer());
+            Engine.AddSystem(new CameraSystem());
+
+            Engine.AddSystem(UpdateNotifier);
             Engine.AddSystem(new DraggerSystem());
+
+            var test1 = new Entity();
+            test1.Add(new Transform());
+            test1.Add(new SpriteComponent() {Texture = TextureUtil.CreateTexture(64, 64, Color.Black)});
+
+            var camera = new Entity();
+            camera.Add(new Camera());
+            camera.Add(new Transform());
+
+            AddEntity(test1);
+            AddEntity(camera);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

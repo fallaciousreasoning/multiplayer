@@ -56,6 +56,7 @@ namespace MultiPlayer.Core
         public Action<Entity, object> ComponentRemoved;
 
         public int Id { get; internal set; }
+        public string FriendlyName { get; set; }
         public LinkedListNode<Entity> Node { get; set; }
         public Engine Engine { get; set; }
         public IEnumerable<object> Components => components.Values;

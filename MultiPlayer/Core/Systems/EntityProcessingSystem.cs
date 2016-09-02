@@ -18,7 +18,7 @@ namespace MultiPlayer.Core.Systems
         protected IFamily Family;
         protected IObservableLinkedList<Entity> Entities;
 
-        public void RecieveMessage(IMessage message)
+        public virtual void RecieveMessage(IMessage message)
         {
             if (!Started)
                 Start();
@@ -26,7 +26,7 @@ namespace MultiPlayer.Core.Systems
             Entities.Foreach(entity => Process(message, entity));
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             Family = Engine.FamilyManager.Get(new ConstituentTypes(Types));
             Entities = Family.Entities;

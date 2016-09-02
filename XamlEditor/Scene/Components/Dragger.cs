@@ -12,8 +12,6 @@ namespace XamlEditor.Scene.Components
 {
     public class Dragger
     {
-        public Entity Drag { get; set; }
-
         public bool Enabled { get; set; }
 
         public float Thickness { get; set; } = 0.2f;

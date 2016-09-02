@@ -11,11 +11,11 @@ namespace XamlEditor.ViewModels
     {
         public string Name
         {
-            get { return friendlyName; }
+            get { return entity.FriendlyName; }
             set
             {
-                if (value == friendlyName) return;
-                friendlyName = value;
+                if (value == entity.FriendlyName) return;
+                entity.FriendlyName = value;
                 OnPropertyChanged();
             }
         }
@@ -41,12 +41,12 @@ namespace XamlEditor.ViewModels
                 if (Equals(value, entity)) return;
                 entity = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(Name));
             }
         }
 
         public Action<Entity> OnSelected;
         private Entity entity;
-        private string friendlyName;
         private bool isSelected;
     }
 }

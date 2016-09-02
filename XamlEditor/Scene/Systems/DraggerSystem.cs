@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Input;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
+using XamlEditor.Extensions;
 using XamlEditor.Scene.Components;
 using XamlEditor.Scene.Messages;
 
@@ -26,19 +28,39 @@ namespace XamlEditor.Scene.Systems
         private static readonly Texture2D DrawTool = TextureUtil.CreateTexture(1, 1, Color.White);
         private Dragger selectedDragger;
 
+        protected override void OnEntityAdded(Entity entity)
+        {
+            Start(entity.Get<Dragger>());
+            base.OnEntityAdded(entity);
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+
+            Family.Entities.Foreach(e => Start(e.Get<Dragger>()));
+        }
+
         protected void Start(Dragger dragger)
         {
             dragger.XDragBounds = new AABB()
             {
-                Min = new Vector2(-dragger.Length, dragger.Thickness / 2),
-                Max = new Vector2(0)
+                Min = new Vector2(-dragger.Length, -dragger.Thickness / 2),
+                Max = new Vector2(0, dragger.Thickness/2)
             };
 
             dragger.YDragBounds = new AABB()
             {
-                Min = new Vector2(dragger.Thickness / 2, -dragger.Length),
-                Max = new Vector2(0)
+                Min = new Vector2(-dragger.Thickness / 2, -dragger.Length),
+                Max = new Vector2(dragger.Thickness/2, 0)
             };
+        }
+
+        public override void RecieveMessage(IMessage message)
+        {
+            base.RecieveMessage(message);
+
+            if (message is DrawMessage) Draw();
         }
 
         protected override void Process(IMessage message, Dragger component1, Transform component2)
@@ -57,20 +79,16 @@ namespace XamlEditor.Scene.Systems
             if (!component1.Enabled) return;
 
             if (message is LateUpdateMessage) Update(component1, component2);
-            if (message is DrawMessage) Draw(component1, component2);
         }
 
         protected void Update(Dragger dragger, Transform transform)
         {
-            Start(dragger);
-
-            dragger.XDragBounds.Centre = transform.Position - dragger.XDragBounds.HalfSize;
-            dragger.YDragBounds.Centre = transform.Position - dragger.YDragBounds.HalfSize;
+            dragger.XDragBounds.Centre = transform.Position;
+            dragger.YDragBounds.Centre = transform.Position;
 
             var input = Engine.Scene.Input;
 
             var mousePos = input.MousePosition;
-            mousePos *= Transform.METRES_A_PIXEL;
 
             if (input.IsDown(MouseButton.Left) && !dragger.XDragging && !dragger.YDragging)
             {
@@ -98,19 +116,29 @@ namespace XamlEditor.Scene.Systems
                 expectedPosition.Y = dragger.StartPos.Y;
 
             if (dragger.XDragging || dragger.YDragging)
-            {
                 transform.Position = expectedPosition;
-                if (dragger.Drag != null)
-                    dragger.Drag.Get<Transform>().Position = expectedPosition;
-            }
         }
 
-        protected void Draw(Dragger dragger, Transform transform)
+        protected void Draw()
         {
-            var size = new Vector2(dragger.Thickness, dragger.Length) * Transform.PIXELS_A_METRE;
+            Engine.Scene.SpriteBatch.Begin(0, null, null, null, null, null, Engine.Systems.Get<CameraSystem>().CameraWorld);
 
-            Engine.Scene.SpriteBatch.Draw(DrawTool, transform.Position*Transform.PIXELS_A_METRE, null, dragger.XAxisColor, MathHelper.PiOver2, new Vector2(0.5f, 0), size, SpriteEffects.None, 0);
-            Engine.Scene.SpriteBatch.Draw(DrawTool, transform.Position*Transform.PIXELS_A_METRE, null, dragger.YAxisColor, 0, new Vector2(0.5f, 1), size, SpriteEffects.None, 0);
+            foreach (var entity in Family.Entities)
+            {
+                var dragger = entity.Get<Dragger>();
+                if (!dragger.Enabled) continue;
+
+                var transform = entity.Get<Transform>();
+
+                var size = new Vector2(dragger.Thickness, dragger.Length)*Transform.PIXELS_A_METRE;
+
+                Engine.Scene.SpriteBatch.Draw(DrawTool, transform.Position*Transform.PIXELS_A_METRE, null,
+                    dragger.XAxisColor, MathHelper.PiOver2, new Vector2(0.5f, 0), size, SpriteEffects.None, 0);
+                Engine.Scene.SpriteBatch.Draw(DrawTool, transform.Position*Transform.PIXELS_A_METRE, null,
+                    dragger.YAxisColor, 0, new Vector2(0.5f, 1), size, SpriteEffects.None, 0);
+            }
+
+            Engine.Scene.SpriteBatch.End();
         }
     }
 }
