@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer.Annotations;
 using MultiPlayer.Collections;
+using MultiPlayer.Core.Families;
 using MultiPlayer.Extensions;
 
 namespace MultiPlayer.Core.Systems
@@ -36,6 +37,10 @@ namespace MultiPlayer.Core.Systems
         {
             var type = system.GetType();
             var types= new HashSet<Type>();
+
+            var familyComposedOf = system as IFamilyComposedOf;
+            if (familyComposedOf != null)
+                return new ConstituentTypes(familyComposedOf.Types);
 
             var requiresFamily = system as IRequiresFamily;
             if (requiresFamily != null)

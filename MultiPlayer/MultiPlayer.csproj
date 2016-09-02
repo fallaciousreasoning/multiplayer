@@ -55,7 +55,9 @@
     <Compile Include="Core\Animation\Messages\AnimationStartedMessage.cs" />
     <Compile Include="Core\Animation\Messages\PauseAnimationMessage.cs" />
     <Compile Include="Core\Animation\Messages\StopAnimationMessage.cs" />
+    <Compile Include="Core\Families\IFamilyComposedOf.cs" />
     <Compile Include="Core\Families\NodeFamily.cs" />
+    <Compile Include="Core\Systems\ComponentProcessingSystem.cs" />
     <Compile Include="Core\Systems\EntityProcessingSystem.cs" />
     <Compile Include="Factories\AnimationBuilder.cs" />
     <Compile Include="Core\Animation\Components\AnimationController.cs" />
@@ -114,7 +116,7 @@
     <Compile Include="Core\Systems\GenericSystem.cs" />
     <Compile Include="Core\Systems\IHearsMessageTypes.cs" />
     <Compile Include="Core\Systems\IKnowsEngine.cs" />
-    <Compile Include="Core\Systems\IRequiresFamily.cs" />
+    <Compile Include="Core\Families\IRequiresFamily.cs" />
     <Compile Include="Core\Systems\ISystemExtensions.cs" />
     <Compile Include="Core\Systems\SpriteRenderer.cs" />
     <Compile Include="Core\Systems\SystemManager.cs" />
@@ -134,7 +136,6 @@
     <Compile Include="Reflection\ObjectActivator.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="Test\Components\StayOnMouse.cs" />
-    <Compile Include="Test\Families\StayOnMouseFamily.cs" />
     <Compile Include="Test\Systems\StayOnMouseSystem.cs" />
     <Compile Include="Test\Systems\TestCollisionListener.cs" />
   </ItemGroup>
@@ -209,7 +210,9 @@
     <None Include="Content\Default.spritefont" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Test\Families\" />
+  </ItemGroup>
   <!-- Specify the search path explicitly so the ResolveAssemblyReferences task picks the right ones -->
   <Target Name="BeforeResolveReferences">
     <CreateProperty Value="$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows;$(AssemblySearchPaths)">
