@@ -1,17 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MultiPlayer.Core;
+using MultiPlayer.Core.Components;
 
-namespace MultiPlayer.GameComponents.Animation
+namespace MultiPlayer.Core.Animation
 {
     public class BasicAccessor<T> : IAccessor
     {
         private readonly Func<T> getter;
         private readonly Action<T, T> setter;
-        
-        public Entity Target { get; set; }
+
+
+        private Entity entity;
+
+        public Entity Entity
+        {
+            get { return entity; }
+            set
+            {
+                entity = value;
+                Transform = entity.Get<Transform>();
+            }
+        }
+
+        public Transform Transform { get; private set; }
 
         public object Get()
         {

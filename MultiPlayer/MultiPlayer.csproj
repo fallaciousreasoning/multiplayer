@@ -50,32 +50,34 @@
     <Compile Include="Annotations\NodeTypeAttribute.cs" />
     <Compile Include="Collections\ConstituentTypes.cs" />
     <Compile Include="Collections\ObservableLinkedList.cs" />
-    <Compile Include="Core\Animation\Components\Animation.cs" />
+    <Compile Include="Core\Animation\Animation.cs" />
+    <Compile Include="Core\Animation\AnimationBuilder.cs" />
+    <Compile Include="Core\Animation\AnimationContainer.cs" />
+    <Compile Include="Core\Animation\AnimationSystem.cs" />
+    <Compile Include="Core\Animation\BasicAccessor.cs" />
+    <Compile Include="Core\Animation\BasicFrame.cs" />
+    <Compile Include="Core\Animation\FloatCalculator.cs" />
+    <Compile Include="Core\Animation\FloatFrame.cs" />
+    <Compile Include="Core\Animation\IAccessor.cs" />
+    <Compile Include="Core\Animation\IAnimationFrame.cs" />
+    <Compile Include="Core\Animation\ICalculator.cs" />
+    <Compile Include="Core\Animation\IHearsAnimationEnd.cs" />
+    <Compile Include="Core\Animation\IHearsAnimationStart.cs" />
+    <Compile Include="Core\Animation\KeyFrame.cs" />
     <Compile Include="Core\Animation\Messages\AnimationFinishedMessage.cs" />
     <Compile Include="Core\Animation\Messages\AnimationStartedMessage.cs" />
     <Compile Include="Core\Animation\Messages\PauseAnimationMessage.cs" />
+    <Compile Include="Core\Animation\Messages\StartAnimationMessage.cs" />
     <Compile Include="Core\Animation\Messages\StopAnimationMessage.cs" />
+    <Compile Include="Core\Animation\PositionAccessor.cs" />
+    <Compile Include="Core\Animation\RotationAccessor.cs" />
+    <Compile Include="Core\Animation\ScaleAccessor.cs" />
+    <Compile Include="Core\Animation\Vector2Calculator.cs" />
+    <Compile Include="Core\Animation\Vector2Frame.cs" />
     <Compile Include="Core\Families\IFamilyComposedOf.cs" />
     <Compile Include="Core\Families\NodeFamily.cs" />
     <Compile Include="Core\Systems\ComponentProcessingSystem.cs" />
     <Compile Include="Core\Systems\EntityProcessingSystem.cs" />
-    <Compile Include="Factories\AnimationBuilder.cs" />
-    <Compile Include="Core\Animation\Components\AnimationController.cs" />
-    <Compile Include="Core\Animation\Components\BasicAccessor.cs" />
-    <Compile Include="Core\Animation\Components\BasicFrame.cs" />
-    <Compile Include="Core\Animation\Components\FloatCalculator.cs" />
-    <Compile Include="Core\Animation\Components\FloatFrame.cs" />
-    <Compile Include="Core\Animation\Components\IAccessor.cs" />
-    <Compile Include="Core\Animation\Components\IAnimationFrame.cs" />
-    <Compile Include="Core\Animation\Components\ICalculator.cs" />
-    <Compile Include="Core\Animation\Components\IHearsAnimationEnd.cs" />
-    <Compile Include="Core\Animation\Components\IHearsAnimationStart.cs" />
-    <Compile Include="Core\Animation\Components\KeyFrame.cs" />
-    <Compile Include="Core\Animation\Components\PositionAccessor.cs" />
-    <Compile Include="Core\Animation\Components\RotationAccessor.cs" />
-    <Compile Include="Core\Animation\Components\ScaleAccessor.cs" />
-    <Compile Include="Core\Animation\Components\Vector2Calculator.cs" />
-    <Compile Include="Core\Animation\Components\Vector2Frame.cs" />
     <Compile Include="Core\Components\Camera.cs" />
     <Compile Include="Core\Components\Collider.cs" />
     <Compile Include="Core\Components\SpriteComponent.cs" />
@@ -83,7 +85,6 @@
     <Compile Include="Core\Components\Transform.cs" />
     <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\Entity.cs" />
-    <Compile Include="Core\Animation\Messages\StartAnimationMessage.cs" />
     <Compile Include="Core\Nodes\CameraNode.cs" />
     <Compile Include="Core\Nodes\CollidableNode.cs" />
     <Compile Include="Core\Families\ICanLoad.cs" />
@@ -140,20 +141,17 @@
     <Compile Include="Test\Systems\TestCollisionListener.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="FarseerPhysics MonoGame">
+    <Reference Include="FarseerPhysics MonoGame, Version=3.5.0.24243, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dependencies\FarseerPhysics MonoGame.dll</HintPath>
     </Reference>
     <Reference Include="Lidgren.Network, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Downloads\Lidgren.Network.dll</HintPath>
     </Reference>
-    <Reference Include="MonoGame.Framework, Version=3.4.0.456, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsGL\MonoGame.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoGame.Framework.Net, Version=3.4.0.456, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsGL\MonoGame.Framework.Net.dll</HintPath>
+      <HintPath>..\dependencies\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX, Version=2.6.3.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

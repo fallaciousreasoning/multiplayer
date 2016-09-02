@@ -7,7 +7,13 @@ using MultiPlayer.Core.Messaging;
 
 namespace MultiPlayer.Core.Animation.Messages
 {
-    public class PauseAnimationMessage : IMessage
+    public class PauseAnimationMessage : ITargetedMessage
     {
+        public PauseAnimationMessage(Entity target)
+        {
+            Target = target;
+        }
+
+        public Entity Target { get; }
     }
 }

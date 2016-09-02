@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MultiPlayer.Core;
+using MultiPlayer.Core.Animation;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Input;
 using MultiPlayer.Core.Systems;
@@ -46,6 +47,7 @@ namespace MultiPlayer
             scene.Engine.AddSystem(new CollisionSystem());
             scene.Engine.AddSystem(new SpriteRenderer());
 
+            scene.Engine.AddSystem(new AnimationSystem());
             scene.Engine.AddSystem(new StayOnMouseSystem());
             scene.Engine.AddSystem(new TestCollisionListener());
 
@@ -78,9 +80,26 @@ namespace MultiPlayer
             camera.Add(new Transform());
             camera.Add(new Camera());
 
+            var animation = AnimationBuilder.New()
+                .InsertFrame(0, new KeyFrame(new Vector2(-5, 0)))
+                .InsertFrame(2, new KeyFrame(new Vector2(5, 0)))
+                .InsertFrame(3, new KeyFrame(new Vector2(5, 5)))
+                .Create();
+
+            var animationContainer= new AnimationContainer();
+            animationContainer.Animation.Add("test", animation);
+
+            var animated = new Entity();
+            animated.Add(animationContainer);
+            animated.Add(new SpriteComponent()
+            {
+                Texture = TextureUtil.CreateTexture(32, 32, Color.Black)
+            });
+
             scene.Engine.AddEntity(cursor);
             scene.Engine.AddEntity(test);
             scene.Engine.AddEntity(camera);
+            scene.Engine.AddEntity(animated);
             scene.Engine.Systems.Get<CameraSystem>().ActiveCamera = camera;
         }
 

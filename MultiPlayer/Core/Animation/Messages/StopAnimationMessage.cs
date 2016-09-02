@@ -9,5 +9,11 @@ namespace MultiPlayer.Core.Animation.Messages
 {
     public class StopAnimationMessage : IMessage
     {
+        public StopAnimationMessage(Entity target)
+        {
+            Target = target;
+        }
+
+        public Entity Target { get; }
     }
 }
