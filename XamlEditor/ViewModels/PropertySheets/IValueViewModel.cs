@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace XamlEditor.ViewModels.PropertySheets
 {
-    public interface IPropertyViewModel
+    public interface IValueViewModel
     {
         string Name { get; }
         object Value { get; set; }
         object Object { get; set; }
-        PropertyInfo PropertyInfo { get; set; }
+        IAccessor Accessor { get; set; }
 
-        ObservableCollection<IPropertyViewModel> Children { get; }
+        ObservableCollection<IValueViewModel> Children { get; }
     }
 }

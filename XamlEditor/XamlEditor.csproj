@@ -139,9 +139,12 @@
     <Compile Include="ViewModels\PropertySheets\ComplexViewModel.cs" />
     <Compile Include="ViewModels\HierarchyViewModel.cs" />
     <Compile Include="ViewModels\PropertySheets\EnumViewModel.cs" />
+    <Compile Include="ViewModels\PropertySheets\FieldAccessor.cs" />
+    <Compile Include="ViewModels\PropertySheets\IAccessor.cs" />
     <Compile Include="ViewModels\PropertySheets\PrimitiveViewModel.cs" />
-    <Compile Include="ViewModels\PropertySheets\IPropertyViewModel.cs" />
+    <Compile Include="ViewModels\PropertySheets\IValueViewModel.cs" />
     <Compile Include="ViewModels\PropertySheets\PropertySheetManager.cs" />
+    <Compile Include="ViewModels\PropertySheets\PropertyAccessor.cs" />
     <Compile Include="ViewModels\PropertySheets\Vector2ViewModel.cs" />
     <Compile Include="ViewModels\SceneViewModel.cs" />
     <Compile Include="ViewModels\EntityViewModel.cs" />

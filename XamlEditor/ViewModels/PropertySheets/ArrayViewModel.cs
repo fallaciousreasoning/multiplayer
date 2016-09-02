@@ -9,12 +9,12 @@ using XamlEditor.ViewModels.PropertySheets;
 
 namespace XamlEditor.ViewModels
 {
-    public class ArrayViewModel : BaseViewModel, IPropertyViewModel
+    public class ArrayViewModel : BaseViewModel, IValueViewModel
     {
         public string Name { get; set; }
         public object Value { get; set; }
         public object Object { get; set; }
-        public PropertyInfo PropertyInfo { get; set; }
-        public ObservableCollection<IPropertyViewModel> Children { get; }
+        public IAccessor Accessor { get; set; }
+        public ObservableCollection<IValueViewModel> Children { get; }
     }
 }

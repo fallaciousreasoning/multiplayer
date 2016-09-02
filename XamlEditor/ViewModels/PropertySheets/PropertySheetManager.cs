@@ -15,7 +15,7 @@ namespace XamlEditor.ViewModels.PropertySheets
 
         public static void RegisterViewModelForType(Type type, Type viewModelType)
         {
-            if (!typeof(IPropertyViewModel).IsAssignableFrom(viewModelType))
+            if (!typeof(IValueViewModel).IsAssignableFrom(viewModelType))
                 throw new ArgumentException($"{viewModelType.FullName} does not extend IPropertyViewModel");
 
             var constructor = viewModelType.GetConstructor(new Type[0]);
@@ -25,7 +25,7 @@ namespace XamlEditor.ViewModels.PropertySheets
             ViewModelMap.Add(type, viewModelType);
         }
 
-        public static IPropertyViewModel GetViewModelFor([NotNull] Type type)
+        public static IValueViewModel GetViewModelFor([NotNull] Type type)
         {
             while (!ViewModelMap.ContainsKey(type))
             {
@@ -34,7 +34,7 @@ namespace XamlEditor.ViewModels.PropertySheets
             }
 
             var viewModelType = ViewModelMap[type];
-            return (IPropertyViewModel) Activator.CreateInstance(viewModelType);
+            return (IValueViewModel) Activator.CreateInstance(viewModelType);
         }
 
         public static void Initialize()

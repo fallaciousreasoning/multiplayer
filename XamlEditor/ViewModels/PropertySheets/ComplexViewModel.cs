@@ -5,19 +5,20 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using MultiPlayer.Annotations;
 using XamlEditor.Extensions;
 using XamlEditor.ViewModels.PropertySheets;
 
 namespace XamlEditor.ViewModels
 {
-    public class ComplexViewModel : BaseViewModel, IPropertyViewModel
+    public class ComplexViewModel : BaseViewModel, IValueViewModel
     {
         private string name;
 
         private object value;
         private object o;
-        private PropertyInfo propertyInfo;
+        private IAccessor accessor;
 
         public object Value
         {
@@ -36,7 +37,7 @@ namespace XamlEditor.ViewModels
 
         public string Name
         {
-            get { return name ?? PropertyInfo?.Name ?? Value?.GetType().Name; }
+            get { return name ?? Accessor?.Name ?? Value?.GetType().Name; }
             set
             {
                 if (Equals(name, value)) return;
@@ -57,51 +58,36 @@ namespace XamlEditor.ViewModels
             }
         }
 
-        public PropertyInfo PropertyInfo
+        public IAccessor Accessor
         {
-            get { return propertyInfo; }
+            get { return accessor; }
             set
             {
-                if (Equals(value, propertyInfo)) return;
-                propertyInfo = value;
+                if (Equals(value, accessor)) return;
+                accessor = value;
                 OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<IPropertyViewModel> Children { get; } = new ObservableCollection<IPropertyViewModel>();
+        public ObservableCollection<IValueViewModel> Children { get; } = new ObservableCollection<IValueViewModel>();
 
         private void LoadProperties()
         {
             Children.Clear();
 
             var type = Value.GetType();
-            var properties = type.GetProperties();
+            var accessors = type.GetAccessors();
 
-            foreach (var property in properties)
+            accessors.Foreach(a =>
             {
-                //We're only interested in properties we can read and write to
-                if (!property.CanWrite || !property.CanRead || ShouldIgnore(type.GetAllAttributes(property)))
-                    continue;
+                var viewModel = PropertySheetManager.GetViewModelFor(a.ValueType);
 
-                //If we shouldn't ever add a property for this type, continue
-                if (ShouldIgnore(property.PropertyType.GetAllAttributes())) continue;
-
-                var viewModel = PropertySheetManager.GetViewModelFor(property.PropertyType);
-                if (viewModel == null) continue;
-
-                viewModel.PropertyInfo = property;
+                if (viewModel == null) return;
+                viewModel.Accessor = a;
                 viewModel.Object = Value;
 
                 Children.Add(viewModel);
-            }
-        }
-
-        private bool ShouldIgnore(IEnumerable<object> attributes)
-        {
-            foreach (var attribute in attributes)
-                if (attribute is EditorIgnoreAttribute)
-                    return true;
-            return false;
+            });
         }
     }
 }

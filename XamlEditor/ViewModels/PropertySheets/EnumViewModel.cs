@@ -9,12 +9,12 @@ using XamlEditor.Extensions;
 
 namespace XamlEditor.ViewModels.PropertySheets
 {
-    public class EnumViewModel : BaseViewModel, IPropertyViewModel
+    public class EnumViewModel : BaseViewModel, IValueViewModel
     {
         private object value;
         private object o;
-        private PropertyInfo propertyInfo;
-        public string Name => PropertyInfo?.Name ?? Value?.GetType().Name;
+        private IAccessor accessor;
+        public string Name => Accessor?.Name ?? Value?.GetType().Name;
 
         public ObservableCollection<object> Values { get; } = new ObservableCollection<object>();
 
@@ -47,16 +47,16 @@ namespace XamlEditor.ViewModels.PropertySheets
             }
         }
 
-        public PropertyInfo PropertyInfo
+        public IAccessor Accessor
         {
-            get { return propertyInfo; }
+            get { return accessor; }
             set
             {
-                if (Equals(value, propertyInfo)) return;
-                if (!value.PropertyType.IsEnum)
+                if (Equals(value, accessor)) return;
+                if (!value.ValueType.IsEnum)
                     throw new ArgumentException("Only enums are supported!");
 
-                propertyInfo = value;
+                accessor = value;
 
                 LoadValues();
                 Get();
@@ -71,22 +71,22 @@ namespace XamlEditor.ViewModels.PropertySheets
         private void LoadValues()
         {
             Values.Clear();
-            Values.AddAll(Enum.GetValues(PropertyInfo.PropertyType));
+            Values.AddAll(Enum.GetValues(Accessor.ValueType));
         }
 
         private void Get()
         {
-            if (Object == null || PropertyInfo == null) return;
-            Value = PropertyInfo.GetValue(Object);
+            if (Object == null || Accessor == null) return;
+            Value = Accessor.GetValue(Object);
         }
 
         private void Set()
         {
-            if (Object == null || PropertyInfo == null) return;
+            if (Object == null || Accessor == null) return;
 
-            PropertyInfo.SetValue(Object, Value);
+            Accessor.SetValue(Object, Value);
         }
 
-        public ObservableCollection<IPropertyViewModel> Children { get; } = null;
+        public ObservableCollection<IValueViewModel> Children { get; } = null;
     }
 }

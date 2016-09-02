@@ -13,7 +13,7 @@ using XamlEditor.ViewModels.PropertySheets;
 
 namespace XamlEditor.ViewModels
 {
-    public class PrimitiveViewModel : BaseViewModel, IPropertyViewModel
+    public class PrimitiveViewModel : BaseViewModel, IValueViewModel
     {
         private static readonly List<ISupportableConverter> converters = new List<ISupportableConverter>()
         {
@@ -22,45 +22,27 @@ namespace XamlEditor.ViewModels
             new StringStringConverter(),
         };
 
-        private PropertyInfo propertyInfo;
-        private FieldInfo fieldInfo;
+        private IAccessor accessor;
 
         private object o;
 
         private IValueConverter converter;
 
-        private string PropertyName => propertyInfo?.Name;
-        private string FieldName => fieldInfo?.Name;
+        private string FieldName => accessor?.Name;
 
-        public string Name => PropertyName ?? FieldName;
-        public Type ValueType => FieldInfo?.FieldType ?? PropertyInfo?.PropertyType;
+        public string Name => FieldName;
+        public Type ValueType => Accessor?.ValueType;
 
-        public PropertyInfo PropertyInfo
+        public IAccessor Accessor
         {
-            get { return propertyInfo; }
+            get { return accessor; }
             set
             {
-                converter = GetConverter(value.PropertyType);
-                if (converter == null) throw new ArgumentException($"Unsupported type {value.PropertyType.Name}");
+                converter = GetConverter(value.ValueType);
+                if (converter == null) throw new ArgumentException($"Unsupported type {value.ValueType.Name}");
 
-                if (Equals(value, propertyInfo)) return;
-                propertyInfo = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Name));
-                OnPropertyChanged(nameof(Value));
-            }
-        }
-
-        public FieldInfo FieldInfo
-        {
-            get { return fieldInfo; }
-            set
-            {
-                converter = GetConverter(value.FieldType);
-                if (converter == null) throw new ArgumentException($"Unsupported type {value.FieldType.Name}");
-
-                if (Equals(value, fieldInfo)) return;
-                fieldInfo = value;
+                if (Equals(value, accessor)) return;
+                accessor = value;
 
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Name));
@@ -70,14 +52,13 @@ namespace XamlEditor.ViewModels
 
         public object Value
         {
-            get { return propertyInfo != null ? propertyInfo.GetValue(Object) : fieldInfo.GetValue(Object); }
+            get { return accessor?.GetValue(Object); }
             set
             {
                 try
                 {
                     var convertedValue = GetConvertedValue(value);
-                    propertyInfo?.SetValue(Object, convertedValue);
-                    fieldInfo?.SetValue(Object, convertedValue);
+                    accessor?.SetValue(Object, convertedValue);
                 }
                 catch (ArgumentException)
                 {
@@ -86,7 +67,7 @@ namespace XamlEditor.ViewModels
             }
         }
 
-        public ObservableCollection<IPropertyViewModel> Children { get; } = null;
+        public ObservableCollection<IValueViewModel> Children { get; } = null;
 
         public object Object
         {

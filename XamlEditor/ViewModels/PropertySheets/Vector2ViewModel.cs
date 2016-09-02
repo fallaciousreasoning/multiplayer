@@ -9,16 +9,16 @@ using Microsoft.Xna.Framework;
 
 namespace XamlEditor.ViewModels.PropertySheets
 {
-    public class Vector2ViewModel : BaseViewModel, IPropertyViewModel
+    public class Vector2ViewModel : BaseViewModel, IValueViewModel
     {
         private string name;
         private Vector2 value;
         private object o;
-        private PropertyInfo propertyInfo;
+        private IAccessor accessor;
         
         public string Name
         {
-            get { return name ?? PropertyInfo?.Name; }
+            get { return name ?? Accessor?.Name; }
             set
             {
                 if (value == name) return;
@@ -89,17 +89,17 @@ namespace XamlEditor.ViewModels.PropertySheets
             }
         }
 
-        public PropertyInfo PropertyInfo
+        public IAccessor Accessor
         {
-            get { return propertyInfo; }
+            get { return accessor; }
             set
             {
-                if (Equals(value, propertyInfo)) return;
+                if (Equals(value, accessor)) return;
 
-                if(value.PropertyType != typeof(Vector2)) 
+                if(value.ValueType != typeof(Vector2)) 
                     throw new ArgumentException("Only Vector2's are supported");
 
-                propertyInfo = value;
+                accessor = value;
 
                 Get();
 
@@ -109,20 +109,20 @@ namespace XamlEditor.ViewModels.PropertySheets
             }
         }
 
-        public ObservableCollection<IPropertyViewModel> Children { get; } = null;
+        public ObservableCollection<IValueViewModel> Children { get; } = null;
 
         private void Set()
         {
-            if (PropertyInfo == null || Object == null) return;
+            if (Accessor == null || Object == null) return;
 
-            PropertyInfo.SetValue(Object, value);
+            Accessor.SetValue(Object, value);
         }
 
         private void Get()
         {
-            if (PropertyInfo == null || Object == null) return;
+            if (Accessor == null || Object == null) return;
 
-            this.value = (Vector2)PropertyInfo.GetValue(Object);
+            this.value = (Vector2)Accessor.GetValue(Object);
         }
     }
 }
