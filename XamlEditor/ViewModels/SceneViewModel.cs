@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer;
+using MultiPlayer.Core;
 using XamlEditor.Annotations;
 using XamlEditor.Scenes;
 
@@ -24,7 +25,7 @@ namespace XamlEditor.ViewModels
                 {
                     scene.UpdateNotifier.ChildAdded -= OnChildAdded;
                     scene.UpdateNotifier.ChildRemoved -= OnChildRemoved;
-                    scene.UpdateNotifier.ComponentAdded -= OnScriptAdded;
+                    scene.UpdateNotifier.ComponentAdded -= OnComponentAdded;
                     scene.UpdateNotifier.ComponentRemoved -= OnComponentRemoved;
                     scene.PropertyChanged -= HeardEditPropertyChanged;
                 }
@@ -35,17 +36,17 @@ namespace XamlEditor.ViewModels
                 {
                     scene.UpdateNotifier.ChildAdded += OnChildAdded;
                     scene.UpdateNotifier.ChildRemoved += OnChildRemoved;
-                    scene.UpdateNotifier.ComponentAdded += OnScriptAdded;
+                    scene.UpdateNotifier.ComponentAdded += OnComponentAdded;
                     scene.UpdateNotifier.ComponentRemoved += OnComponentRemoved;
                     scene.PropertyChanged += HeardEditPropertyChanged;
                 }
 
-                GameObjectViewModel.GameObject = null;
-                HierarchyViewModel.Root = scene?.SceneRoot;
+                GameObjectViewModel.Entity = null;
+                HierarchyViewModel.Engine = scene?.Engine;
             }
         }
 
-        public GameObjectViewModel GameObjectViewModel { get; } = new GameObjectViewModel();
+        public EntityViewModel GameObjectViewModel { get; } = new EntityViewModel();
         public HierarchyViewModel HierarchyViewModel { get; } = new HierarchyViewModel();
 
         public SceneViewModel()
@@ -53,37 +54,37 @@ namespace XamlEditor.ViewModels
             HierarchyViewModel.OnSelected = OnGameObjectSelected;
         }
 
-        public void OnGameObjectSelected(GameObject gameObject)
+        public void OnGameObjectSelected(Entity entity)
         {
-            GameObjectViewModel.GameObject = gameObject;
-            Scene.SelectGameObject(gameObject);
+            GameObjectViewModel.Entity = entity;
+            Scene.SelectGameObject(entity);
         }
 
         public void HeardEditPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Scene.SceneRoot))
-                HierarchyViewModel.Root = Scene.SceneRoot;
+            if (e.PropertyName == nameof(Scene.Engine))
+                HierarchyViewModel.Engine = Scene.Engine;
         }
 
-        public void OnChildAdded(GameObject parent, GameObject child)
+        public void OnChildAdded(Entity parent, Entity child)
         {
             HierarchyViewModel.Reload();
         }
 
-        public void OnChildRemoved(GameObject parent, GameObject child)
+        public void OnChildRemoved(Entity parent, Entity child)
         {
             HierarchyViewModel.Reload();
         }
 
-        public void OnScriptAdded(GameObject parent, object script)
+        public void OnComponentAdded(Entity parent, object script)
         {
-            if (parent == GameObjectViewModel.GameObject)
+            if (parent == GameObjectViewModel.Entity)
                 GameObjectViewModel.Reload();
         }
 
-        public void OnComponentRemoved(GameObject parent, object script)
+        public void OnComponentRemoved(Entity parent, object script)
         {
-            if (parent == GameObjectViewModel.GameObject)
+            if (parent == GameObjectViewModel.Entity)
                 GameObjectViewModel.Reload();
         }
 

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace XamlEditor.ViewModels
 {
-    public class ScriptViewModel : ComplexViewModel
+    public class ComponentViewModel : ComplexViewModel
     {
-        public ScriptViewModel(object o)
+        public ComponentViewModel(object o)
             : base()
         {
             this.Value = o;

@@ -42,7 +42,7 @@
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
-        <ListBox Grid.Column="2" ItemsSource="{Binding GameObjectViewModel.Scripts}">
+        <ListBox Grid.Column="2" ItemsSource="{Binding GameObjectViewModel.Components}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>

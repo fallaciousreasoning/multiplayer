@@ -18,12 +18,13 @@ using XamlEditor.Scene.Messages;
 
 namespace XamlEditor.Scene.Systems
 {
-    [HearsMessage(typeof(EnableDraggerMessage))]
+    [HearsMessage(typeof(SelectMessage))]
     [HearsMessage(typeof(DrawMessage))]
     [HearsMessage(typeof(LateUpdateMessage))]
     public class DraggerSystem : ComponentProcessingSystem<Dragger, Transform>
     {
         private static readonly Texture2D DrawTool = TextureUtil.CreateTexture(1, 1, Color.White);
+        private Dragger selectedDragger;
 
         protected void Start(Dragger dragger)
         {
@@ -43,10 +44,14 @@ namespace XamlEditor.Scene.Systems
         protected override void Process(IMessage message, Dragger component1, Transform component2)
         {
             //Enable/disable when we need to
-            if (message is EnableDraggerMessage)
+            if (message is SelectMessage)
             {
-                var m = message as EnableDraggerMessage;
-                m.Target.Get<Dragger>().Enabled = m.State;
+                var m = message as SelectMessage;
+
+                if (selectedDragger != null) selectedDragger.Enabled = false;
+
+                selectedDragger = m.Target.Get<Dragger>();
+                selectedDragger.Enabled = true;
             }
 
             if (!component1.Enabled) return;

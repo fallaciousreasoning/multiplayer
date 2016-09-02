@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer;
+using MultiPlayer.Core;
 using MultiPlayer.Core.InputMethods;
 using XamlEditor.Annotations;
 using XamlEditor.Interop;
@@ -99,7 +100,8 @@ namespace XamlEditor
         protected override void Update(GameTime gameTime)
         {
             var seconds = (float) gameTime.ElapsedGameTime.TotalSeconds;
-            Scene.Update(seconds);
+            var time = new Time() {DeltaTime = seconds};
+            Scene.Update(time);
 
             base.Update(gameTime);
         }

@@ -8,15 +8,13 @@ using MultiPlayer.Core.Messaging;
 
 namespace XamlEditor.Scene.Messages
 {
-    public class EnableDraggerMessage : ITargetedMessage
+    public class SelectMessage : ITargetedMessage
     {
-        public EnableDraggerMessage(Entity target, bool state)
+        public SelectMessage(Entity target)
         {
             Target = target;
-            State = state;
         }
-
-        public bool State { get; }
+        
         public Entity Target { get; }
     }
 }

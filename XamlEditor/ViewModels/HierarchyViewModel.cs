@@ -6,38 +6,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MultiPlayer;
+using MultiPlayer.Core;
 using XamlEditor.Extensions;
 
 namespace XamlEditor.ViewModels
 {
     public class HierarchyViewModel : BaseViewModel
     {
-        private GameObject root;
+        private Engine engine;
         private bool isExpanded;
-        private bool isSelected;
 
-        public GameObject Root
+        public Engine Engine
         {
-            get { return root; }
+            get { return engine; }
             set
             {
-                if (Equals(value, root)) return;
-                root = value;
+                if (Equals(value, engine)) return;
+                engine = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(Name));
 
                 LoadChildren();
-            }
-        }
-
-        public string Name
-        {
-            get { return Root.Name; }
-            set
-            {
-                if (Equals(value, root.Name)) return;
-                Root.Name = value;
-                OnPropertyChanged();
             }
         }
 
@@ -52,22 +40,9 @@ namespace XamlEditor.ViewModels
             }
         }
 
-        public bool IsSelected
-        {
-            get { return isSelected; }
-            set
-            {
-                if (value == isSelected) return;
-                isSelected = value;
-                OnPropertyChanged();
+        public Action<Entity> OnSelected;
 
-                OnSelected?.Invoke(Root);
-            }
-        }
-
-        public Action<GameObject> OnSelected;
-
-        public ObservableCollection<HierarchyViewModel> Children { get; } = new ObservableCollection<HierarchyViewModel>();
+        public ObservableCollection<EntityHierarchyViewModel> Children { get; } = new ObservableCollection<EntityHierarchyViewModel>();
 
         public HierarchyViewModel()
         {
@@ -80,17 +55,17 @@ namespace XamlEditor.ViewModels
 
         private void LoadChildren()
         {
-            if (Root == null) return;
+            if (Engine == null) return;
 
             Children.Clear();
 
-            var children = Root.GetComponents<GameObject>();
-            children.Foreach(child =>
+            Engine.Entities
+                .Foreach(child =>
             {
-                Children.Add(new HierarchyViewModel()
+                Children.Add(new EntityHierarchyViewModel()
                 {
                     OnSelected = OnSelected,
-                    Root = child
+                    Entity = child
                 });
             });
         }
