@@ -10,7 +10,7 @@ namespace MultiPlayer.Core.Families
 {
     public interface IFamily
     {
-        ImmutableHashSet<Type> ConstituentTypes { get; }
+        ConstituentTypes ConstituentTypes { get; }
 
         IObservableLinkedList<Entity> Entities { get; }
 

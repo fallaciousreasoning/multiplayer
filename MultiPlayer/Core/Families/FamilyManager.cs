@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using MultiPlayer.Collections;
 using MultiPlayer.Extensions;
 using MultiPlayer.Reflection;
 
@@ -14,13 +15,13 @@ namespace MultiPlayer.Core.Families
         private readonly Dictionary<Type, INodeFamily> nodeFamilyTypes = new Dictionary<Type, INodeFamily>();
         private readonly LinkedList<INodeFamily> nodeFamilies = new LinkedList<INodeFamily>();
 
-        private readonly Dictionary<ISet<Type>, IFamily> familyTypes = new Dictionary<ISet<Type>, IFamily>();
+        private readonly Dictionary<ConstituentTypes, IFamily> familyTypes = new Dictionary<ConstituentTypes, IFamily>();
         private readonly LinkedList<IFamily> families = new LinkedList<IFamily>();
 
         private readonly ObjectActivator<SophisticatedFamily> defaultFamilyActivator = ObjectActivatorHelpers.GetActivator<SophisticatedFamily>();
         private readonly Type nodeType = typeof(NodeFamily<>);
 
-        internal void Register(ISet<Type> types)
+        internal void Register(ConstituentTypes types)
         {
             if (types.Count == 0) return;
 
@@ -51,7 +52,7 @@ namespace MultiPlayer.Core.Families
             families.Foreach(f => f.OnComponentRemoved(entity, component));
         }
 
-        public IFamily Get(ISet<Type> constituentTypes)
+        public IFamily Get(ConstituentTypes constituentTypes)
         {
             //TODO Sets don't hash to the same value
             return familyTypes[constituentTypes];

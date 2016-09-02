@@ -47,7 +47,7 @@ namespace MultiPlayer.Collections
         {
             var node = Items.AddFirst(item);
 
-            ItemAdded?.Invoke(this,node);
+            ItemAdded?.Invoke(this,item);
             return node;
         }
 
@@ -55,7 +55,7 @@ namespace MultiPlayer.Collections
         {
             var node = Items.AddLast(item);
 
-            ItemAdded?.Invoke(this, node);
+            ItemAdded?.Invoke(this, item);
             return node;
         }
 
@@ -74,7 +74,7 @@ namespace MultiPlayer.Collections
             var node = Items.First;
             Items.RemoveFirst();
 
-            ItemRemoved?.Invoke(this, node);
+            ItemRemoved?.Invoke(this, node.Value);
         }
 
         public void RemoveLast()
@@ -82,7 +82,7 @@ namespace MultiPlayer.Collections
             var node = Items.Last;
             Items.RemoveLast();
 
-            ItemRemoved?.Invoke(this, node);
+            ItemRemoved?.Invoke(this, node.Value);
         }
 
         public void Remove(object item)
@@ -91,6 +91,8 @@ namespace MultiPlayer.Collections
                 Remove((LinkedListNode<T>) item);
             else if (item is T)
                 Remove((T)item);
+
+            ItemRemoved?.Invoke(this, item);
         }
 
         public void Remove(T item)
@@ -100,14 +102,14 @@ namespace MultiPlayer.Collections
             
             Items.Remove(node);
 
-            ItemRemoved?.Invoke(this, node);
+            ItemRemoved?.Invoke(this, node.Value);
         }
 
         public void Remove(LinkedListNode<T> node)
         {
             Items.Remove(node);
 
-            ItemRemoved?.Invoke(this, node);
+            ItemRemoved?.Invoke(this, node.Value);
         }
 
         public void Clear()

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer.Annotations;
+using MultiPlayer.Collections;
 using MultiPlayer.Extensions;
 
 namespace MultiPlayer.Core.Systems
@@ -31,14 +32,14 @@ namespace MultiPlayer.Core.Systems
             return receives;
         }
 
-        public static ISet<Type> RequiredTypes(this ISystem system)
+        public static ConstituentTypes RequiredTypes(this ISystem system)
         {
             var type = system.GetType();
             var types= new HashSet<Type>();
 
             var requiresFamily = system as IRequiresFamily;
             if (requiresFamily != null)
-                return requiresFamily.FamilyType.ComposingTypes().ToSet();
+                return new ConstituentTypes(requiresFamily.FamilyType.ComposingTypes());
 
             var attributes = type.GetAllCustomAttributes();
 
@@ -50,7 +51,7 @@ namespace MultiPlayer.Core.Systems
                 nodeTypeAttr.Expects.ComposingTypes().Foreach(t => types.Add(t));
             }
 
-            return types;
+            return new ConstituentTypes(types);
         }
 
         public static Type NodeType(this ISystem system)

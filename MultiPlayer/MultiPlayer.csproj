@@ -48,6 +48,7 @@
     <Compile Include="Annotations\EditorIgnoreAttribute.cs" />
     <Compile Include="Annotations\HearsMessageAttribute.cs" />
     <Compile Include="Annotations\NodeTypeAttribute.cs" />
+    <Compile Include="Collections\ConstituentTypes.cs" />
     <Compile Include="Collections\ObservableLinkedList.cs" />
     <Compile Include="Core\Animation\Components\Animation.cs" />
     <Compile Include="Core\Animation\Messages\AnimationFinishedMessage.cs" />

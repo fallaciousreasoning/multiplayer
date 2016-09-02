@@ -14,12 +14,10 @@ namespace MultiPlayer.Core.Families
         private readonly ObservableLinkedList<Entity> entities = new ObservableLinkedList<Entity>();
 
         private readonly Dictionary<Entity, LinkedListNode<Entity>> entityMap = new Dictionary<Entity, LinkedListNode<Entity>>();
-        private readonly ImmutableList<Type> constituentTypesList;
         
-        public SophisticatedFamily(HashSet<Type> constituentTypes)
+        public SophisticatedFamily(ConstituentTypes constituentTypes)
         {
-            this.constituentTypesList = constituentTypes.ToImmutableList();
-            ConstituentTypes = constituentTypes.ToImmutableHashSet();
+            ConstituentTypes = constituentTypes;
         }
 
         public void OnEntityCreated(Entity entity)
@@ -72,10 +70,10 @@ namespace MultiPlayer.Core.Families
 
         private bool Matches(Entity entity)
         {
-            return constituentTypesList.All(entity.HasComponent);
+            return ConstituentTypes.TypesList.All(entity.HasComponent);
         }
 
-        public ImmutableHashSet<Type> ConstituentTypes { get; }
+        public ConstituentTypes ConstituentTypes { get; }
 
         public IObservableLinkedList<Entity> Entities => entities;
     }

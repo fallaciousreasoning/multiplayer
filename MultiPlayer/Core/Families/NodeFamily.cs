@@ -13,7 +13,7 @@ namespace MultiPlayer.Core.Families
     public interface INodeFamily
     {
         IObservableLinkedList UntypedNodes { get; }
-        ISet<Type> ConstituentTypes { get; }
+        ConstituentTypes ConstituentTypes { get; }
 
         void Register(FamilyManager familyManager);
     }
@@ -28,7 +28,7 @@ namespace MultiPlayer.Core.Families
         public IObservableLinkedList UntypedNodes => Nodes;
         public IObservableLinkedList<T> Nodes { get; } = new ObservableLinkedList<T>();
 
-        public ISet<Type> ConstituentTypes { get; } = new HashSet<Type>();
+        public ConstituentTypes ConstituentTypes { get; }
 
         private readonly ObjectActivator<T> activator;
 
@@ -44,11 +44,6 @@ namespace MultiPlayer.Core.Families
             type = typeof(T);
             activator = ObjectActivatorHelpers.GetActivator<T>();
 
-            Initialize();
-        }
-
-        private void Initialize()
-        {
             var fields = type.GetFields();
             foreach (var field in fields)
             {
@@ -56,8 +51,9 @@ namespace MultiPlayer.Core.Families
 
                 fieldTypes.Add(field);
                 fieldSet.Add(field);
-                ConstituentTypes.Add(field.FieldType);
             }
+
+            ConstituentTypes = new ConstituentTypes(fieldSet.Select(f => f.FieldType));
         }
 
         public void Register(FamilyManager familyManager)
