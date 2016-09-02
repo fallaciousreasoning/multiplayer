@@ -71,6 +71,11 @@ namespace XamlEditor.ViewModels
 
         public ObservableCollection<IValueViewModel> Children { get; } = new ObservableCollection<IValueViewModel>();
 
+        public void Reload()
+        {
+            LoadProperties();
+        }
+
         private void LoadProperties()
         {
             Children.Clear();

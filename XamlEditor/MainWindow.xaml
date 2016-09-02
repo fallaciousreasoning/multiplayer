@@ -33,7 +33,7 @@
             </ListBox.ItemContainerStyle>
         </ListBox>
         
-        <ListBox Grid.Column="2" ItemsSource="{Binding GameObjectViewModel.Components}" HorizontalContentAlignment="Stretch">
+        <ListBox Grid.Column="2" ItemsSource="{Binding EntityViewModel.Components}" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel HorizontalAlignment="Stretch">

@@ -5,6 +5,7 @@ using MultiPlayer.Core;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
+using XamlEditor.Scene.Messages;
 
 namespace XamlEditor.Scene.Systems
 {
@@ -16,6 +17,7 @@ namespace XamlEditor.Scene.Systems
     [HearsMessage(typeof(EntityRemovedMessage))]
     [HearsMessage(typeof(ComponentAddedMessage))]
     [HearsMessage(typeof(ComponentRemovedMessage))]
+    [HearsMessage(typeof(ComponentChangedMessage))]
     public class UpdateNotifier : IKnowsEngine, ISystem
     {
         public event ComponentEvent ComponentAdded;
@@ -24,24 +26,31 @@ namespace XamlEditor.Scene.Systems
         public event ComponentEvent ComponentRemoved;
         public event ChildEvent ChildRemoved;
 
-        public void OnComponentAdded(Entity entity, object o)
+        public event ComponentEvent ComponentChanged;
+
+        private void OnComponentAdded(Entity entity, object o)
         {
             ComponentAdded?.Invoke(entity, o);
         }
 
-        public void OnComponentRemoved(Entity entity, object o)
+        private void OnComponentRemoved(Entity entity, object o)
         {
             ComponentRemoved?.Invoke(entity, o);
         }
 
-        public void OnEntityRemoved(Entity child)
+        private void OnEntityRemoved(Entity child)
         {
             ChildRemoved?.Invoke(null, child);
         }
 
-        public void OnEntityAdded(Entity child)
+        private void OnEntityAdded(Entity child)
         {
             ChildAdded?.Invoke(null, child);
+        }
+
+        private void OnComponentChanged(Entity target, object component)
+        {
+            ComponentChanged?.Invoke(target, component);
         }
 
         public IList<Type> Types { get; } = new List<Type>() {typeof(Transform)};
@@ -71,6 +80,12 @@ namespace XamlEditor.Scene.Systems
             if (cremovedMessage != null)
             {
                 OnComponentRemoved(cremovedMessage.Target, cremovedMessage.Component);
+            }
+
+            var cchangedMessage = message as ComponentChangedMessage;
+            if (cchangedMessage != null)
+            {
+                OnComponentChanged(cchangedMessage.Target, cchangedMessage.Component);
             }
         }
     }

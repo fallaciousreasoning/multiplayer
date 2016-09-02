@@ -25,8 +25,9 @@ namespace XamlEditor.Scenes
 
         public event ChildEvent ChildAdded;
         public event ComponentEvent ComponentAdded;
-        public event ChildEvent ComponentRemoved;
-        public event ComponentEvent ScriptRemoved;
+        public event ChildEvent ChildRemoved;
+        public event ComponentEvent ComponentRemoved;
+        public event ComponentEvent ComponentChanged;
 
         public Entity AddEntity(Entity entity, Transform parent = null)
         {
@@ -35,9 +36,11 @@ namespace XamlEditor.Scenes
             if (!entity.HasComponent<Transform>())
                 entity.Add(new Transform());
 
+
             entity.Get<Transform>().Parent = parent;
 
             entity.Add(new Dragger());
+            entity.Add(new TransformWatcher());
 
             Engine.AddEntity(entity);
 
@@ -54,9 +57,10 @@ namespace XamlEditor.Scenes
         {
             UpdateNotifier = new UpdateNotifier();
             UpdateNotifier.ChildAdded += ChildAdded;
-            UpdateNotifier.ChildRemoved += ComponentRemoved;
+            UpdateNotifier.ChildRemoved += ChildRemoved;
             UpdateNotifier.ComponentAdded += ComponentAdded;
-            UpdateNotifier.ComponentRemoved += ScriptRemoved;
+            UpdateNotifier.ComponentRemoved += ComponentRemoved;
+            UpdateNotifier.ComponentChanged += ComponentChanged;
         }
 
         public override void Start()
@@ -68,6 +72,7 @@ namespace XamlEditor.Scenes
 
             Engine.AddSystem(UpdateNotifier);
             Engine.AddSystem(new DraggerSystem());
+            Engine.AddSystem(new TransformWatcherSystem());
 
             var test1 = new Entity();
             test1.Add(new Transform());

@@ -38,15 +38,16 @@ namespace XamlEditor.ViewModels
                     scene.UpdateNotifier.ChildRemoved += OnChildRemoved;
                     scene.UpdateNotifier.ComponentAdded += OnComponentAdded;
                     scene.UpdateNotifier.ComponentRemoved += OnComponentRemoved;
+                    scene.UpdateNotifier.ComponentChanged += EntityViewModel.ComponentChanged;
                     scene.PropertyChanged += HeardEditPropertyChanged;
                 }
 
-                GameObjectViewModel.Entity = null;
+                EntityViewModel.Entity = null;
                 HierarchyViewModel.Engine = scene?.Engine;
             }
         }
 
-        public EntityViewModel GameObjectViewModel { get; } = new EntityViewModel();
+        public EntityViewModel EntityViewModel { get; } = new EntityViewModel();
         public HierarchyViewModel HierarchyViewModel { get; } = new HierarchyViewModel();
 
         public SceneViewModel()
@@ -56,7 +57,7 @@ namespace XamlEditor.ViewModels
 
         public void OnGameObjectSelected(Entity entity)
         {
-            GameObjectViewModel.Entity = entity;
+            EntityViewModel.Entity = entity;
             Scene.SelectGameObject(entity);
         }
 
@@ -78,14 +79,14 @@ namespace XamlEditor.ViewModels
 
         public void OnComponentAdded(Entity parent, object script)
         {
-            if (parent == GameObjectViewModel.Entity)
-                GameObjectViewModel.Reload();
+            if (parent == EntityViewModel.Entity)
+                EntityViewModel.Reload();
         }
 
         public void OnComponentRemoved(Entity parent, object script)
         {
-            if (parent == GameObjectViewModel.Entity)
-                GameObjectViewModel.Reload();
+            if (parent == EntityViewModel.Entity)
+                EntityViewModel.Reload();
         }
 
     }

@@ -39,20 +39,34 @@ namespace XamlEditor.ViewModels
             Entity = g;
         }
 
+        public void ComponentChanged(Entity entity, object component)
+        {
+            if (Entity != entity) return;
+
+            componentMap[component.GetType()].Reload();
+        }
+
         public void Reload()
         {
             Components.Clear();
+            componentMap.Clear();
+
             //Add all the scripts to the view model
             entity?.Components
                 .Where(
-                    c => 
+                    c =>
                         !c.GetType().GetAllAttributes().Any(a => a is EditorIgnoreAttribute)
-                    )
+                )
                 .Foreach(c =>
-                    Components.Add(new ComponentViewModel(c))
+                    {
+                        var viewModel = new ComponentViewModel(c);
+                        Components.Add(viewModel);
+                        componentMap.Add(c.GetType(), viewModel);
+                    }
                 );
         }
 
+        private Dictionary<Type, ComponentViewModel> componentMap = new Dictionary<Type, ComponentViewModel>();
         public ObservableCollection<ComponentViewModel> Components { get; private set; } = new ObservableCollection<ComponentViewModel>();
     }
 }

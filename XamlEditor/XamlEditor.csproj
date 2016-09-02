@@ -125,9 +125,12 @@
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Scene\Components\Dragger.cs" />
     <Compile Include="Scene\Components\StickTo.cs" />
+    <Compile Include="Scene\Components\TransformWatcher.cs" />
+    <Compile Include="Scene\Messages\ComponentChangedMessage.cs" />
     <Compile Include="Scene\Messages\SelectMessage.cs" />
     <Compile Include="Scene\Systems\DraggerSystem.cs" />
     <Compile Include="Scene\Systems\StickToSystem.cs" />
+    <Compile Include="Scene\Systems\TransformWatcherSystem.cs" />
     <Compile Include="Scene\Systems\UpdateNotifierSystem.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Scenes\EditScene.cs" />
