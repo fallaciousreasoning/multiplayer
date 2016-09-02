@@ -14,6 +14,12 @@ namespace XamlEditor.ViewModels.PropertySheets
         private object value;
         private object o;
         private IAccessor accessor;
+
+        public void Reload()
+        {
+            Value = accessor.GetValue(Object);
+        }
+
         public string Name => Accessor?.Name ?? Value?.GetType().Name;
 
         public ObservableCollection<object> Values { get; } = new ObservableCollection<object>();

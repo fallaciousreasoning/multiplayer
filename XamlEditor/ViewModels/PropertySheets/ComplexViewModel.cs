@@ -73,7 +73,7 @@ namespace XamlEditor.ViewModels
 
         public void Reload()
         {
-            LoadProperties();
+            Children.Foreach(c => c.Reload());
         }
 
         private void LoadProperties()

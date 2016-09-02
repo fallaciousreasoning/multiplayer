@@ -11,6 +11,11 @@ namespace XamlEditor.ViewModels
 {
     public class ArrayViewModel : BaseViewModel, IValueViewModel
     {
+        public void Reload()
+        {
+            throw new NotImplementedException();
+        }
+
         public string Name { get; set; }
         public object Value { get; set; }
         public object Object { get; set; }

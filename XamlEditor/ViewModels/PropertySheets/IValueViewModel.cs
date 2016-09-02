@@ -10,6 +10,8 @@ namespace XamlEditor.ViewModels.PropertySheets
 {
     public interface IValueViewModel
     {
+        void Reload();
+
         string Name { get; }
         object Value { get; set; }
         object Object { get; set; }

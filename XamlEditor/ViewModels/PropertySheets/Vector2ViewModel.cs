@@ -15,7 +15,12 @@ namespace XamlEditor.ViewModels.PropertySheets
         private Vector2 value;
         private object o;
         private IAccessor accessor;
-        
+
+        public void Reload()
+        {
+            Value = accessor.GetValue(Object);
+        }
+
         public string Name
         {
             get { return name ?? Accessor?.Name; }

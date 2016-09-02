@@ -30,6 +30,11 @@ namespace XamlEditor.ViewModels
 
         private string FieldName => accessor?.Name;
 
+        public void Reload()
+        {
+            Value = accessor.GetValue(Object);
+        }
+
         public string Name => FieldName;
         public Type ValueType => Accessor?.ValueType;
 
