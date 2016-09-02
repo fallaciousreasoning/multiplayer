@@ -71,7 +71,7 @@ namespace XamlEditor.Scenes
 
             var test1 = new Entity();
             test1.Add(new Transform());
-            test1.Add(new SpriteComponent() {Texture = TextureUtil.CreateTexture(64, 64, Color.Black)});
+            test1.Add(new MultiPlayer.Core.Components.Sprite() { Texture = TextureUtil.CreateTexture(64, 64, Color.Black)});
 
             var camera = new Entity();
             camera.Add(new Camera());

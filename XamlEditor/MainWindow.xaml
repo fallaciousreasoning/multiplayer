@@ -33,12 +33,12 @@
             </ListBox.ItemContainerStyle>
         </ListBox>
         
-        <ListBox Grid.Column="2" ItemsSource="{Binding GameObjectViewModel.Components}">
+        <ListBox Grid.Column="2" ItemsSource="{Binding GameObjectViewModel.Components}" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
+                    <StackPanel HorizontalAlignment="Stretch">
                         <TextBlock Text="{Binding Name}"/>
-                        <ItemsControl Margin="10,0,0,10" ItemsSource="{Binding Children}" ItemTemplateSelector="{StaticResource PropertyTemplateSelector}"/>
+                        <ItemsControl Margin="10,0,0,10" ItemsSource="{Binding Children}" ItemTemplateSelector="{StaticResource PropertyTemplateSelector}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MultiPlayer;
+using MultiPlayer.Annotations;
 using MultiPlayer.Core;
 
 namespace XamlEditor.Scene.Components
 {
+    [EditorIgnore]
     public class Dragger
     {
         public bool Enabled { get; set; }

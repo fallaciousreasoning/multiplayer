@@ -83,7 +83,7 @@
     <Compile Include="Core\Systems\EntityProcessingSystem.cs" />
     <Compile Include="Core\Components\Camera.cs" />
     <Compile Include="Core\Components\Collider.cs" />
-    <Compile Include="Core\Components\SpriteComponent.cs" />
+    <Compile Include="Core\Components\Sprite.cs" />
     <Compile Include="Core\Components\IKnowsNode.cs" />
     <Compile Include="Core\Components\Transform.cs" />
     <Compile Include="Core\Engine.cs" />

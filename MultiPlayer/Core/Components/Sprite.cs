@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MultiPlayer.Core.Components
 {
-    public class SpriteComponent
+    public class Sprite
     {
         public Texture2D Texture;
         public Color Tint = Color.White;

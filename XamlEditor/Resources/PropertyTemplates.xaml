@@ -2,35 +2,35 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:templateSelectors="clr-namespace:XamlEditor.TemplateSelectors">
     <DataTemplate x:Key="SimplePropertyTemplate">
-        <StackPanel>
+        <StackPanel HorizontalAlignment="Stretch">
             <TextBlock Text="{Binding Name}"/>
-            <TextBox Text="{Binding Value, Mode=TwoWay}"/>
+            <TextBox Text="{Binding Value, Mode=TwoWay}" HorizontalAlignment="Stretch"/>
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="BoolDataTemplate">
-        <StackPanel>
+        <StackPanel HorizontalAlignment="Stretch">
             <TextBlock Text="{Binding Name}"/>
             <CheckBox IsChecked="{Binding Value, Mode=TwoWay}"/>
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="UnknownDataTemplate">
-        <StackPanel Margin="0,0,10,0">
+        <StackPanel Margin="0,0,10,0" HorizontalAlignment="Stretch">
             <TextBlock Text="{Binding Name}"/>
             <TextBlock Text="Unsupported Type:"/>
             <TextBlock Text="{Binding PropertyInfo.PropertyType.FullName}"/>
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="EnumDataTemplate">
-        <StackPanel Margin="0,0,10,0">
+        <StackPanel Margin="0,0,10,0" HorizontalAlignment="Stretch">
             <TextBlock Text="{Binding Name}"/>
-            <ComboBox ItemsSource="{Binding Values}" SelectedItem="{Binding Value, Mode=TwoWay}"/>
+            <ComboBox ItemsSource="{Binding Values}" SelectedItem="{Binding Value, Mode=TwoWay}" HorizontalAlignment="Stretch"/>
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="Vector2DataTemplate">
-        <StackPanel>
+        <StackPanel HorizontalAlignment="Stretch">
             <TextBlock Text="{Binding Name}"/>
-            <StackPanel Margin="10,0,0,0">
-                <Grid>
+            <StackPanel Margin="10,0,0,0" HorizontalAlignment="Stretch">
+                <Grid HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -38,7 +38,7 @@
                     <TextBlock Text="X:" Margin="0,0,10,0" Grid.Column="0"/>
                     <TextBox Text="{Binding X, Mode=TwoWay}" Grid.Column="1"/>
                 </Grid>
-                <Grid>
+                <Grid HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -51,7 +51,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="ComplexDataTemplate">
-        <Expander IsExpanded="True" Header="{Binding Name}">
+        <Expander IsExpanded="True" Header="{Binding Name}" HorizontalAlignment="Stretch">
             <ItemsControl ItemsSource="{Binding Children}" ItemTemplateSelector="{DynamicResource PropertyTemplateSelector}" Margin="10,0,0,5"/>
         </Expander>
     </DataTemplate>

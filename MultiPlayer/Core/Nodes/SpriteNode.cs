@@ -4,7 +4,7 @@ namespace MultiPlayer.Core.Nodes
 {
     public class SpriteNode
     {
-        public SpriteComponent Sprite;
+        public Sprite Sprite;
         public Transform Transform;
     }
 }

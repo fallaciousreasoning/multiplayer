@@ -54,7 +54,7 @@ namespace MultiPlayer
 
             var cursor = new Entity();
             cursor.Add(new Transform());
-            cursor.Add(new SpriteComponent()
+            cursor.Add(new Sprite()
             {
                 Texture = TextureUtil.CreateTexture(32, 32, Color.Black)
             });
@@ -67,7 +67,7 @@ namespace MultiPlayer
                 Position = new Vector2(1)
             };
             test.Add(transform);
-            var sprite = new SpriteComponent()
+            var sprite = new Sprite()
             {
                 Texture = TextureUtil.CreateTexture(64, 64, Color.Red)
             };
@@ -97,7 +97,7 @@ namespace MultiPlayer
             animated.Add(new Transform());
             animated.Add(animationContainer);
             animated.Add(ColliderBuilder.New().IsDynamic().Create());
-            animated.Add(new SpriteComponent()
+            animated.Add(new Sprite()
             {
                 Texture = TextureUtil.CreateTexture(64, 64, Color.Pink)
             });
