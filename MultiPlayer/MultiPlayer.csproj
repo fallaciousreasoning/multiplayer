@@ -50,6 +50,7 @@
     <Compile Include="Annotations\NodeTypeAttribute.cs" />
     <Compile Include="Collections\ConstituentTypes.cs" />
     <Compile Include="Collections\ObservableLinkedList.cs" />
+    <Compile Include="Core\AABB.cs" />
     <Compile Include="Core\Animation\Animation.cs" />
     <Compile Include="Core\Animation\AnimationBuilder.cs" />
     <Compile Include="Core\Animation\AnimationContainer.cs" />
@@ -76,6 +77,8 @@
     <Compile Include="Core\Animation\Vector2Frame.cs" />
     <Compile Include="Core\Families\IFamilyComposedOf.cs" />
     <Compile Include="Core\Families\NodeFamily.cs" />
+    <Compile Include="Core\Messaging\ComponentAddedMessage.cs" />
+    <Compile Include="Core\Messaging\ComponentRemovedMessage.cs" />
     <Compile Include="Core\Systems\ComponentProcessingSystem.cs" />
     <Compile Include="Core\Systems\EntityProcessingSystem.cs" />
     <Compile Include="Core\Components\Camera.cs" />

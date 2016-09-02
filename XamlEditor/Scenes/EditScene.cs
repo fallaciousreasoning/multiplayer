@@ -9,12 +9,14 @@ using Microsoft.Xna.Framework;
 using MultiPlayer;
 using MultiPlayer.Core.InputMethods;
 using Runner;
+using SharpDX.Direct3D9;
 using XamlEditor.Annotations;
-using XamlEditor.GameComponents;
+using XamlEditor.Scene.Components;
+using XamlEditor.Scene.Systems;
 
 namespace XamlEditor.Scenes
 {
-    public class EditScene : Scene, INotifyPropertyChanged
+    public class EditScene : MultiPlayer.Scene, INotifyPropertyChanged
     {
         public GameObject EditRoot
         {
@@ -113,8 +115,8 @@ namespace XamlEditor.Scenes
             UpdateNotifier = new UpdateNotifier();
             UpdateNotifier.ChildAdded += ChildAdded;
             UpdateNotifier.ChildRemoved += ChildRemoved;
-            UpdateNotifier.ScriptAdded += ScriptAdded;
-            UpdateNotifier.ScriptRemoved += ScriptRemoved;
+            UpdateNotifier.ComponentAdded += ScriptAdded;
+            UpdateNotifier.ComponentRemoved += ScriptRemoved;
         }
 
         public override void Start()

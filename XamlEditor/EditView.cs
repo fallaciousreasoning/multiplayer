@@ -16,7 +16,7 @@ using MultiPlayer.Core.InputMethods;
 using XamlEditor.Annotations;
 using XamlEditor.Interop;
 using XamlEditor.Scenes;
-using MouseButton = MultiPlayer.Core.MouseButton;
+using MouseButton = MultiPlayer.Core.Input.MouseButton;
 
 namespace XamlEditor
 {

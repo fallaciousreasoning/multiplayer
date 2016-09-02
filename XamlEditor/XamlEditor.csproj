@@ -108,10 +108,12 @@
     <Compile Include="Converters\ISupportableConverter.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="GameComponents\Dragger.cs" />
-    <Compile Include="GameComponents\EditSelector.cs" />
-    <Compile Include="GameComponents\StickTo.cs" />
-    <Compile Include="GameComponents\UpdateNotifier.cs" />
+    <Compile Include="Scene\Components\Dragger.cs" />
+    <Compile Include="Scene\Components\StickTo.cs" />
+    <Compile Include="Scene\Messages\EnableDraggerMessage.cs" />
+    <Compile Include="Scene\Systems\DraggerSystem.cs" />
+    <Compile Include="Scene\Systems\StickToSystem.cs" />
+    <Compile Include="Scene\Systems\UpdateNotifierSystem.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Scenes\EditScene.cs" />
     <Compile Include="TemplateSelectors\PropertyTemplateSelector.cs" />

@@ -43,13 +43,25 @@ namespace MultiPlayer.Core
             entityIds.Add(entity.Id, entity);
             entity.Node = entities.AddLast(entity);
 
-            entity.ComponentAdded = FamilyManager.OnComponentAdded;
-            entity.ComponentRemoved = FamilyManager.OnComponentRemoved;
+            entity.ComponentAdded = OnComponentAdded;
+            entity.ComponentRemoved = OnComponentRemoved;
 
             FamilyManager.OnEntityCreated(entity);
             MessageHub.SendMessage(new EntityAddedMessage(entity));
 
             nextId++;
+        }
+
+        private void OnComponentAdded(Entity entity, object component)
+        {
+            FamilyManager.OnComponentAdded(entity, component);
+            MessageHub.SendMessage(new ComponentAddedMessage(entity, component));
+        }
+
+        private void OnComponentRemoved(Entity entity, object component)
+        {
+            FamilyManager.OnComponentRemoved(entity, component);
+            MessageHub.SendMessage(new ComponentRemovedMessage(entity, component));
         }
 
         public void RemoveEntity(Entity entity)

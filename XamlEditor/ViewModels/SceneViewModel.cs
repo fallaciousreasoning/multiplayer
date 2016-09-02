@@ -24,8 +24,8 @@ namespace XamlEditor.ViewModels
                 {
                     scene.UpdateNotifier.ChildAdded -= OnChildAdded;
                     scene.UpdateNotifier.ChildRemoved -= OnChildRemoved;
-                    scene.UpdateNotifier.ScriptAdded -= OnScriptAdded;
-                    scene.UpdateNotifier.ScriptRemoved -= OnScriptRemoved;
+                    scene.UpdateNotifier.ComponentAdded -= OnScriptAdded;
+                    scene.UpdateNotifier.ComponentRemoved -= OnComponentRemoved;
                     scene.PropertyChanged -= HeardEditPropertyChanged;
                 }
 
@@ -35,8 +35,8 @@ namespace XamlEditor.ViewModels
                 {
                     scene.UpdateNotifier.ChildAdded += OnChildAdded;
                     scene.UpdateNotifier.ChildRemoved += OnChildRemoved;
-                    scene.UpdateNotifier.ScriptAdded += OnScriptAdded;
-                    scene.UpdateNotifier.ScriptRemoved += OnScriptRemoved;
+                    scene.UpdateNotifier.ComponentAdded += OnScriptAdded;
+                    scene.UpdateNotifier.ComponentRemoved += OnComponentRemoved;
                     scene.PropertyChanged += HeardEditPropertyChanged;
                 }
 
@@ -81,7 +81,7 @@ namespace XamlEditor.ViewModels
                 GameObjectViewModel.Reload();
         }
 
-        public void OnScriptRemoved(GameObject parent, object script)
+        public void OnComponentRemoved(GameObject parent, object script)
         {
             if (parent == GameObjectViewModel.GameObject)
                 GameObjectViewModel.Reload();
