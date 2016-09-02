@@ -9,7 +9,7 @@ using MultiPlayer.Core.Messaging;
 namespace MultiPlayer.Core.Systems
 {
     [HearsMessage(typeof(StartMessage), typeof(UpdateMessage), typeof(LateUpdateMessage), typeof(CollisionMessage))]
-    public class GenericSystem<T> : ISystem
+    public class GenericSystem<T> : ISystem, IRequiresFamily
     {
         public void RecieveMessage(IMessage message)
         {
@@ -78,5 +78,7 @@ namespace MultiPlayer.Core.Systems
         {
 
         }
+
+        public Type FamilyType { get; } = typeof(T);
     }
 }
