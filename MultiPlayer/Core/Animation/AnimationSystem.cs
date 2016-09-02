@@ -21,6 +21,7 @@ namespace MultiPlayer.Core.Animation
         public void Start(Entity entity, AnimationContainer container, Animation animation)
         {
             container.CurrentAnimation = animation;
+            animation.Entity = entity;
             animation.Start();
 
             Engine.MessageHub.SendMessage(new AnimationStartedMessage(entity, container, animation));
@@ -50,7 +51,7 @@ namespace MultiPlayer.Core.Animation
         {
             if (container.CurrentAnimation == null) return;
 
-            container.CurrentAnimation.Update(time.GameSpeed);
+            container.CurrentAnimation.Update(time.Step);
 
             if (container.WasPlaying && !container.CurrentAnimation.IsPlaying)
             {

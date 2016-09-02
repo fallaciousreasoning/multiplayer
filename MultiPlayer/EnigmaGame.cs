@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MultiPlayer.Core;
 using MultiPlayer.Core.Animation;
+using MultiPlayer.Core.Animation.Messages;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Input;
 using MultiPlayer.Core.Systems;
@@ -83,17 +84,22 @@ namespace MultiPlayer
             var animation = AnimationBuilder.New()
                 .InsertFrame(0, new KeyFrame(new Vector2(-5, 0)))
                 .InsertFrame(2, new KeyFrame(new Vector2(5, 0)))
-                .InsertFrame(3, new KeyFrame(new Vector2(5, 5)))
+                .InsertFrame(3, new KeyFrame(new Vector2(5, 2.5f)))
+                .Reverses(true)
+                .Loops(true)
+                .AnimatePhysics()
                 .Create();
 
             var animationContainer= new AnimationContainer();
             animationContainer.Animation.Add("test", animation);
 
             var animated = new Entity();
+            animated.Add(new Transform());
             animated.Add(animationContainer);
+            animated.Add(ColliderBuilder.New().IsDynamic().Create());
             animated.Add(new SpriteComponent()
             {
-                Texture = TextureUtil.CreateTexture(32, 32, Color.Black)
+                Texture = TextureUtil.CreateTexture(64, 64, Color.Pink)
             });
 
             scene.Engine.AddEntity(cursor);
@@ -101,6 +107,8 @@ namespace MultiPlayer
             scene.Engine.AddEntity(camera);
             scene.Engine.AddEntity(animated);
             scene.Engine.Systems.Get<CameraSystem>().ActiveCamera = camera;
+
+            scene.Engine.MessageHub.SendMessage(new StartAnimationMessage(animated, "test"));
         }
 
         protected override void Update(GameTime gameTime)
