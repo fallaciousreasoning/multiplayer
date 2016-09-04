@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiPlayer", "MultiPlayer\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlEditor", "XamlEditor\XamlEditor.csproj", "{096F7348-1A40-460B-BFA3-E57DEADC97A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "Runner\Runner.csproj", "{8A7A2F80-B068-4A28-93CF-B829C8085C9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,12 @@ Global
 		{096F7348-1A40-460B-BFA3-E57DEADC97A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{096F7348-1A40-460B-BFA3-E57DEADC97A5}.Release|x86.ActiveCfg = Release|Any CPU
 		{096F7348-1A40-460B-BFA3-E57DEADC97A5}.Release|x86.Build.0 = Release|Any CPU
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Debug|x86.ActiveCfg = Debug|x86
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Debug|x86.Build.0 = Debug|x86
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Release|Any CPU.ActiveCfg = Release|x86
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Release|x86.ActiveCfg = Release|x86
+		{8A7A2F80-B068-4A28-93CF-B829C8085C9C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
