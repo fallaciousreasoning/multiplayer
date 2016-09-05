@@ -4,10 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using MultiPlayer;
-using MultiPlayer.GameComponents;
-using MultiPlayer.GameComponents.Animation;
-using MultiPlayer.GameComponents.Physics;
-using IUpdateable = MultiPlayer.GameComponents.IUpdateable;
 
 namespace Runner.Builders
 {

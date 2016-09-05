@@ -51,7 +51,14 @@
     <Compile Include="Builders\TriggerDetector.cs" />
     <Compile Include="Builders\ObstacleBuilder.cs" />
     <Compile Include="Builders\PlayerBuilder.cs" />
-    <Compile Include="Builders\PlayerController.cs" />
+    <Compile Include="Components\CharacterInput.cs" />
+    <Compile Include="Components\Clamber.cs" />
+    <Compile Include="Components\Move.cs" />
+    <Compile Include="Components\Roll.cs" />
+    <Compile Include="Components\Slide.cs" />
+    <Compile Include="Systems\InfoUpdater.cs" />
+    <Compile Include="Systems\Mover.cs" />
+    <Compile Include="Systems\PlayerInput.cs" />
     <Compile Include="Builders\CharacterMotor.cs" />
     <Compile Include="Components\CharacterInfo.cs" />
     <Compile Include="Components\CharacterStats.cs" />
@@ -63,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RunnerGame.cs" />
     <Compile Include="Systems\FollowSystem.cs" />
+    <Compile Include="Systems\Roller.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FarseerPhysics MonoGame, Version=3.5.0.30732, Culture=neutral, processorArchitecture=x86">

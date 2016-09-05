@@ -6,16 +6,21 @@ using System.Text;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using MultiPlayer;
+using MultiPlayer.Core.Animation;
+using MultiPlayer.Core.Components;
+using MultiPlayer.Factories;
 using MultiPlayer.GameComponents;
 using MultiPlayer.GameComponents.Animation;
 using MultiPlayer.GameComponents.Physics;
 using Newtonsoft.Json;
+using Runner.Systems;
+using SharpDX.Direct3D9;
 
 namespace Runner.Builders
 {
     public static class PlayerBuilder
     {
-        public static GameObjectFactory BuildPlayer()
+        public static EntityBuilder BuildPlayer()
         {
             var width = 0.5f;
             var height = 1f;
@@ -67,7 +72,7 @@ namespace Runner.Builders
                 .Create();
 
 
-            var animator = new AnimationController()
+            var animator = new AnimationContainer()
                 .Add(Animations.Name(PlayerAnimation.Clamber, Direction.Right), clamberRightAnimation)
                 .Add(Animations.Name(PlayerAnimation.Clamber, Direction.Left), clamberLeftAnimation)
 
@@ -93,58 +98,58 @@ namespace Runner.Builders
             characterMotor.Animator = animator;
 
 
-            return GameObjectFactory.New()
+            return EntityBuilder.New()
                 .WithTag("player")
                 .WithTexture(TextureUtil.CreateTexture(widthPixels,heightPixels, Color.White))
                 .With(characterMotor)
-                .With(new PlayerController())
+                .With(new PlayerInput())
                 .With(animator)
                 .With(new RollFinishListener())
 
-                .WithChild(GameObjectFactory.New(false, true, true)
+                .WithChild(EntityBuilder.New(false, true, true)
                     //Add the ground detector (bar below)
-                    .WithChild(GameObjectFactory.New()
-                        .With(ColliderFactory.BoxTrigger(width * sensorLopOff, sensorWidth))
+                    .WithChild(EntityBuilder.New()
+                        .With(ColliderBuilder.New().BoxShape(width * sensorLopOff, sensorWidth).IsTrigger())
                         .With(groundDetector)
                         .WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
                         .AtPosition(new Vector2(0, height * 0.5f + sensorWidth * 0.5f))
                         .Create())
 
                     //Add the ceiling detector (bar above)
-                    .WithChild(GameObjectFactory.New()
-                        .With(ColliderFactory.BoxTrigger(width * sensorWidth, sensorWidth))
+                    .WithChild(EntityBuilder.New()
+                        .With(ColliderBuilder.New().BoxShape(width * sensorWidth, sensorWidth).IsTrigger())
                         .With(ceilingDetector)
                         .WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
                         .AtPosition(-new Vector2(0, height * 0.5f + sensorWidth * 0.5f))
                         .Create())
 
                     //Add the room to stand detector (box above)
-                    .WithChild(GameObjectFactory.New()
-                        .With(ColliderFactory.BoxTrigger(width * sensorWidth, sensorWidth))
+                    .WithChild(EntityBuilder.New()
+                        .With(ColliderBuilder.New().BoxShape(width * sensorWidth, sensorWidth).IsTrigger())
                         .With(ceilingDetector)
                         .WithTexture(TextureUtil.CreateTexture(widthPixels, sensorWidthPixels, Color.Red))
                         .AtPosition(-new Vector2(0, height * 0.75f + sensorWidth * 0.5f))
                         .Create())
 
                     //Add the left wall detector (bar down left side)
-                    .WithChild(GameObjectFactory.New()
-                        .With(ColliderFactory.BoxTrigger(sensorWidth, height * sensorLopOff))
+                    .WithChild(EntityBuilder.New()
+                        .With(ColliderBuilder.New().BoxShape(sensorWidth, height * sensorLopOff).IsTrigger())
                         .With(leftWallDetector)
                         .WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
                         .AtPosition(-new Vector2(width * 0.5f + sensorWidth * 0.5f, 0))
                         .Create())
 
                     //Add the right wall detector (bar down right side)
-                    .WithChild(GameObjectFactory.New()
-                        .With(ColliderFactory.BoxTrigger(sensorWidth, height * sensorLopOff))
+                    .WithChild(EntityBuilder.New()
+                        .With(ColliderBuilder.New().BoxShape(sensorWidth, height * sensorLopOff).IsTrigger())
                         .With(rightWallDetector)
                         .WithTexture(TextureUtil.CreateTexture(sensorWidthPixels, heightPixels, Color.Red))
                         .AtPosition(new Vector2(width * 0.5f + sensorWidth * 0.5f, 0))
                         .Create())
 
                     //Add the clamber detector (bar over top, extending out sides)
-                    .WithChild(GameObjectFactory.New()
-                        .With(ColliderFactory.BoxTrigger(width * 3f * sensorLopOff, sensorWidth))
+                    .WithChild(EntityBuilder.New()
+                        .With(ColliderBuilder.New().BoxShape(width * 3f * sensorLopOff, sensorWidth).IsTrigger())
                         .With(clamberDetector)
                         .WithTexture(TextureUtil.CreateTexture(widthPixels * 3, sensorWidthPixels, Color.Red))
                         .AtPosition(-new Vector2(0, (height * 0.5f + sensorWidth * 0.5f) * clamberSensorOffset))
@@ -152,7 +157,7 @@ namespace Runner.Builders
                     .Create())
                 .AtPosition(new Vector2(0, -10))
 
-                .With(ColliderFactory.BoxCollider(width, height, BodyType.Dynamic, true));
+                .With(ColliderBuilder.New().BoxShape(width, height).IsDynamic().IsFixedRotation(true));
         }
 
         public static AnimationBuilder ClamberAnimation()
@@ -203,20 +208,6 @@ namespace Runner.Builders
                 .IsRelative(false);
 
             return animation;
-        }
-
-        public static GameObject AnimationTest()
-        {
-            var animator = RollAnimation().Create();
-
-            var gameObject = GameObjectFactory.New()
-                .WithTexture(TextureUtil.CreateTexture(64, 64, Color.Yellow))
-                .With(animator)
-                .Create();
-            
-            animator.Start();
-
-            return gameObject;
         }
     }
 }

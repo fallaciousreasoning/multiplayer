@@ -50,4 +50,15 @@ namespace MultiPlayer.Core.Systems
         public override IList<Type> Types { get; } = new List<Type>() { typeof(T1), typeof(T2), typeof(T3), typeof(T4) };
         protected abstract void Process(IMessage message, T1 component1, T2 component2, T3 component3, T4 component4);
     }
+
+    public abstract class ComponentProcessingSystem<T1, T2, T3, T4, T5> : EntityProcessingSystem where T1 : class where T2 : class where T3 : class where T4 : class where T5 : class
+    {
+        protected override void Process(IMessage message, Entity entity)
+        {
+            Process(message, entity.Get<T1>(), entity.Get<T2>(), entity.Get<T3>(), entity.Get<T4>(), entity.Get<T5>());
+        }
+
+        public override IList<Type> Types { get; } = new List<Type>() { typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5) };
+        protected abstract void Process(IMessage message, T1 component1, T2 component2, T3 component3, T4 component4, T5 component5);
+    }
 }
