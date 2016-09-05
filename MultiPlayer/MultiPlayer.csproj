@@ -80,7 +80,6 @@
     <Compile Include="Core\Messaging\ComponentAddedMessage.cs" />
     <Compile Include="Core\Messaging\ComponentRemovedMessage.cs" />
     <Compile Include="Core\Systems\ComponentProcessingSystem.cs" />
-    <Compile Include="Core\Systems\CompositeSystem.cs" />
     <Compile Include="Core\Systems\EntityProcessingSystem.cs" />
     <Compile Include="Core\Components\Camera.cs" />
     <Compile Include="Core\Components\Collider.cs" />
@@ -119,12 +118,11 @@
     <Compile Include="Core\Systems\DrawableSystem.cs" />
     <Compile Include="Core\Systems\GenericSystem.cs" />
     <Compile Include="Core\Systems\IHearsMessageTypes.cs" />
-    <Compile Include="Core\Systems\IKnowsCompositeSystem.cs" />
     <Compile Include="Core\Systems\IKnowsEngine.cs" />
     <Compile Include="Core\Families\IRequiresFamily.cs" />
     <Compile Include="Core\Systems\ISystemExtensions.cs" />
+    <Compile Include="Core\Systems\SingleResponsibilitySystem.cs" />
     <Compile Include="Core\Systems\SpriteRenderer.cs" />
-    <Compile Include="Core\Systems\SubSystem.cs" />
     <Compile Include="Core\Systems\SystemManager.cs" />
     <Compile Include="Core\Systems\ISystem.cs" />
     <Compile Include="Core\Systems\LateUpdateableSystem.cs" />
