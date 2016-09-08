@@ -19,12 +19,26 @@ namespace MultiPlayer.Core.Components
         public float Rotation;
 
         public Vector2 WorldPosition
-            => Parent != null
-                ? Parent.WorldPosition + Vector2.Transform(Position, Matrix.CreateRotationZ(Parent.Rotation))
-                : Position;
+        {
+            get
+            {
+                return Parent != null
+                    ? Parent.WorldPosition + Vector2.Transform(Position, Matrix.CreateRotationZ(Parent.Rotation))
+                    : Position;
+            }
+            set { Position = value - (WorldPosition - Position); }
+        }
 
-        public Vector2 WorldScale => Scale*(Parent?.WorldScale ?? Vector2.One);
+        public Vector2 WorldScale
+        {
+            get { return Scale*(Parent?.WorldScale ?? Vector2.One); }
+            set { Scale = value/(Parent?.WorldScale ?? Vector2.One); }
+        }
 
-        public float WorldRotation => Rotation + (Parent?.WorldRotation ?? 0);
+        public float WorldRotation
+        {
+            get { return Rotation + (Parent?.WorldRotation ?? 0); }
+            set { Rotation = value - (Parent?.WorldRotation ?? 0); }
+        }
     }
 }

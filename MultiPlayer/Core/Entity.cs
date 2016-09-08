@@ -11,10 +11,17 @@ namespace MultiPlayer.Core
     {
         private readonly Dictionary<Type, object> components = new Dictionary<Type, object>();
 
-        public void Add<T>(T component)
-            where T : class
+        public void Add<T>()
+            where T : class, new()
         {
-            components.Add(typeof(T), component);
+            Add(new T());
+        }
+
+        public void Add(object component)
+        {
+            var type = component.GetType();
+
+            components.Add(type, component);
             ComponentAdded?.Invoke(this, component);
         }
 

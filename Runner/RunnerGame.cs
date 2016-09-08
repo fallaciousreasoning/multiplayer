@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Editor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MultiPlayer;
 using MultiPlayer.Core;
+using MultiPlayer.Core.Components;
 using MultiPlayer.Core.InputMethods;
 using Newtonsoft.Json;
 using Runner.Builders;
+using Runner.Systems;
 
 namespace Runner
 {
@@ -23,14 +24,25 @@ namespace Runner
         {
             base.Start();
 
+            Engine.AddSystem(new FollowSystem());
+
+            Engine.AddSystem(new TouchTrackingSystem());
+
+            Engine.AddSystem(new CharacterSystem());
+            Engine.AddSystem(new Mover());
+
+            Engine.AddSystem(new PlayerInput());
+
             Input.AddButton("jump", new InputButton(Keys.Space, Keys.W, Keys.Up));
             Input.AddButton("slide", new InputButton(Keys.S, Keys.LeftShift, Keys.Down));
 
             PrefabInitializer.AddRunnerGamePrefabs(PrefabManager);
 
-            var player = PrefabManager.Instantiate("player", new Vector2(-6.25f, 0));
+            var player = PrefabManager.Instantiate("player", new Vector2(2, -.25f));
 
-            camera = CameraBuilder.Camera(player.Transform).CreateLast();
+            var floor = PrefabManager.Instantiate("platform", new Vector2(0, 3), 0, new Vector2(12, 1));
+
+            camera = CameraBuilder.Camera(player[0].Get<Transform>()).CreateRoot();
             Engine.AddEntity(camera);
         }
 

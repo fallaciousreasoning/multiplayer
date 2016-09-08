@@ -1,5 +1,6 @@
 ﻿using System;
 using MultiPlayer;
+using MultiPlayer.Annotations;
 using MultiPlayer.Core.Input;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
@@ -8,6 +9,7 @@ using Runner.Components;
 
 namespace Runner.Systems
 {
+    [HearsMessage(typeof(UpdateMessage))]
     public class PlayerInput : ComponentProcessingSystem<CharacterInput>
     {
         private InputManager input;

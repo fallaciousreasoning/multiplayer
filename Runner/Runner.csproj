@@ -46,9 +46,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Builders\CameraBuilder.cs" />
-    <Compile Include="Builders\CharacterStats.cs" />
-    <Compile Include="Builders\RollFinishListener.cs" />
-    <Compile Include="Builders\TriggerDetector.cs" />
     <Compile Include="Builders\ObstacleBuilder.cs" />
     <Compile Include="Builders\PlayerBuilder.cs" />
     <Compile Include="Components\CharacterInput.cs" />
@@ -61,11 +58,9 @@
     <Compile Include="Systems\TouchTrackingSystem.cs" />
     <Compile Include="Systems\Mover.cs" />
     <Compile Include="Systems\PlayerInput.cs" />
-    <Compile Include="Builders\CharacterMotor.cs" />
     <Compile Include="Components\CharacterInfo.cs" />
     <Compile Include="Components\CharacterStats.cs" />
     <Compile Include="Components\Follow.cs" />
-    <Compile Include="MapInfo.cs" />
     <Compile Include="PlayerAnimationHelper.cs" />
     <Compile Include="PrefabInitializer.cs" />
     <Compile Include="Program.cs" />

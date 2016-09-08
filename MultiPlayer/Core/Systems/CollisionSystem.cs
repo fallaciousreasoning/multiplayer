@@ -49,6 +49,14 @@ namespace MultiPlayer.Core.Systems
             
             collider.Body = CreateBody(entity, collider);
             collider.Body.UserData = entity;
+
+            if (entity.HasComponent<Transform>())
+            {
+                var transform = entity.Get<Transform>();
+                collider.Body.Position = transform.WorldPosition;
+                collider.Body.Rotation = transform.WorldRotation;
+            }
+
             collider.Body.OnCollision += OnCollided;
             collider.Body.OnSeparation += OnSeperated;
         }
@@ -73,11 +81,11 @@ namespace MultiPlayer.Core.Systems
                 var transform = entity.Get<Transform>();
                 var collider = entity.Get<Collider>();
 
-                if (transform.Position != b.Position || transform.Rotation != b.Rotation)
+                if (transform.WorldPosition != b.Position || transform.WorldRotation != b.Rotation)
                 {
                     b.Awake = true;
-                    b.Position = transform.Position;
-                    b.Rotation = transform.Rotation;
+                    b.Position = transform.WorldPosition;
+                    b.Rotation = transform.WorldRotation;
                 }
 
                 if (transform.Scale != collider.LastScale)
@@ -101,11 +109,11 @@ namespace MultiPlayer.Core.Systems
             world.BodyList.ForEach(b =>
             {
                 var transform = (b.UserData as Entity).Get<Transform>();
-                if (transform.Position != b.Position || transform.Rotation != b.Rotation)
+                if (transform.WorldPosition != b.Position || transform.WorldRotation != b.Rotation)
                 {
                     b.Awake = true;
-                    transform.Position = b.Position;
-                    transform.Rotation = b.Rotation;
+                    transform.WorldPosition = b.Position;
+                    transform.WorldRotation = b.Rotation;
                 }
             });
         }

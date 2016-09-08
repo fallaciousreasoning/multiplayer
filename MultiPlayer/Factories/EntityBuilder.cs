@@ -12,18 +12,12 @@ namespace MultiPlayer.Factories
 {
     public class EntityBuilder
     {
-        private Dictionary<Type, object> Components => entities[entities.Count - 1];
-        private readonly List<Dictionary<Type, object>> entities = new List<Dictionary<Type, object>>();
-
-        public EntityBuilder NewEntity()
-        {
-            entities.Add(new Dictionary<Type, object>());
-            return this;
-        }
+        private Dictionary<Type, object> Components = new Dictionary<Type, object>();
+        private List<EntityBuilder> children = new List<EntityBuilder>();
 
         public EntityBuilder WithTag(string tag)
         {
-            if (Components.ContainsKey(typeof(Tag))) Components.Add(typeof(Tag), new Tag());
+            if (!Components.ContainsKey(typeof(Tag))) Components.Add(typeof(Tag), new Tag());
 
             var tagComponent = Components[typeof(Tag)] as Tag;
             tagComponent.AddTag(tag);
@@ -62,27 +56,30 @@ namespace MultiPlayer.Factories
             return new EntityBuilder().With<Transform>();
         }
 
-        public IEnumerable<Entity> Create()
+        public List<Entity> Create(Entity parent=null)
         {
             var created = new List<Entity>();
 
-            foreach (var components in entities)
-            {
-                var entity = new Entity();
-                foreach (var key in components.Keys)
-                    entity.Add(components[key]);
+            var root = CreateRoot(parent);
+            created.Add(root);
 
-                created.Add(entity);
+            foreach (var builder in children)
+            {
+                var entities = builder.Create(root);
+                created.AddRange(entities);
             }
 
             return created;
         }
 
-        public Entity CreateLast()
+        public Entity CreateRoot(Entity parent=null)
         {
             var entity = new Entity();
             foreach (var key in Components.Keys)
                 entity.Add(Components[key]);
+
+            if (parent != null && entity.HasComponent<Transform>() && parent.HasComponent<Transform>())
+                entity.Get<Transform>().Parent = parent.Get<Transform>();
 
             return entity;
         }
@@ -90,6 +87,24 @@ namespace MultiPlayer.Factories
         public EntityBuilder AtPosition(Vector2 position)
         {
             Get<Transform>().Position = position;
+            return this;
+        }
+
+        public EntityBuilder AtRotation(float rotation)
+        {
+            Get<Transform>().Rotation = rotation;
+            return this;
+        }
+
+        public EntityBuilder AtScale(Vector2 scale)
+        {
+            Get<Transform>().Scale = scale;
+            return this;
+        }
+
+        public EntityBuilder WithChild(EntityBuilder child)
+        {
+            children.Add(child);
             return this;
         }
     }

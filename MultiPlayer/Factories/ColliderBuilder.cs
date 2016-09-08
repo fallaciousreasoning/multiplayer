@@ -42,6 +42,7 @@ namespace MultiPlayer.Factories
         public ColliderBuilder IsTrigger(bool isTrigger = true)
         {
             this.isTrigger = isTrigger;
+            if (isTrigger) WithBodyType(BodyType.Dynamic);
             return this;
         }
 

@@ -27,6 +27,7 @@ namespace MultiPlayer
         public EnigmaGame(Scene scene)
         {
             this.scene = scene;
+            IsMouseVisible = true;
 
             graphics = new GraphicsDeviceManager(this);
             time = new Time();
@@ -44,11 +45,8 @@ namespace MultiPlayer
 
             scene.Start();
 
-            scene.Engine.AddSystem(new CameraSystem());
-            scene.Engine.AddSystem(new CollisionSystem());
-            scene.Engine.AddSystem(new SpriteRenderer());
+            return;
 
-            scene.Engine.AddSystem(new AnimationSystem());
             scene.Engine.AddSystem(new StayOnMouseSystem());
             scene.Engine.AddSystem(new TestCollisionListener());
 

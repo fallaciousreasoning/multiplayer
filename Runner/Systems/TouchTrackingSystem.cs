@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,12 @@ namespace Runner.Systems
 
             var collisionMessage = (CollisionMessage) message;
 
+            if (collisionMessage.Hit.HasComponent<Tag>())
+            {
+                Debug.WriteLine($"IsTrigger: {collisionMessage.IsTrigger}");
+                Debug.WriteLine(string.Join(",", collisionMessage.Hit.Get<Tag>().Tags));
+            }
+
             if (!collisionMessage.IsTrigger || 
                 !collisionMessage.Target.HasComponent<Touching>() ||
                 !collisionMessage.Hit.HasComponent<Tag>()) return;
@@ -31,7 +38,7 @@ namespace Runner.Systems
             if (collisionMessage.Mode == CollisionMode.Entered)
                 touchInfo.Touched(hitTag.Tags);
             else
-                touchInfo.Touched(hitTag.Tags);
+                touchInfo.Seperated(hitTag.Tags);
         }
     }
 }

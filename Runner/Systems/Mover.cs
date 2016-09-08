@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using MultiPlayer.Annotations;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
@@ -11,6 +12,7 @@ using Runner.Components;
 
 namespace Runner.Systems
 {
+    [HearsMessage(typeof(UpdateMessage))]
     public class Mover : ComponentProcessingSystem<Collider, CharacterStats, CharacterInput, CharacterInfo, Move>
     {
         protected override void Process(IMessage message, Collider collider, CharacterStats stats, CharacterInput input, CharacterInfo info, Move move)
@@ -42,7 +44,7 @@ namespace Runner.Systems
             newVelocity += stats.Gravity*step;
 
             newVelocity.X = MathHelper.Clamp(newVelocity.X, -stats.MaxXSpeed, stats.MaxXSpeed);
-            newVelocity.X = MathHelper.Clamp(newVelocity.Y, -stats.MaxYSpeed, stats.MaxYSpeed);
+            newVelocity.Y = MathHelper.Clamp(newVelocity.Y, -stats.MaxYSpeed, stats.MaxYSpeed);
 
             info.Velocity = newVelocity;
             collider.Velocity = info.Velocity;

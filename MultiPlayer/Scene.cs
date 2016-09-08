@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MultiPlayer.Core;
+using MultiPlayer.Core.Animation;
 using MultiPlayer.Core.Input;
 using MultiPlayer.Core.InputMethods;
+using MultiPlayer.Core.Systems;
 
 namespace MultiPlayer
 {
@@ -16,6 +18,7 @@ namespace MultiPlayer
         public Scene(IMouse mouse, IKeyboard keyboard)
         {
             Engine = new Engine(this);
+            PrefabManager = new PrefabManager(Engine);
 
             Input = new InputManager(mouse, keyboard);
             Engine.AddSystem(Input);
@@ -25,6 +28,12 @@ namespace MultiPlayer
         {
             SpriteBatch = new SpriteBatch(Device);
             ActiveScene = this;
+
+            Engine.AddSystem(new CameraSystem());
+            Engine.AddSystem(new CollisionSystem());
+            Engine.AddSystem(new SpriteRenderer());
+
+            Engine.AddSystem(new AnimationSystem());
 
             Engine.Start();
         }
@@ -40,6 +49,7 @@ namespace MultiPlayer
             Engine.Draw();
         }
 
+        public PrefabManager PrefabManager { get; private set; }
         public Time Time { get; private set; }
         public Engine Engine { get; private set; }
         public InputManager Input { get; private set; }

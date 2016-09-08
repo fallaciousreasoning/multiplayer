@@ -31,10 +31,26 @@ namespace MultiPlayer.Core
             entityBuilders.Add(name, builder);
         }
 
-        public IEnumerable<Entity> Instantiate(string name)
+        public List<Entity> Instantiate(string name)
         {
-            var entities = Build(name);
+            return Instantiate(name, Vector2.Zero);
+        }
 
+        public List<Entity> Instantiate(string name, Vector2 position)
+        {
+            return Instantiate(name, position, 0);
+        }
+
+        public List<Entity> Instantiate(string name, Vector2 position, float rotation)
+        {
+            return Instantiate(name, position, rotation, Vector2.One);
+        }
+
+        public List<Entity> Instantiate(string name, Vector2 position, float rotation, Vector2 scale)
+        {
+            var entities = Build(name, position, rotation, scale);
+
+            entities.Reverse();
             entities.Foreach(manager.AddEntity);
 
             return entities;
@@ -46,12 +62,32 @@ namespace MultiPlayer.Core
             return entity;
         }
 
-        public IEnumerable<Entity> Build(string name)
+        public List<Entity> Build(string name)
+        {
+            return Build(name, Vector2.Zero);
+        }
+
+        public List<Entity> Build(string name, Vector2 position)
+        {
+            return Build(name, position, 0);
+        }
+
+        public List<Entity> Build(string name, Vector2 position, float rotation)
+        {
+            return Build(name, position, rotation, Vector2.One);
+        }
+
+        public List<Entity> Build(string name, Vector2 position, float rotation, Vector2 scale)
         {
             name = ignoreCase ? name.ToLower() : name;
             if (!entityBuilders.ContainsKey(name)) throw new Exception($"You don't have a prefab called {name}");
 
-            var entities = entityBuilders[name]().Create();
+            var entities = entityBuilders[name]()
+                .AtPosition(position)
+                .AtRotation(rotation)
+                .AtScale(scale)
+                .Create();
+
             return entities;
         }
     }

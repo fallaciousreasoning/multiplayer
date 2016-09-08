@@ -20,7 +20,7 @@ namespace Runner.Builders
             return EntityBuilder.New()
                 .WithTag(OBSTACLE_TAG)
                 .WithTexture(TextureUtil.CreateTexture((int)(width*Transform.PIXELS_A_METRE), (int)(height*Transform.PIXELS_A_METRE), Color.Black))
-                .With(ColliderBuilder.New().BoxShape(width, height));
+                .With(ColliderBuilder.New().BoxShape(width, height).Create());
         }
     }
 }
