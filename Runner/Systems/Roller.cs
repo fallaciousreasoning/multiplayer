@@ -18,8 +18,12 @@ namespace Runner.Systems
     {
         protected override void OnEntityAdded(Entity entity)
         {
+            Roll(entity);
             base.OnEntityAdded(entity);
+        }
 
+        private void Roll(Entity entity)
+        {
             var startAnimationMessage = new StartAnimationMessage(entity,
                 Animations.Name(PlayerAnimation.Roll, entity.Get<CharacterInfo>().Facing));
             Engine.MessageHub.SendMessage(startAnimationMessage);
@@ -32,8 +36,13 @@ namespace Runner.Systems
 
             if (animationFinishedMessage.Target == entity)
             {
-                entity.Remove<Roll>();
-                entity.Add<Move>();
+                if (!entity.Get<CharacterInfo>().CanStand)
+                    Roll(entity);
+                else
+                {
+                    entity.Remove<Roll>();
+                    entity.Add<Move>();
+                }
             }
         }
 
