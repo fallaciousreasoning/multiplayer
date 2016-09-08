@@ -84,7 +84,7 @@ namespace Runner.Builders
             return EntityBuilder.New()
                 .WithTag("player")
                 .WithTexture(TextureUtil.CreateTexture(widthPixels, heightPixels, Color.White))
-                .With(new CharacterStats())
+                .With(LoadStats())
                 .With(new CharacterInfo()
                 {
                     CeilingDetector = ceilingDetector,
