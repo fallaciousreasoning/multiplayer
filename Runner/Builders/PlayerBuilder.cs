@@ -98,7 +98,7 @@ namespace Runner.Builders
                 .With(new Move())
                 .With(animator)
 
-                .WithChild(EntityBuilder.New()
+                .WithChild(EntityBuilder.New(false, true, true)
                     //Add the ground detector (bar below)
                     .WithChild(EntityBuilder.New()
                         .With(ColliderBuilder.New().BoxShape(width*sensorLopOff, sensorWidth).IsTrigger().Create())

@@ -25,10 +25,16 @@ namespace MultiPlayer.Core
             ComponentAdded?.Invoke(this, component);
         }
 
-        public void Remove<T>(T component)
+        public void Remove<T>()
             where T : class
         {
-            components.Remove(typeof(T));
+            var component = components[typeof(T)];
+            Remove(component);
+        }
+
+        public void Remove(object component)
+        {
+            components.Remove(component.GetType());
             ComponentRemoved?.Invoke(this, component);
         }
 

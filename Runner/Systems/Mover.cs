@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using MultiPlayer.Annotations;
+using MultiPlayer.Core;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
@@ -13,16 +15,9 @@ using Runner.Components;
 namespace Runner.Systems
 {
     [HearsMessage(typeof(UpdateMessage))]
-    public class Mover : ComponentProcessingSystem<CharacterStats, CharacterInput, CharacterInfo, Move>
+    public class Mover : EntityProcessingSystem
     {
-        protected override void Process(IMessage message, CharacterStats stats, CharacterInput input, CharacterInfo info, Move move)
-        {
-            var updateMessage = message as UpdateMessage;
-            if (updateMessage != null)
-                Update(updateMessage.Time.Step, stats, input,info);
-        }
-
-        private void Update(float step, CharacterStats stats, CharacterInput input, CharacterInfo info)
+        private void Update(float step, Entity entity, CharacterStats stats, CharacterInput input, CharacterInfo info)
         {
             if (input.Jump)
             {
@@ -52,7 +47,8 @@ namespace Runner.Systems
 
             if (!info.WasOnGround && info.OnGround && info.ShouldRoll)
             {
-                //TODO Roll
+                entity.Remove<Move>();
+                entity.Add<Roll>();
             }
 
             info.WasOnGround = info.OnGround;
@@ -89,5 +85,20 @@ namespace Runner.Systems
             }
             else info.ShouldRoll = true;
         }
+
+        protected override void Process(IMessage message, Entity entity)
+        {
+            var updateMessage = message as UpdateMessage;
+            if (updateMessage != null)
+                Update(updateMessage.Time.Step, entity, entity.Get<CharacterStats>(), entity.Get<CharacterInput>(), entity.Get<CharacterInfo>());
+        }
+
+        public override IList<Type> Types { get; } = new List<Type>()
+        {
+            typeof(CharacterStats),
+            typeof(CharacterInput),
+            typeof(CharacterStats),
+            typeof(Move)
+        };
     }
 }

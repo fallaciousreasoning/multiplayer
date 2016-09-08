@@ -22,16 +22,17 @@ namespace Runner
 
         public override void Start()
         {
-            base.Start();
-
             Engine.AddSystem(new FollowSystem());
 
             Engine.AddSystem(new TouchTrackingSystem());
 
             Engine.AddSystem(new CharacterSystem());
             Engine.AddSystem(new Mover());
+            Engine.AddSystem(new Roller());
 
             Engine.AddSystem(new PlayerInput());
+
+            base.Start();
 
             Input.AddButton("jump", new InputButton(Keys.Space, Keys.W, Keys.Up));
             Input.AddButton("slide", new InputButton(Keys.S, Keys.LeftShift, Keys.Down));

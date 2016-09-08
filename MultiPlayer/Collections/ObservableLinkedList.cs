@@ -31,6 +31,9 @@ namespace MultiPlayer.Collections
 
         void Remove(T item);
         void Remove(LinkedListNode<T> item);
+
+        LinkedListNode<T> First { get; }
+        LinkedListNode<T> Last { get; }
     }
 
     public class ObservableLinkedList<T> : IObservableLinkedList<T>

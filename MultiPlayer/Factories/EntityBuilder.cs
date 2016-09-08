@@ -51,9 +51,14 @@ namespace MultiPlayer.Factories
             return (T)Get(typeof(T));
         }
 
-        public static EntityBuilder New()
+        public static EntityBuilder New(bool positionIndependent=false, bool rotationIndependent=false, bool scaleIndependent=false)
         {
-            return new EntityBuilder().With<Transform>();
+            return new EntityBuilder().With(new Transform()
+            {
+                PositionIndependent = positionIndependent,
+                RotationIndependent = rotationIndependent,
+                ScaleIndependent = scaleIndependent
+            });
         }
 
         public List<Entity> Create(Entity parent=null)

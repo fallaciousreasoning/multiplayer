@@ -12,6 +12,10 @@ namespace MultiPlayer.Core.Components
         public const float PIXELS_A_METRE = 64;
         public const float METRES_A_PIXEL = 1/PIXELS_A_METRE;
 
+        public bool PositionIndependent;
+        public bool RotationIndependent;
+        public bool ScaleIndependent;
+
         public Transform Parent;
 
         public Vector2 Position;
@@ -22,7 +26,7 @@ namespace MultiPlayer.Core.Components
         {
             get
             {
-                return Parent != null
+                return Parent != null && !PositionIndependent
                     ? Parent.WorldPosition + Vector2.Transform(Position, Matrix.CreateRotationZ(Parent.Rotation))
                     : Position;
             }
@@ -31,14 +35,14 @@ namespace MultiPlayer.Core.Components
 
         public Vector2 WorldScale
         {
-            get { return Scale*(Parent?.WorldScale ?? Vector2.One); }
-            set { Scale = value/(Parent?.WorldScale ?? Vector2.One); }
+            get { return Scale*(ScaleIndependent ? Vector2.One : Parent?.WorldScale ?? Vector2.One); }
+            set { Scale = value/(ScaleIndependent ? Vector2.One : Parent?.WorldScale ?? Vector2.One); }
         }
 
         public float WorldRotation
         {
-            get { return Rotation + (Parent?.WorldRotation ?? 0); }
-            set { Rotation = value - (Parent?.WorldRotation ?? 0); }
+            get { return Rotation + (RotationIndependent ? 0 : Parent?.WorldRotation ?? 0); }
+            set { Rotation = value - (RotationIndependent ? 0 : Parent?.WorldRotation ?? 0); }
         }
     }
 }

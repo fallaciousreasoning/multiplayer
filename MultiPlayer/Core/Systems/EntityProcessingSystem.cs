@@ -23,7 +23,12 @@ namespace MultiPlayer.Core.Systems
             if (!Started)
                 Start();
 
-            Entities.Foreach(entity => Process(message, entity));
+            var node = Entities.First;
+            while (node != null)
+            {
+                Process(message, node.Value);
+                node = node.Next;
+            }
         }
 
         protected virtual void Start()

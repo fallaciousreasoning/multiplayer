@@ -22,12 +22,6 @@ namespace Runner.Systems
 
             var collisionMessage = (CollisionMessage) message;
 
-            if (collisionMessage.Hit.HasComponent<Tag>())
-            {
-                Debug.WriteLine($"IsTrigger: {collisionMessage.IsTrigger}");
-                Debug.WriteLine(string.Join(",", collisionMessage.Hit.Get<Tag>().Tags));
-            }
-
             if (!collisionMessage.IsTrigger || 
                 !collisionMessage.Target.HasComponent<Touching>() ||
                 !collisionMessage.Hit.HasComponent<Tag>()) return;
