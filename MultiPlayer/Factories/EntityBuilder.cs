@@ -12,11 +12,23 @@ namespace MultiPlayer.Factories
 {
     public class EntityBuilder
     {
-        private readonly Dictionary<Type, object> components = new Dictionary<Type, object>();
+        private Dictionary<Type, object> Components => entities[entities.Count - 1];
+        private readonly List<Dictionary<Type, object>> entities = new List<Dictionary<Type, object>>();
+
+        public EntityBuilder NewEntity()
+        {
+            entities.Add(new Dictionary<Type, object>());
+            return this;
+        }
 
         public EntityBuilder WithTag(string tag)
         {
-            throw new NotImplementedException();
+            if (Components.ContainsKey(typeof(Tag))) Components.Add(typeof(Tag), new Tag());
+
+            var tagComponent = Components[typeof(Tag)] as Tag;
+            tagComponent.AddTag(tag);
+
+            return this;
         }
 
         public EntityBuilder WithTexture(Texture2D texture)
@@ -26,7 +38,7 @@ namespace MultiPlayer.Factories
 
         public EntityBuilder With(object component)
         {
-            components.Add(component.GetType(), component);
+            Components.Add(component.GetType(), component);
             return this;
         }
 
@@ -37,7 +49,7 @@ namespace MultiPlayer.Factories
 
         public object Get(Type type)
         {
-            return components[type];
+            return Components[type];
         }
 
         public T Get<T>()
@@ -50,11 +62,27 @@ namespace MultiPlayer.Factories
             return new EntityBuilder().With<Transform>();
         }
 
-        public Entity Create()
+        public IEnumerable<Entity> Create()
+        {
+            var created = new List<Entity>();
+
+            foreach (var components in entities)
+            {
+                var entity = new Entity();
+                foreach (var key in components.Keys)
+                    entity.Add(components[key]);
+
+                created.Add(entity);
+            }
+
+            return created;
+        }
+
+        public Entity CreateLast()
         {
             var entity = new Entity();
-            foreach (var key in components.Keys)
-                entity.Add(components[key]);
+            foreach (var key in Components.Keys)
+                entity.Add(Components[key]);
 
             return entity;
         }

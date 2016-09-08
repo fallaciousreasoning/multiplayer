@@ -11,7 +11,7 @@ namespace Runner.Builders
 {
     public static class CameraBuilder
     {
-        public static EntityBuilder CreateCamera(Transform target)
+        public static EntityBuilder Camera(Transform target)
         {
             return EntityBuilder.New()
                 .With(new Camera())

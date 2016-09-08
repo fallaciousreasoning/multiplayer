@@ -75,10 +75,12 @@
     <Compile Include="Core\Animation\ScaleAccessor.cs" />
     <Compile Include="Core\Animation\Vector2Calculator.cs" />
     <Compile Include="Core\Animation\Vector2Frame.cs" />
+    <Compile Include="Core\Components\Tag.cs" />
     <Compile Include="Core\Families\IFamilyComposedOf.cs" />
     <Compile Include="Core\Families\NodeFamily.cs" />
     <Compile Include="Core\Messaging\ComponentAddedMessage.cs" />
     <Compile Include="Core\Messaging\ComponentRemovedMessage.cs" />
+    <Compile Include="Core\PrefabManager.cs" />
     <Compile Include="Core\Systems\ComponentProcessingSystem.cs" />
     <Compile Include="Core\Systems\EntityProcessingSystem.cs" />
     <Compile Include="Core\Components\Camera.cs" />

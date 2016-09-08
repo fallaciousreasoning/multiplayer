@@ -12,7 +12,6 @@ namespace Runner.Systems
     {
         public void RecieveMessage(IMessage message)
         {
-            throw new NotImplementedException();
         }
     }
 }

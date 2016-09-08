@@ -17,7 +17,7 @@ namespace Runner
 {
     public class RunnerGame : Scene
     {
-        private GameObject camera;
+        private Entity camera;
 
         public override void Start()
         {
@@ -26,21 +26,12 @@ namespace Runner
             Input.AddButton("jump", new InputButton(Keys.Space, Keys.W, Keys.Up));
             Input.AddButton("slide", new InputButton(Keys.S, Keys.LeftShift, Keys.Down));
 
-            PrefabInitializer.AddRunnerGamePrefabs(PrefabFactory);
+            PrefabInitializer.AddRunnerGamePrefabs(PrefabManager);
 
-            var player = PrefabFactory.Instantiate("player", new Vector2(-6.25f, 0));
+            var player = PrefabManager.Instantiate("player", new Vector2(-6.25f, 0));
 
-            camera = CameraBuilder.CreateCamera(player.Transform);
-
-            PrefabFactory.Instantiate(camera);
-
-            string json;
-            using (var r = new StreamReader(File.OpenRead("map.json")))
-            {
-                json = r.ReadToEnd();
-            }
-            var map = JsonConvert.DeserializeObject<MapInfo>(json);
-            PrefabFactory.Instantiate(map.Scene);
+            camera = CameraBuilder.Camera(player.Transform).CreateLast();
+            Engine.AddEntity(camera);
         }
 
         public RunnerGame(IMouse mouse, IKeyboard keyboard)

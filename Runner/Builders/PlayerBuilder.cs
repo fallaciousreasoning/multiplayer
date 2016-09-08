@@ -20,7 +20,7 @@ namespace Runner.Builders
 {
     public static class PlayerBuilder
     {
-        public static EntityBuilder BuildPlayer()
+        public static EntityBuilder Player()
         {
             var width = 0.5f;
             var height = 1f;

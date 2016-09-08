@@ -10,11 +10,10 @@ namespace Runner
 {
     public static class PrefabInitializer
     {
-        public static void AddRunnerGamePrefabs(PrefabFactory factory)
+        public static void AddRunnerGamePrefabs(PrefabManager prefabManager)
         {
-            factory.RegisterPrefab("platform", () => ObstacleBuilder.BuildGround().Create());
-            factory.RegisterPrefab("player", () => PlayerBuilder.BuildPlayer().Create());
-            factory.RegisterPrefab("animated", PlayerBuilder.AnimationTest);
+            prefabManager.RegisterPrefab("platform", ObstacleBuilder.Obstacle);
+            prefabManager.RegisterPrefab("player", PlayerBuilder.Player);
         }
     }
 }

@@ -28,8 +28,11 @@ namespace Runner.Systems
         protected override void Process(IMessage message, CharacterInput characterInput)
         {
             var x = input.GetAxis("horizontal");
-            characterInput.AccelerateLeft = x < 0;
-            characterInput.AccelerateRight = x > 0;
+
+            characterInput.Direction = 0;
+
+            if (x < 0) characterInput.Direction--;
+            if (x > 0) characterInput.Direction++;
 
             if (input.GetButtonDown("jump"))
                 characterInput.Jump = true;

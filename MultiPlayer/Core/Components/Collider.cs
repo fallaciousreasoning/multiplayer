@@ -19,10 +19,13 @@ namespace MultiPlayer.Core.Components
 
         public float Density;
 
-        public Vector2 LastScale = Vector2.One;
         public Vertices Shape;
 
         internal Body Body { get; set; }
         internal bool WasTrigger { get; set; }
+        internal Vector2 LastScale { get; set; } = Vector2.One;
+
+        public Vector2 Velocity { get { return Body.LinearVelocity; } set { Body.LinearVelocity = value; } }
+        public float AngularVelocity { get { return Body.AngularVelocity; } set { Body.AngularVelocity = value; } }
     }
 }
