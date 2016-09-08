@@ -49,6 +49,7 @@ namespace Runner.Systems
             
             if (!info.WasOnGround && info.OnGround && info.ShouldRoll)
             {
+                info.ShouldRoll = false;
                 entity.Remove<Move>();
                 entity.Add<Roll>();
             }
