@@ -27,7 +27,7 @@ namespace Runner.Systems
 
             if (input.Slide)
             {
-                Slide(stats, info);
+                Slide(entity, stats, info);
                 input.Slide = false;
             }
 
@@ -36,15 +36,17 @@ namespace Runner.Systems
             var dir = MathHelper.Clamp(input.Direction, -1, 1);
 
             newVelocity.X += (info.OnGround ? stats.HorizontalAcceleration : stats.HorizontalAirAcceleration) * dir * step;
-            newVelocity += stats.Gravity*step;
 
             info.Velocity = newVelocity;
 
+            if (info.Triggered(info.LeftWallDetector) && info.Velocity.X < 0) info.Velocity.X = 0;
+            if (info.Triggered(info.RightWallDetector) && info.Velocity.X > 0) info.Velocity.X = 0;
+            if (info.Triggered(info.GroundDetector) && info.Velocity.Y > 0) info.Velocity.Y = 0;
+            if (info.Triggered(info.CeilingDetector) && info.Velocity.Y < 0) info.Velocity.Y = 0;
+
             if (dir == 0)
                 info.Velocity.X -= info.Velocity.X*(info.OnGround ? stats.HorizontalDrag : stats.HorizontalAirDrag)*step;
-
-            info.TillJump -= step;
-
+            
             if (!info.WasOnGround && info.OnGround && info.ShouldRoll)
             {
                 entity.Remove<Move>();
@@ -77,11 +79,13 @@ namespace Runner.Systems
             info.TillJump = stats.JumpDelay;
         }
 
-        private void Slide(CharacterStats stats, CharacterInfo info)
+        private void Slide(Entity entity, CharacterStats stats, CharacterInfo info)
         {
             if (info.OnGround)
             {
-                //TODO slide
+                entity.Remove<Move>();
+                entity.Add<Slide>();
+
                 info.TillJump = stats.SlideJumpDelay;
             }
             else info.ShouldRoll = true;

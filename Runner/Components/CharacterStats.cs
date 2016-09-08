@@ -52,7 +52,7 @@ namespace Runner.Components
         /// <summary>
         /// The minimum horizontal velocity the character needs to slide
         /// </summary>
-        public float MinSlideVelocity { get; set; } = 2;
+        public float MinSlideVelocity { get; set; } = 3;
 
         /// <summary>
         /// The maximum horizontal speed of the character
@@ -77,7 +77,7 @@ namespace Runner.Components
         /// <summary>
         /// The horizontal drag applied to the character when sliding
         /// </summary>
-        public float HorizontalSlideDrag { get; set; } = 2.5f;
+        public float HorizontalSlideDrag { get; set; } = 1f;
 
         /// <summary>
         /// The acceleration applied to the character due to gravity

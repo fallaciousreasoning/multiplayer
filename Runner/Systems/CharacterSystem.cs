@@ -17,16 +17,17 @@ namespace Runner.Systems
     {
         protected override void Process(IMessage message, Collider collider, CharacterStats stats, CharacterInput input, CharacterInfo info)
         {
+            var updateMessage = message as UpdateMessage;
+            if (updateMessage == null) return;
+
+            var step = updateMessage.Time.Step;
+
+            info.Velocity += stats.Gravity * step;
 
             info.Velocity.X = MathHelper.Clamp(info.Velocity.X, -stats.MaxXSpeed, stats.MaxXSpeed);
             info.Velocity.Y = MathHelper.Clamp(info.Velocity.Y, -stats.MaxYSpeed, stats.MaxYSpeed);
 
             collider.Velocity = info.Velocity;
-
-            if (info.Triggered(info.LeftWallDetector) && info.Velocity.X < 0) info.Velocity.X = 0;
-            if (info.Triggered(info.RightWallDetector) && info.Velocity.X > 0) info.Velocity.X = 0;
-            if (info.Triggered(info.GroundDetector) && info.Velocity.Y > 0) info.Velocity.Y = 0;
-            if (info.Triggered(info.CeilingDetector) && info.Velocity.Y < 0) info.Velocity.Y = 0;
 
             info.Moving = info.Velocity.LengthSquared() > stats.VelocityMinForMoving;
 
@@ -35,6 +36,8 @@ namespace Runner.Systems
 
             if (info.Velocity.X > stats.VelocityMinForMoving)
                 info.Facing = Direction.Right;
+
+            info.TillJump -= step;
         }
     }
 }

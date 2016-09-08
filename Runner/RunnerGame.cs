@@ -30,6 +30,7 @@ namespace Runner
             Engine.AddSystem(new Mover());
             Engine.AddSystem(new Roller());
             Engine.AddSystem(new Clamberer());
+            Engine.AddSystem(new Slider());
 
             Engine.AddSystem(new PlayerInput());
 
@@ -46,6 +47,8 @@ namespace Runner
             PrefabManager.Instantiate("platform", new Vector2(-6.5f, 0), 0, new Vector2(1, 6));
             PrefabManager.Instantiate("platform", new Vector2(6.5f, 0), 0, new Vector2(1, 6));
             PrefabManager.Instantiate("platform", new Vector2(5.5f, 1), 0, new Vector2(1, 4));
+
+            PrefabManager.Instantiate("platform", new Vector2(0f, 1.5f), 0, new Vector2(4, 1));
 
             camera = CameraBuilder.Camera(player.Last().Get<Transform>()).CreateRoot();
             Engine.AddEntity(camera);

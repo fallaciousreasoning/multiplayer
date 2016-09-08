@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Runner.Components
 {
-    class Slide
+    public class Slide
     {
+        public bool AnimatedDown;
+        public bool AnimatingUp;
     }
 }
