@@ -14,14 +14,14 @@ using Runner.Components;
 namespace Runner.Systems
 {
     [HearsMessage(typeof(AnimationFinishedMessage))]
-    public class Roller : EntityProcessingSystem
+    public class Clamberer : EntityProcessingSystem
     {
         protected override void OnEntityAdded(Entity entity)
         {
             base.OnEntityAdded(entity);
 
             var startAnimationMessage = new StartAnimationMessage(entity,
-                Animations.Name(PlayerAnimation.Roll, entity.Get<CharacterInfo>().Facing));
+                Animations.Name(PlayerAnimation.Clamber, entity.Get<CharacterInfo>().Facing));
             Engine.MessageHub.SendMessage(startAnimationMessage);
         }
 
@@ -32,7 +32,7 @@ namespace Runner.Systems
 
             if (animationFinishedMessage.Target == entity)
             {
-                entity.Remove<Roll>();
+                entity.Remove<Clamber>();
                 entity.Add<Move>();
             }
         }
@@ -42,7 +42,7 @@ namespace Runner.Systems
             typeof(CharacterStats),
             typeof(CharacterInfo),
             typeof(AnimationContainer),
-            typeof(Roll),
+            typeof(Clamber),
         };
     }
 }

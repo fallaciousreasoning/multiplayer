@@ -21,7 +21,7 @@ namespace Runner.Systems
         {
             if (input.Jump)
             {
-                Jump(stats, info);
+                Jump(entity, stats, info);
                 input.Jump = false;
             }
 
@@ -54,7 +54,7 @@ namespace Runner.Systems
             info.WasOnGround = info.OnGround;
         }
 
-        private void Jump(CharacterStats stats, CharacterInfo info)
+        private void Jump(Entity entity, CharacterStats stats, CharacterInfo info)
         {
             if (info.TillJump > 0) return;
 
@@ -65,12 +65,13 @@ namespace Runner.Systems
             else if (info.CanClamber)
             {
                 info.Velocity = Vector2.Zero;
-                //TODO clamber
+                entity.Remove<Move>();
+                entity.Add<Clamber>();
             }
             else if (info.CanWallJump)
             {
                 info.Velocity.X = stats.WallJumpHorizontalImpulse*info.AwayFromWall*10;
-                info.Velocity.Y = stats.WallJumpHorizontalImpulse;
+                info.Velocity.Y = stats.WallJumpVerticalImpulse;
             }
 
             info.TillJump = stats.JumpDelay;

@@ -55,6 +55,7 @@
     <Compile Include="Components\Slide.cs" />
     <Compile Include="Components\Touching.cs" />
     <Compile Include="Systems\CharacterSystem.cs" />
+    <Compile Include="Systems\Clamberer.cs" />
     <Compile Include="Systems\TouchTrackingSystem.cs" />
     <Compile Include="Systems\Mover.cs" />
     <Compile Include="Systems\PlayerInput.cs" />
