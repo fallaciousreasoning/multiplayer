@@ -17,7 +17,7 @@ namespace Runner.Builders
                 .With(new Camera())
                 .With(new Follow()
                 {
-                    Spring = 2,
+                    Spring = 5,
                     Target = target
                 });
         }

@@ -13,16 +13,16 @@ using Runner.Components;
 namespace Runner.Systems
 {
     [HearsMessage(typeof(UpdateMessage))]
-    public class Mover : ComponentProcessingSystem<Collider, CharacterStats, CharacterInput, CharacterInfo, Move>
+    public class Mover : ComponentProcessingSystem<CharacterStats, CharacterInput, CharacterInfo, Move>
     {
-        protected override void Process(IMessage message, Collider collider, CharacterStats stats, CharacterInput input, CharacterInfo info, Move move)
+        protected override void Process(IMessage message, CharacterStats stats, CharacterInput input, CharacterInfo info, Move move)
         {
             var updateMessage = message as UpdateMessage;
             if (updateMessage != null)
-                Update(updateMessage.Time.Step, collider, stats,input,info);
+                Update(updateMessage.Time.Step, stats, input,info);
         }
 
-        private void Update(float step, Collider collider, CharacterStats stats, CharacterInput input, CharacterInfo info)
+        private void Update(float step, CharacterStats stats, CharacterInput input, CharacterInfo info)
         {
             if (input.Jump)
             {
@@ -43,16 +43,7 @@ namespace Runner.Systems
             newVelocity.X += (info.OnGround ? stats.HorizontalAcceleration : stats.HorizontalAirAcceleration) * dir * step;
             newVelocity += stats.Gravity*step;
 
-            newVelocity.X = MathHelper.Clamp(newVelocity.X, -stats.MaxXSpeed, stats.MaxXSpeed);
-            newVelocity.Y = MathHelper.Clamp(newVelocity.Y, -stats.MaxYSpeed, stats.MaxYSpeed);
-
             info.Velocity = newVelocity;
-            collider.Velocity = info.Velocity;
-
-            if (info.Triggered(info.LeftWallDetector) && info.Velocity.X < 0) info.Velocity.X = 0;
-            if (info.Triggered(info.RightWallDetector) && info.Velocity.X > 0) info.Velocity.X = 0;
-            if (info.Triggered(info.GroundDetector) && info.Velocity.Y > 0) info.Velocity.Y = 0;
-            if (info.Triggered(info.CeilingDetector) && info.Velocity.Y < 0) info.Velocity.Y = 0;
 
             if (dir == 0)
                 info.Velocity.X -= info.Velocity.X*(info.OnGround ? stats.HorizontalDrag : stats.HorizontalAirDrag)*step;

@@ -42,7 +42,7 @@ namespace Runner
 
             var floor = PrefabManager.Instantiate("platform", new Vector2(0, 3), 0, new Vector2(12, 1));
 
-            camera = CameraBuilder.Camera(player[0].Get<Transform>()).CreateRoot();
+            camera = CameraBuilder.Camera(player.Last().Get<Transform>()).CreateRoot();
             Engine.AddEntity(camera);
         }
 
