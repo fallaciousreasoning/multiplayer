@@ -83,8 +83,8 @@ namespace XamlEditor.Scene.Systems
 
         protected void Update(Dragger dragger, Transform transform)
         {
-            dragger.XDragBounds.Centre = transform.Position;
-            dragger.YDragBounds.Centre = transform.Position;
+            dragger.XDragBounds.Centre = transform.Position - new Vector2(dragger.XDragBounds.HalfSize.X, 0);
+            dragger.YDragBounds.Centre = transform.Position - new Vector2(0, dragger.YDragBounds.HalfSize.Y);
 
             var input = Engine.Scene.Input;
 
