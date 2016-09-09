@@ -81,7 +81,10 @@ namespace XamlEditor.ViewModels
         public void DragOver(IDropInfo dropInfo)
         {
             if (!(dropInfo.Data is EntityHierarchyViewModel)) return;
+            var entity = ((EntityHierarchyViewModel) dropInfo.Data).Entity;
 
+            if (!entity.HasComponent(accessor.ValueType)) return;
+            
             dropInfo.NotHandled = false;
             dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
             dropInfo.Effects = DragDropEffects.Copy;

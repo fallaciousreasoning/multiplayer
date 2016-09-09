@@ -60,7 +60,7 @@ namespace MultiPlayer.Core
             return HasComponent(typeof(T));
         }
 
-        internal bool HasComponent(Type type)
+        public bool HasComponent(Type type)
         {
             return components.ContainsKey(type);
         }
