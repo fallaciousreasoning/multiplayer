@@ -21,12 +21,13 @@ namespace XamlEditor.ViewModels
 
         public object Value
         {
-            get { return value; }
+            get { return accessor.GetValue(Object); }
             set
             {
-                if (Equals(value, this.value)) return;
-                this.value = value;
-                
+                if (Equals(value, Value)) return;
+
+                accessor.SetValue(Object, value);
+
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(FriendlyValue));
