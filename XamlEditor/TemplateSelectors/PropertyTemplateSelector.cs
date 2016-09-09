@@ -34,6 +34,8 @@ namespace XamlEditor.TemplateSelectors
         public DataTemplate EnumDataTemplate { get; set; }
 
         public DataTemplate Vector2DataTemplate { get; set; }
+
+        public DataTemplate ComponentPropertyDataTemplate { get; set; }
         
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -54,7 +56,7 @@ namespace XamlEditor.TemplateSelectors
             if (item is Vector2ViewModel && Vector2DataTemplate != null)
                 return Vector2DataTemplate;
 
-            return UnknownDataTemplate ?? base.SelectTemplate(item, container);
+            return ComponentPropertyDataTemplate; //UnknownDataTemplate ?? base.SelectTemplate(item, container);
         }
     }
 }

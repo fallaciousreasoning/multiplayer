@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using MultiPlayer.Annotations;
 
 namespace MultiPlayer.Core.Components
 {
@@ -22,6 +23,7 @@ namespace MultiPlayer.Core.Components
         public Vector2 Scale = Vector2.One;
         public float Rotation;
 
+        [EditorIgnore]
         public Vector2 WorldPosition
         {
             get
@@ -33,12 +35,14 @@ namespace MultiPlayer.Core.Components
             set { Position = value - (WorldPosition - Position); }
         }
 
+        [EditorIgnore]
         public Vector2 WorldScale
         {
             get { return Scale*(ScaleIndependent ? Vector2.One : Parent?.WorldScale ?? Vector2.One); }
             set { Scale = value/(ScaleIndependent ? Vector2.One : Parent?.WorldScale ?? Vector2.One); }
         }
 
+        [EditorIgnore]
         public float WorldRotation
         {
             get { return Rotation + (RotationIndependent ? 0 : Parent?.WorldRotation ?? 0); }

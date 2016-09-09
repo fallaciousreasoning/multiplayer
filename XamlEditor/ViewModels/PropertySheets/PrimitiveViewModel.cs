@@ -33,6 +33,7 @@ namespace XamlEditor.ViewModels
         public void Reload()
         {
             Value = accessor.GetValue(Object);
+            OnPropertyChanged(nameof(Value));
         }
 
         public string Name => FieldName;

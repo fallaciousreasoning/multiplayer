@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:templateSelectors="clr-namespace:XamlEditor.TemplateSelectors">
+                    xmlns:templateSelectors="clr-namespace:XamlEditor.TemplateSelectors"
+                    xmlns:dd="urn:gong-wpf-dragdrop">
+    
     <DataTemplate x:Key="SimplePropertyTemplate">
         <StackPanel HorizontalAlignment="Stretch">
             <TextBlock Text="{Binding Name}"/>
@@ -49,6 +51,12 @@
             </StackPanel>
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="ComponentPropertyTemplate">
+        <StackPanel dd:DragDrop.IsDropTarget="True" dd:DragDrop.DropHandler="{Binding}">
+            <TextBlock Text="{Binding Name}"/>
+            <TextBlock Text="{Binding FriendlyValue}"/>
+        </StackPanel>
+    </DataTemplate>
 
     <DataTemplate x:Key="ComplexDataTemplate">
         <Expander IsExpanded="True" Header="{Binding Name}" HorizontalAlignment="Stretch">
@@ -63,5 +71,6 @@
                                                 BoolDataTemplate="{StaticResource BoolDataTemplate}"
                                                 ComplexDataTemplate="{StaticResource ComplexDataTemplate}"
                                                 EnumDataTemplate="{StaticResource EnumDataTemplate}"
-                                                Vector2DataTemplate="{StaticResource Vector2DataTemplate}"/>
+                                                Vector2DataTemplate="{StaticResource Vector2DataTemplate}"
+                                                ComponentPropertyDataTemplate="{StaticResource ComponentPropertyTemplate}"/>
 </ResourceDictionary>

@@ -67,8 +67,8 @@ namespace XamlEditor.Scenes
         {
             base.Start();
 
-            Engine.AddSystem(new SpriteRenderer());
-            Engine.AddSystem(new CameraSystem());
+            //Engine.AddSystem(new SpriteRenderer());
+            //Engine.AddSystem(new CameraSystem());
 
             Engine.AddSystem(UpdateNotifier);
             Engine.AddSystem(new DraggerSystem());

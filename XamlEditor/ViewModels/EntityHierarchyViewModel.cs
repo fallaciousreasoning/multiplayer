@@ -20,19 +20,6 @@ namespace XamlEditor.ViewModels
             }
         }
 
-        public bool IsSelected
-        {
-            get { return isSelected; }
-            set
-            {
-                if (value == isSelected) return;
-                isSelected = value;
-                OnPropertyChanged();
-
-                OnSelected?.Invoke(Entity);
-            }
-        }
-
         public Entity Entity
         {
             get { return entity; }
@@ -47,6 +34,5 @@ namespace XamlEditor.ViewModels
 
         public Action<Entity> OnSelected;
         private Entity entity;
-        private bool isSelected;
     }
 }

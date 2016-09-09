@@ -29,7 +29,7 @@ namespace XamlEditor.ViewModels.PropertySheets
         {
             while (!ViewModelMap.ContainsKey(type))
             {
-                if (type.BaseType != typeof(object) && type.BaseType != null) type = type.BaseType;
+                if (type.BaseType != null) type = type.BaseType;
                 else return null;
             }
 
@@ -52,6 +52,8 @@ namespace XamlEditor.ViewModels.PropertySheets
             RegisterViewModelForType(typeof(bool), typeof(PrimitiveViewModel));
 
             RegisterViewModelForType(typeof(Enum), typeof(EnumViewModel));
+
+            RegisterViewModelForType(typeof(object), typeof(ComponentPropertyViewModel));
         }
     }
 }

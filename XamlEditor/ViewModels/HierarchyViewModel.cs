@@ -14,7 +14,6 @@ namespace XamlEditor.ViewModels
     public class HierarchyViewModel : BaseViewModel
     {
         private Engine engine;
-        private bool isExpanded;
 
         public Engine Engine
         {
@@ -29,18 +28,21 @@ namespace XamlEditor.ViewModels
             }
         }
 
-        public bool IsExpanded
+        public EntityHierarchyViewModel ActiveItem
         {
-            get { return isExpanded; }
+            get { return activeItem; }
             set
             {
-                if (value == isExpanded) return;
-                isExpanded = value;
+                if (Equals(value, activeItem)) return;
+                activeItem = value;
                 OnPropertyChanged();
+
+                ActiveItem?.OnSelected(ActiveItem.Entity);
             }
         }
 
         public Action<Entity> OnSelected;
+        private EntityHierarchyViewModel activeItem;
 
         public ObservableCollection<EntityHierarchyViewModel> Children { get; } = new ObservableCollection<EntityHierarchyViewModel>();
 
