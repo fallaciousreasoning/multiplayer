@@ -16,8 +16,11 @@ using SharpDX.Direct3D9;
 
 namespace Runner.Builders
 {
-    public static class PlayerBuilder
+    public static class CharacterBuilder
     {
+        public const string CHARACTER_TAG = "character";
+        public const string PLAYER_TAG = "player";
+
         public static EntityBuilder Player()
         {
             var width = 0.5f;
@@ -69,6 +72,13 @@ namespace Runner.Builders
                 .ReflectRotation()
                 .Create();
 
+            var diveRightAnimation = DiveAnimation()
+                .Create();
+
+            var diveLeftAnimation = DiveAnimation()
+                .ReflectRotation()
+                .Create();
+
             var animator = new AnimationContainer()
                 .Add(Animations.Name(PlayerAnimation.Clamber, Direction.Right), clamberRightAnimation)
                 .Add(Animations.Name(PlayerAnimation.Clamber, Direction.Left), clamberLeftAnimation)
@@ -79,10 +89,14 @@ namespace Runner.Builders
                 .Add(Animations.Name(PlayerAnimation.SlideDown, Direction.Right), slideDownRightAnimation)
                 .Add(Animations.Name(PlayerAnimation.SlideUp, Direction.Right), slideUpRightAnimation)
                 .Add(Animations.Name(PlayerAnimation.SlideDown, Direction.Left), slideDownLeftAnimation)
-                .Add(Animations.Name(PlayerAnimation.SlideUp, Direction.Left), slideUpLeftAnimation);
+                .Add(Animations.Name(PlayerAnimation.SlideUp, Direction.Left), slideUpLeftAnimation)
+                
+                .Add(Animations.Name(PlayerAnimation.Dive, Direction.Right), diveRightAnimation)
+                .Add(Animations.Name(PlayerAnimation.Dive, Direction.Left), diveLeftAnimation);
 
             return EntityBuilder.New()
-                .WithTag("player")
+                .WithTag(PLAYER_TAG)
+                .WithTag(CHARACTER_TAG)
                 .WithTexture(TextureUtil.CreateTexture(widthPixels, heightPixels, Color.White))
                 .With(LoadStats())
                 .With(new CharacterInfo()
@@ -190,6 +204,17 @@ namespace Runner.Builders
                 .InsertFrame(0, new KeyFrame(0))
                 .InsertFrame(0.2f, new KeyFrame(-MathHelper.PiOver2))
                 .IsRelative(false);
+
+            return animation;
+        }
+
+        public static AnimationBuilder DiveAnimation()
+        {
+            var animation = AnimationBuilder.New()
+                .InsertFrame(0, new KeyFrame(0))
+                .InsertFrame(0.5f, new KeyFrame(MathHelper.PiOver2 + 0.1f))
+                .IsRelative(false)
+                .AnimatePhysics();
 
             return animation;
         }

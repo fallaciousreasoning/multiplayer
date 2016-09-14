@@ -31,8 +31,11 @@ namespace Runner
             Engine.AddSystem(new Roller());
             Engine.AddSystem(new Clamberer());
             Engine.AddSystem(new Slider());
+            Engine.AddSystem(new Diver());
 
             Engine.AddSystem(new PlayerInput());
+
+            Engine.AddSystem(new DiveInitiator());
 
             base.Start();
 
@@ -43,12 +46,12 @@ namespace Runner
 
             var player = PrefabManager.Instantiate("player", new Vector2(2, -.25f));
 
-            PrefabManager.Instantiate("platform", new Vector2(0, 3), 0, new Vector2(12, 1));
-            PrefabManager.Instantiate("platform", new Vector2(-6.5f, 0), 0, new Vector2(1, 6));
-            PrefabManager.Instantiate("platform", new Vector2(6.5f, 0), 0, new Vector2(1, 6));
-            PrefabManager.Instantiate("platform", new Vector2(5.5f, 1), 0, new Vector2(1, 4));
+            PrefabManager.Instantiate("platform", new Vector2(0, 3), 0, new Vector2(24, 1));
+            PrefabManager.Instantiate("platform", new Vector2(-12, 0), 0, new Vector2(1, 6));
+            PrefabManager.Instantiate("platform", new Vector2(12f, 0), 0, new Vector2(1, 6));
+            PrefabManager.Instantiate("platform", new Vector2(11f, 1), 0, new Vector2(1, 4));
 
-            PrefabManager.Instantiate("platform", new Vector2(0f, 1.5f), 0, new Vector2(4, 1));
+            PrefabManager.Instantiate("divable", new Vector2(0f, 1.5f), 0, new Vector2(1, 1));
 
             camera = CameraBuilder.Camera(player.Last().Get<Transform>()).CreateRoot();
             Engine.AddEntity(camera);

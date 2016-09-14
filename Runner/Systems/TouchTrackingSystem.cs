@@ -30,9 +30,9 @@ namespace Runner.Systems
             var hitTag = collisionMessage.Hit.Get<Tag>();
 
             if (collisionMessage.Mode == CollisionMode.Entered)
-                touchInfo.Touched(hitTag.Tags);
+                touchInfo.Touched(collisionMessage.Hit, hitTag.Tags);
             else
-                touchInfo.Seperated(hitTag.Tags);
+                touchInfo.Seperated(collisionMessage.Hit, hitTag.Tags);
         }
     }
 }

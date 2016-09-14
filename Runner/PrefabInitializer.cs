@@ -13,7 +13,9 @@ namespace Runner
         public static void AddRunnerGamePrefabs(PrefabManager prefabManager)
         {
             prefabManager.RegisterPrefab("platform", ObstacleBuilder.Obstacle);
-            prefabManager.RegisterPrefab("player", PlayerBuilder.Player);
+            prefabManager.RegisterPrefab("divable", ObstacleBuilder.DivableObstacle);
+
+            prefabManager.RegisterPrefab("player", CharacterBuilder.Player);
         }
     }
 }

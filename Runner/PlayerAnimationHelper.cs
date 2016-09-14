@@ -12,6 +12,7 @@ namespace Runner
         SlideDown,
         SlideUp,
         Clamber,
+        Dive
     }
 
     public enum Direction

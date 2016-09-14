@@ -47,15 +47,19 @@
   <ItemGroup>
     <Compile Include="Builders\CameraBuilder.cs" />
     <Compile Include="Builders\ObstacleBuilder.cs" />
-    <Compile Include="Builders\PlayerBuilder.cs" />
+    <Compile Include="Builders\CharacterBuilder.cs" />
     <Compile Include="Components\CharacterInput.cs" />
     <Compile Include="Components\Clamber.cs" />
+    <Compile Include="Components\Divable.cs" />
+    <Compile Include="Components\Dive.cs" />
     <Compile Include="Components\Move.cs" />
     <Compile Include="Components\Roll.cs" />
     <Compile Include="Components\Slide.cs" />
     <Compile Include="Components\Touching.cs" />
     <Compile Include="Systems\CharacterSystem.cs" />
     <Compile Include="Systems\Clamberer.cs" />
+    <Compile Include="Systems\DiveInitiator.cs" />
+    <Compile Include="Systems\Diver.cs" />
     <Compile Include="Systems\Slider.cs" />
     <Compile Include="Systems\TouchTrackingSystem.cs" />
     <Compile Include="Systems\Mover.cs" />
