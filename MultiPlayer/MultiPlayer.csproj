@@ -80,6 +80,8 @@
     <Compile Include="Core\Families\NodeFamily.cs" />
     <Compile Include="Core\Messaging\ComponentAddedMessage.cs" />
     <Compile Include="Core\Messaging\ComponentRemovedMessage.cs" />
+    <Compile Include="Core\Messaging\MessageHandler.cs" />
+    <Compile Include="Core\Messaging\MessageRouter.cs" />
     <Compile Include="Core\PrefabManager.cs" />
     <Compile Include="Core\Systems\ComponentProcessingSystem.cs" />
     <Compile Include="Core\Systems\EntityProcessingSystem.cs" />
