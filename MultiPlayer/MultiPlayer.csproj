@@ -134,8 +134,10 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Core\Input\InputManager.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Factories\BasicPrefab.cs" />
     <Compile Include="Factories\ColliderBuilder.cs" />
     <Compile Include="Factories\EntityBuilder.cs" />
+    <Compile Include="Factories\IPrefab.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomUtil.cs" />
