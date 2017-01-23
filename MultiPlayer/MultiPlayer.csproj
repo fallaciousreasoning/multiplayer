@@ -125,6 +125,7 @@
     <Compile Include="Core\Systems\IKnowsEngine.cs" />
     <Compile Include="Core\Families\IRequiresFamily.cs" />
     <Compile Include="Core\Systems\ISystemExtensions.cs" />
+    <Compile Include="Core\Systems\SimpleSystem.cs" />
     <Compile Include="Core\Systems\SingleResponsibilitySystem.cs" />
     <Compile Include="Core\Systems\SpriteRenderer.cs" />
     <Compile Include="Core\Systems\SystemManager.cs" />
