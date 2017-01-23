@@ -21,6 +21,7 @@ namespace MultiPlayer.Core.Families
     public interface INodeFamily<T> : INodeFamily
     {
         IObservableLinkedList<T> Nodes { get; }
+        T NodeFromEntity(Entity entity);
     }
 
     public class NodeFamily<T> : INodeFamily<T>
@@ -93,6 +94,11 @@ namespace MultiPlayer.Core.Families
                 field.SetValue(instance, entity.Get(field.FieldType));
 
             return instance;
+        }
+
+        public T NodeFromEntity(Entity entity)
+        {
+            return CreateFromEntity(entity);
         }
     }
 }

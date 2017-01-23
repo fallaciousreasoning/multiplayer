@@ -1,4 +1,6 @@
-﻿using MultiPlayer.Core.Messaging;
+﻿using MultiPlayer.Collections;
+using MultiPlayer.Core.Families;
+using MultiPlayer.Core.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +13,10 @@ namespace MultiPlayer.Core.Systems
     {
         private Dictionary<Type, Action<IMessage>> messageHandlers = new Dictionary<Type, Action<IMessage>>();
 
-        protected List<T> Nodes { get; private set; }
+        protected IObservableLinkedList<T> Nodes { get { return NodeFamily.Nodes; } }
 
         public Engine Engine { get; set; }
+        public INodeFamily<T> NodeFamily { get; private set; }
 
         public virtual void OnNodeAdded(T node)
         {
@@ -25,12 +28,12 @@ namespace MultiPlayer.Core.Systems
 
         }
 
-        public virtual void OnComponentAdded(Entity node, object component)
+        public virtual void OnComponentAdded(T node, object component)
         {
 
         }
 
-        public virtual void OnComponentRemoved(Entity node, object component)
+        public virtual void OnComponentRemoved(T node, object component)
         {
 
         }
@@ -53,6 +56,13 @@ namespace MultiPlayer.Core.Systems
         public virtual void OnTriggerExit(T node1, T node2)
         {
 
+        }
+
+        public virtual void StartSystem()
+        {
+            NodeFamily = Engine.FamilyManager.GetNodeFamily<T>();
+            Nodes.ItemAdded += (o, e) => OnNodeAdded((T)e);
+            Nodes.ItemRemoved += (o, e) => OnNodeRemoved((T)e);
         }
 
         public virtual void Start(T node)
@@ -78,7 +88,10 @@ namespace MultiPlayer.Core.Systems
         public void RecieveMessage(IMessage message)
         {
             if (message is StartMessage)
+            {
+                StartSystem();
                 Nodes.ForEach(Start);
+            }
             else if (message is UpdateMessage)
                 Nodes.ForEach(Update);
             else if (message is DrawMessage)
@@ -86,12 +99,12 @@ namespace MultiPlayer.Core.Systems
             else if (message is ComponentAddedMessage)
             {
                 var m = (ComponentAddedMessage)message;
-                OnComponentAdded(m.Target, m.Component);
+                OnComponentAdded(NodeFamily.NodeFromEntity(m.Target), m.Component);
             }
             else if (message is ComponentRemovedMessage)
             {
                 var m = (ComponentRemovedMessage)message;
-                OnComponentRemoved(m.Target, m.Component);
+                OnComponentRemoved(NodeFamily.NodeFromEntity(m.Target), m.Component);
             }
             else if (message is CollisionMessage)
             {
@@ -99,14 +112,14 @@ namespace MultiPlayer.Core.Systems
                 if (m.IsTrigger)
                 {
                     if (m.Mode == CollisionMode.Entered)
-                        OnTriggerEnter(m.Target, m.Hit);
-                    else OnTriggerExit(m.Target, m.Hit);
+                        OnTriggerEnter(NodeFamily.NodeFromEntity(m.Target), NodeFamily.NodeFromEntity(m.Hit));
+                    else OnTriggerExit(NodeFamily.NodeFromEntity(m.Target), NodeFamily.NodeFromEntity(m.Hit));
                 }
                 else
                 {
                     if (m.Mode == CollisionMode.Entered)
-                        OnCollisionEnter(m.Target, m.Hit);
-                    else OnCollisionExit(m.Target, m.Hit);
+                        OnCollisionEnter(NodeFamily.NodeFromEntity(m.Target), NodeFamily.NodeFromEntity(m.Hit));
+                    else OnCollisionExit(NodeFamily.NodeFromEntity(m.Target), NodeFamily.NodeFromEntity(m.Hit));
                 }
             }
             else if (messageHandlers.ContainsKey(message.GetType()))
