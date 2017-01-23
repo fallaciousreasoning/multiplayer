@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MultiPlayer.Extensions;
 
 namespace MultiPlayer.Core.Systems
 {
@@ -90,12 +91,12 @@ namespace MultiPlayer.Core.Systems
             if (message is StartMessage)
             {
                 StartSystem();
-                Nodes.ForEach(Start);
+                Nodes.Foreach(Start);
             }
             else if (message is UpdateMessage)
-                Nodes.ForEach(Update);
+                Nodes.Foreach(Update);
             else if (message is DrawMessage)
-                Nodes.ForEach(Draw);
+                Nodes.Foreach(Draw);
             else if (message is ComponentAddedMessage)
             {
                 var m = (ComponentAddedMessage)message;
