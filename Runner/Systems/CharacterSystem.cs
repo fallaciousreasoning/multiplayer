@@ -13,31 +13,28 @@ using Runner.Components;
 namespace Runner.Systems
 {
     [HearsMessage(typeof(UpdateMessage))]
-    public class CharacterSystem : ComponentProcessingSystem<Collider, CharacterStats, CharacterInput, CharacterInfo>
+    public class CharacterSystem : SimpleSystem<(Collider collider, CharacterStats stats, CharacterInput input, CharacterInfo info)>
     {
-        protected override void Process(IMessage message, Collider collider, CharacterStats stats, CharacterInput input, CharacterInfo info)
+        public override void Update((Collider collider, CharacterStats stats, CharacterInput input, CharacterInfo info) node)
         {
-            var updateMessage = message as UpdateMessage;
-            if (updateMessage == null) return;
+            var step = Engine.Time.Step;
 
-            var step = updateMessage.Time.Step;
+            node.info.Velocity += node.stats.Gravity * step;
 
-            info.Velocity += stats.Gravity * step;
+            node.info.Velocity.X = MathHelper.Clamp(node.info.Velocity.X, -node.stats.MaxXSpeed, node.stats.MaxXSpeed);
+            node.info.Velocity.Y = MathHelper.Clamp(node.info.Velocity.Y, -node.stats.MaxYSpeed, node.stats.MaxYSpeed);
 
-            info.Velocity.X = MathHelper.Clamp(info.Velocity.X, -stats.MaxXSpeed, stats.MaxXSpeed);
-            info.Velocity.Y = MathHelper.Clamp(info.Velocity.Y, -stats.MaxYSpeed, stats.MaxYSpeed);
+            node.collider.Velocity = node.info.Velocity;
 
-            collider.Velocity = info.Velocity;
+            node.info.Moving = node.info.Velocity.LengthSquared() > node.stats.VelocityMinForMoving;
 
-            info.Moving = info.Velocity.LengthSquared() > stats.VelocityMinForMoving;
+            if (node.info.Velocity.X < -node.stats.VelocityMinForMoving)
+                node.info.Facing = Direction.Left;
 
-            if (info.Velocity.X < -stats.VelocityMinForMoving)
-                info.Facing = Direction.Left;
+            if (node.info.Velocity.X > node.stats.VelocityMinForMoving)
+                node.info.Facing = Direction.Right;
 
-            if (info.Velocity.X > stats.VelocityMinForMoving)
-                info.Facing = Direction.Right;
-
-            info.TillJump -= step;
+            node.info.TillJump -= step;
         }
     }
 }
