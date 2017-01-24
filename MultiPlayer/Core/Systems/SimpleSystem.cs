@@ -10,7 +10,7 @@ using MultiPlayer.Extensions;
 
 namespace MultiPlayer.Core.Systems
 {
-    public abstract class SimpleSystem<T> : ISystem, IKnowsEngine
+    public abstract class SimpleSystem<T> : ISystem, IKnowsEngine, IHearsMessageTypes
     {
         private Dictionary<Type, Action<IMessage>> messageHandlers = new Dictionary<Type, Action<IMessage>>();
 
@@ -18,6 +18,16 @@ namespace MultiPlayer.Core.Systems
 
         public Engine Engine { get; set; }
         public INodeFamily<T> NodeFamily { get; private set; }
+
+        public IList<Type> HearsMessages => new List<Type>
+        {
+            typeof(ComponentAddedMessage),
+            typeof(ComponentRemovedMessage),
+            typeof(CollisionMessage),
+            typeof(StartMessage),
+            typeof(UpdateMessage),
+            typeof(DrawMessage)
+        };
 
         public virtual void OnNodeAdded(T node)
         {
