@@ -107,6 +107,8 @@ namespace MultiPlayer.Core
 
         public void Update(Time time)
         {
+            Time = time;
+
             Updating = true;
             
             MessageHub.SendMessage(new UpdateMessage(time));
@@ -119,6 +121,8 @@ namespace MultiPlayer.Core
         {
             MessageHub.SendMessage(new DrawMessage());
         }
+
+        public Time Time { get; private set; }
 
         public Scene Scene { get; }
         public MessageHub MessageHub { get; }

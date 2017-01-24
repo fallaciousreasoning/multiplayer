@@ -10,7 +10,7 @@ using MultiPlayer.Extensions;
 
 namespace MultiPlayer.Core.Systems
 {
-    public abstract class SimpleSystem<T> : ISystem, IKnowsEngine, IHearsMessageTypes
+    public abstract class SimpleSystem<T> : ISystem, IKnowsEngine, IHearsMessageTypes, IRequiresFamily
     {
         private Dictionary<Type, Action<IMessage>> messageHandlers = new Dictionary<Type, Action<IMessage>>();
 
@@ -28,6 +28,8 @@ namespace MultiPlayer.Core.Systems
             typeof(UpdateMessage),
             typeof(DrawMessage)
         };
+
+        public Type FamilyType => typeof(T);
 
         public virtual void OnNodeAdded(T node)
         {

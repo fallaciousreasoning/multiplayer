@@ -26,6 +26,8 @@ namespace MultiPlayer.Core.Families
 
     public class NodeFamily<T> : INodeFamily<T>
     {
+        private const string TUPLE_NAME = "ValueTuple";
+
         public IObservableLinkedList UntypedNodes => Nodes;
         public IObservableLinkedList<T> Nodes { get; } = new ObservableLinkedList<T>();
 
@@ -39,6 +41,9 @@ namespace MultiPlayer.Core.Families
         private readonly List<FieldInfo> fieldTypes = new List<FieldInfo>();
 
         private readonly Dictionary<Entity, LinkedListNode<T>> entityNodeMap = new Dictionary<Entity, LinkedListNode<T>>();
+
+        private readonly bool isTuple;
+        private readonly Type[] genericTypeArguments;
 
         public NodeFamily()
         {
@@ -55,6 +60,11 @@ namespace MultiPlayer.Core.Families
             }
 
             ConstituentTypes = new ConstituentTypes(fieldSet.Select(f => f.FieldType));
+            isTuple = type.Name.StartsWith(TUPLE_NAME);
+            if (isTuple)
+            {
+                genericTypeArguments = type.GenericTypeArguments;
+            }
         }
 
         public void Register(FamilyManager familyManager)
@@ -81,7 +91,18 @@ namespace MultiPlayer.Core.Families
 
         private T CreateFromEntity(Entity entity)
         {
-            var instance = activator();
+            //Special handling for tuples
+            object[] args;
+            if (isTuple)
+            {
+                args = new object[genericTypeArguments.Length];
+
+                for (var i = 0; i < genericTypeArguments.Length; ++i)
+                    args[i] = entity.Get(genericTypeArguments[i]);
+            }
+            else args = new object[0];
+
+            var instance = activator(args);
 
             var canLoad = instance as ICanLoad<T>;
             canLoad?.LoadFrom(entity);
