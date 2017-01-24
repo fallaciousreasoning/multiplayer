@@ -12,7 +12,6 @@ using MultiPlayer.Factories;
 using Newtonsoft.Json;
 using Runner.Components;
 using Runner.Systems;
-using SharpDX.Direct3D9;
 
 namespace Runner.Builders
 {
