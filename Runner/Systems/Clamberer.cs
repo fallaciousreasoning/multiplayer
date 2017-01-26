@@ -36,6 +36,7 @@ namespace Runner.Systems
 
                 entity.Remove<Clamber>();
                 entity.Add<Move>();
+                break;
             }
         }
     }
