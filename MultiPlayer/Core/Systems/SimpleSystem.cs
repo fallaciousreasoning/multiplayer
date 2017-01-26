@@ -185,7 +185,7 @@ namespace MultiPlayer.Core.Systems
             else if (message is AnimationFinishedMessage)
             {
                 var m = message as AnimationFinishedMessage;
-                OnAnimationStarted(m.Target, NodeFamily.NodeForEntity(m.Target));
+                OnAnimationFinished(m.Target, NodeFamily.NodeForEntity(m.Target));
             }
             else if (messageHandlers.ContainsKey(message.GetType()))
                 messageHandlers[message.GetType()](message);
