@@ -115,6 +115,8 @@ namespace MultiPlayer.Core
             MessageHub.SendMessage(new LateUpdateMessage(time));
 
             Updating = false;
+
+            FamilyManager.Update();
         }
 
         public void Draw()

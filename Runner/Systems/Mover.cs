@@ -14,11 +14,15 @@ using Runner.Components;
 
 namespace Runner.Systems
 {
-    [HearsMessage(typeof(UpdateMessage))]
-    public class Mover : EntityProcessingSystem
+    public class Mover : SimpleSystem<(CharacterStats stats, CharacterInput input, CharacterInfo info, Move move)>
     {
-        private void Update(float step, Entity entity, CharacterStats stats, CharacterInput input, CharacterInfo info)
+        public override void Update(Entity entity, (CharacterStats stats, CharacterInput input, CharacterInfo info, Move move) node)
         {
+            var input = node.input;
+            var stats = node.stats;
+            var info = node.info;
+            var step = Engine.Time.Step;
+
             if (input.Jump)
             {
                 Jump(entity, stats, info);
@@ -91,20 +95,5 @@ namespace Runner.Systems
             }
             else info.ShouldRoll = true;
         }
-
-        protected override void Process(IMessage message, Entity entity)
-        {
-            var updateMessage = message as UpdateMessage;
-            if (updateMessage != null)
-                Update(updateMessage.Time.Step, entity, entity.Get<CharacterStats>(), entity.Get<CharacterInput>(), entity.Get<CharacterInfo>());
-        }
-
-        public override IList<Type> Types { get; } = new List<Type>()
-        {
-            typeof(CharacterStats),
-            typeof(CharacterInput),
-            typeof(CharacterStats),
-            typeof(Move)
-        };
     }
 }

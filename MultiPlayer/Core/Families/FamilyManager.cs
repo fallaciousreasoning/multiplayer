@@ -88,5 +88,10 @@ namespace MultiPlayer.Core.Families
         {
             return (INodeFamily<T>)nodeFamilyTypes[typeof(T)];
         }
+
+        internal void Update()
+        {
+            families.Foreach(family => family.Maintain());
+        }
     }
 }

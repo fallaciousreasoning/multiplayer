@@ -18,5 +18,7 @@ namespace MultiPlayer.Core.Families
         void OnEntityRemoved(Entity entity);
         void OnComponentAdded(Entity entity, object component);
         void OnComponentRemoved(Entity entity, object component);
+
+        void Maintain();
     }
 }
