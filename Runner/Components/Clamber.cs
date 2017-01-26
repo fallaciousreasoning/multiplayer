@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Runner.Components
 {
-    class Clamber
+    public class Clamber
     {
     }
 }

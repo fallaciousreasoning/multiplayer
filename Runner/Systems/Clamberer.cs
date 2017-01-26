@@ -14,35 +14,32 @@ using Runner.Components;
 namespace Runner.Systems
 {
     [HearsMessage(typeof(AnimationFinishedMessage))]
-    public class Clamberer : EntityProcessingSystem
+    public class Clamberer : SimpleSystem<(CharacterStats stats, CharacterInfo info, AnimationContainer container, Clamber clamber)>
     {
-        protected override void OnEntityAdded(Entity entity)
+        public override void OnNodeAdded(Entity entity, (CharacterStats stats, CharacterInfo info, AnimationContainer container, Clamber clamber) node)
         {
-            base.OnEntityAdded(entity);
+            base.OnNodeAdded(entity, node);
 
             var startAnimationMessage = new StartAnimationMessage(entity,
                 Animations.Name(PlayerAnimation.Clamber, entity.Get<CharacterInfo>().Facing));
             Engine.MessageHub.SendMessage(startAnimationMessage);
         }
 
-        protected override void Process(IMessage message, Entity entity)
+        public override void OnUnhandledMessage(IMessage message)
         {
+            base.OnUnhandledMessage(message);
+
             var animationFinishedMessage = message as AnimationFinishedMessage;
             if (animationFinishedMessage == null) return;
 
-            if (animationFinishedMessage.Target == entity)
+            foreach (var node in Nodes)
             {
+                var entity = NodeFamily.EntityForNode(node);
+                if (animationFinishedMessage.Target != entity) continue;
+
                 entity.Remove<Clamber>();
                 entity.Add<Move>();
             }
         }
-
-        public override IList<Type> Types { get; } = new List<Type>()
-        {
-            typeof(CharacterStats),
-            typeof(CharacterInfo),
-            typeof(AnimationContainer),
-            typeof(Clamber),
-        };
     }
 }
