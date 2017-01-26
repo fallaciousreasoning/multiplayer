@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer.Extensions;
+using MultiPlayer.Core.Animation.Messages;
 
 namespace MultiPlayer.Core.Systems
 {
@@ -67,6 +68,16 @@ namespace MultiPlayer.Core.Systems
         }
 
         public virtual void OnTriggerExit(Entity entity1, Entity entity2, T node1, T node2)
+        {
+
+        }
+
+        public virtual void OnAnimationStarted(Entity entity, T node)
+        {
+
+        }
+
+        public virtual void OnAnimationFinished(Entity entity, T node)
         {
 
         }
@@ -165,6 +176,16 @@ namespace MultiPlayer.Core.Systems
                         OnCollisionEnter(m.Hit, m.Target, NodeFamily.NodeForEntity(m.Target), NodeFamily.NodeForEntity(m.Hit));
                     else OnCollisionExit(m.Hit, m.Target, NodeFamily.NodeForEntity(m.Target), NodeFamily.NodeForEntity(m.Hit));
                 }
+            }
+            else if (message is AnimationStartedMessage)
+            {
+                var m = message as AnimationStartedMessage;
+                OnAnimationStarted(m.Target, NodeFamily.NodeForEntity(m.Target));
+            }
+            else if (message is AnimationFinishedMessage)
+            {
+                var m = message as AnimationFinishedMessage;
+                OnAnimationStarted(m.Target, NodeFamily.NodeForEntity(m.Target));
             }
             else if (messageHandlers.ContainsKey(message.GetType()))
                 messageHandlers[message.GetType()](message);

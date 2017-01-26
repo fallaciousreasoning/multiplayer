@@ -25,17 +25,14 @@ namespace Runner.Systems
             Engine.MessageHub.SendMessage(startAnimationMessage);
         }
 
-        public override void OnUnhandledMessage(IMessage message)
+        public override void OnAnimationFinished(Entity entity, (CharacterStats stats, CharacterInfo info, AnimationContainer container, Clamber clamber) node)
         {
-            base.OnUnhandledMessage(message);
+            base.OnAnimationFinished(entity, node);
 
-            var animationFinishedMessage = message as AnimationFinishedMessage;
-            if (animationFinishedMessage == null) return;
-
-            foreach (var node in Nodes)
+            foreach (var otherNode in Nodes)
             {
-                var entity = NodeFamily.EntityForNode(node);
-                if (animationFinishedMessage.Target != entity) continue;
+                var otherEntity = NodeFamily.EntityForNode(otherNode);
+                if (entity != otherEntity) continue;
 
                 entity.Remove<Clamber>();
                 entity.Add<Move>();
