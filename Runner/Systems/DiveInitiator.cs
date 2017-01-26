@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer.Annotations;
+using MultiPlayer.Core;
 using MultiPlayer.Core.Families;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
@@ -11,15 +12,15 @@ using Runner.Components;
 
 namespace Runner.Systems
 {
-    [HearsMessage(typeof(UpdateMessage))]
-    public class DiveInitiator : ComponentProcessingSystem<Divable>
+    public class DiveInitiator : SimpleSystem<Divable>
     {
-        protected override void Process(IMessage message, Divable component)
+        public override void Update(Entity entity, Divable node)
         {
-            if (!(message is UpdateMessage)) return;
-            if (component.Characters == null) return;
+            base.Update(entity, node);
 
-            foreach (var character in component.Characters)
+            if (node.Characters == null) return;
+
+            foreach (var character in node.Characters)
             {
                 //Make sure the character is in the right state
                 if (!character.HasComponent<Move>() || !character.HasComponent<CharacterInfo>()) continue;
@@ -27,7 +28,7 @@ namespace Runner.Systems
                 var info = character.Get<CharacterInfo>();
 
                 //Make sure we're going fast enough
-                if (Math.Abs(info.Velocity.X) < component.MinSpeedForDive || info.Velocity.Y > - 3) continue;
+                if (Math.Abs(info.Velocity.X) < node.MinSpeedForDive || info.Velocity.Y > -3) continue;
 
                 //Transition to the dive state
                 character.Remove<Move>();
