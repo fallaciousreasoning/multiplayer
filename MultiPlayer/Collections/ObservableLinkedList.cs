@@ -26,6 +26,9 @@ namespace MultiPlayer.Collections
 
     public interface IObservableLinkedList<T> : IEnumerable<T>, IObservableLinkedList
     {
+        void AddFirst(LinkedListNode<T> node);
+        void AddLast(LinkedListNode<T> node);
+
         LinkedListNode<T> AddFirst(T item);
         LinkedListNode<T> AddLast(T item);
 
@@ -46,19 +49,29 @@ namespace MultiPlayer.Collections
         public LinkedListNode<T> First => Items.First;
         public LinkedListNode<T> Last => Items.Last;
 
+        public void AddFirst(LinkedListNode<T> node)
+        {
+            Items.AddFirst(node);
+            ItemAdded?.Invoke(this, node.Value);
+        }
+
+        public void AddLast(LinkedListNode<T> node)
+        {
+            Items.AddLast(node);
+            ItemAdded?.Invoke(this, node.Value);
+        }
+
         public LinkedListNode<T> AddFirst(T item)
         {
-            var node = Items.AddFirst(item);
-
-            ItemAdded?.Invoke(this,item);
+            var node = new LinkedListNode<T>(item);
+            AddFirst(node);
             return node;
         }
 
         public LinkedListNode<T> AddLast(T item)
         {
-            var node = Items.AddLast(item);
-
-            ItemAdded?.Invoke(this, item);
+            var node = new LinkedListNode<T>(item);
+            AddLast(node);
             return node;
         }
 

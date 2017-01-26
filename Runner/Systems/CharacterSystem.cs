@@ -9,13 +9,14 @@ using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
 using Runner.Components;
+using MultiPlayer.Core;
 
 namespace Runner.Systems
 {
     [HearsMessage(typeof(UpdateMessage))]
     public class CharacterSystem : SimpleSystem<(Collider collider, CharacterStats stats, CharacterInput input, CharacterInfo info)>
     {
-        public override void Update((Collider collider, CharacterStats stats, CharacterInput input, CharacterInfo info) node)
+        public override void Update(Entity entity, (Collider collider, CharacterStats stats, CharacterInput input, CharacterInfo info) node)
         {
             var step = Engine.Time.Step;
 

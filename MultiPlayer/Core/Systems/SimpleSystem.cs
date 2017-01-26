@@ -31,42 +31,42 @@ namespace MultiPlayer.Core.Systems
 
         public Type FamilyType => typeof(T);
 
-        public virtual void OnNodeAdded(T node)
+        public virtual void OnNodeAdded(Entity entity, T node)
         {
 
         }
 
-        public virtual void OnNodeRemoved(T node)
+        public virtual void OnNodeRemoved(Entity entity, T node)
         {
 
         }
 
-        public virtual void OnComponentAdded(T node, object component)
+        public virtual void OnComponentAdded(Entity entity, T node, object component)
         {
 
         }
 
-        public virtual void OnComponentRemoved(T node, object component)
+        public virtual void OnComponentRemoved(Entity entity, T node, object component)
         {
 
         }
 
-        public virtual void OnCollisionEnter(T node1, T node2)
+        public virtual void OnCollisionEnter(Entity entity1, Entity entity2, T node1, T node2)
         {
 
         }
 
-        public virtual void OnCollisionExit(T node1, T node2)
+        public virtual void OnCollisionExit(Entity entity1, Entity entity2, T node1, T node2)
         {
 
         }
 
-        public virtual void OnTriggerEnter(T node1, T node2)
+        public virtual void OnTriggerEnter(Entity entity1, Entity entity2, T node1, T node2)
         {
 
         }
 
-        public virtual void OnTriggerExit(T node1, T node2)
+        public virtual void OnTriggerExit(Entity entity1, Entity entity2, T node1, T node2)
         {
 
         }
@@ -74,21 +74,39 @@ namespace MultiPlayer.Core.Systems
         public virtual void StartSystem()
         {
             NodeFamily = Engine.FamilyManager.GetNodeFamily<T>();
-            Nodes.ItemAdded += (o, e) => OnNodeAdded((T)e);
-            Nodes.ItemRemoved += (o, e) => OnNodeRemoved((T)e);
+            Nodes.ItemAdded += (o, e) =>
+            {
+                var node = (T)e;
+                OnNodeAdded(NodeFamily.EntityForNode(node), node);
+            };
+            Nodes.ItemRemoved += (o, e) =>
+            {
+                var node = (T)e;
+                OnNodeRemoved(NodeFamily.EntityForNode(node), node);
+            };
         }
 
-        public virtual void Start(T node)
+        public virtual void Start(Entity entity, T node)
         {
 
         }
 
-        public virtual void Update(T node)
+        public virtual void UpdateSystem()
         {
 
         }
 
-        public virtual void Draw(T node)
+        public virtual void Update(Entity entity, T node)
+        {
+
+        }
+
+        public virtual void DrawSystem()
+        {
+
+        }
+
+        public virtual void Draw(Entity entity, T node)
         {
 
         }
@@ -103,21 +121,34 @@ namespace MultiPlayer.Core.Systems
             if (message is StartMessage)
             {
                 StartSystem();
-                Nodes.Foreach(Start);
+                Nodes.Foreach(n =>
+                {
+                    Start(NodeFamily.EntityForNode(n), n);
+                });
             }
             else if (message is UpdateMessage)
-                Nodes.Foreach(Update);
+            {
+                UpdateSystem();
+                Nodes.Foreach(n => {
+                    Update(NodeFamily.EntityForNode(n), n);
+                });
+            }
             else if (message is DrawMessage)
-                Nodes.Foreach(Draw);
+            {
+                DrawSystem();
+                Nodes.Foreach(n => {
+                    Draw(NodeFamily.EntityForNode(n), n);
+                });
+            }
             else if (message is ComponentAddedMessage)
             {
                 var m = (ComponentAddedMessage)message;
-                OnComponentAdded(NodeFamily.NodeFromEntity(m.Target), m.Component);
+                OnComponentAdded(m.Target, NodeFamily.NodeForEntity(m.Target), m.Component);
             }
             else if (message is ComponentRemovedMessage)
             {
                 var m = (ComponentRemovedMessage)message;
-                OnComponentRemoved(NodeFamily.NodeFromEntity(m.Target), m.Component);
+                OnComponentRemoved(m.Target, NodeFamily.NodeForEntity(m.Target), m.Component);
             }
             else if (message is CollisionMessage)
             {
@@ -125,14 +156,14 @@ namespace MultiPlayer.Core.Systems
                 if (m.IsTrigger)
                 {
                     if (m.Mode == CollisionMode.Entered)
-                        OnTriggerEnter(NodeFamily.NodeFromEntity(m.Target), NodeFamily.NodeFromEntity(m.Hit));
-                    else OnTriggerExit(NodeFamily.NodeFromEntity(m.Target), NodeFamily.NodeFromEntity(m.Hit));
+                        OnTriggerEnter(m.Hit, m.Target, NodeFamily.NodeForEntity(m.Target), NodeFamily.NodeForEntity(m.Hit));
+                    else OnTriggerExit(m.Hit, m.Target, NodeFamily.NodeForEntity(m.Target), NodeFamily.NodeForEntity(m.Hit));
                 }
                 else
                 {
                     if (m.Mode == CollisionMode.Entered)
-                        OnCollisionEnter(NodeFamily.NodeFromEntity(m.Target), NodeFamily.NodeFromEntity(m.Hit));
-                    else OnCollisionExit(NodeFamily.NodeFromEntity(m.Target), NodeFamily.NodeFromEntity(m.Hit));
+                        OnCollisionEnter(m.Hit, m.Target, NodeFamily.NodeForEntity(m.Target), NodeFamily.NodeForEntity(m.Hit));
+                    else OnCollisionExit(m.Hit, m.Target, NodeFamily.NodeForEntity(m.Target), NodeFamily.NodeForEntity(m.Hit));
                 }
             }
             else if (messageHandlers.ContainsKey(message.GetType()))

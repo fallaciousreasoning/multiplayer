@@ -21,7 +21,8 @@ namespace MultiPlayer.Core.Families
     public interface INodeFamily<T> : INodeFamily
     {
         IObservableLinkedList<T> Nodes { get; }
-        T NodeFromEntity(Entity entity);
+        T NodeForEntity(Entity entity);
+        Entity EntityForNode(T node);
     }
 
     public class NodeFamily<T> : INodeFamily<T>
@@ -41,6 +42,7 @@ namespace MultiPlayer.Core.Families
         private readonly List<FieldInfo> fieldTypes = new List<FieldInfo>();
 
         private readonly Dictionary<Entity, LinkedListNode<T>> entityNodeMap = new Dictionary<Entity, LinkedListNode<T>>();
+        private readonly Dictionary<T, Entity> nodeEntityMap = new Dictionary<T, Entity>();
 
         private readonly bool isTuple;
         private readonly Type[] genericTypeArguments;
@@ -77,8 +79,12 @@ namespace MultiPlayer.Core.Families
         private void Add(Entity entity)
         {
             var item = CreateFromEntity(entity);
-            var node = Nodes.AddLast(item);
+            nodeEntityMap.Add(item, entity);
+
+            var node = new LinkedListNode<T>(item);
+
             entityNodeMap.Add(entity, node);
+            Nodes.AddLast(node);
         }
 
         private void Remove(Entity entity)
@@ -87,6 +93,7 @@ namespace MultiPlayer.Core.Families
             Nodes.Remove(node);
 
             entityNodeMap.Remove(entity);
+            nodeEntityMap.Remove(node.Value);
         }
 
         private T CreateFromEntity(Entity entity)
@@ -117,9 +124,14 @@ namespace MultiPlayer.Core.Families
             return instance;
         }
 
-        public T NodeFromEntity(Entity entity)
+        public T NodeForEntity(Entity entity)
         {
-            return CreateFromEntity(entity);
+            return entityNodeMap.ContainsKey(entity) ? entityNodeMap[entity].Value : CreateFromEntity(entity);
+        }
+
+        public Entity EntityForNode(T node)
+        {
+            return nodeEntityMap[node];
         }
     }
 }
