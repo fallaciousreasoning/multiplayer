@@ -10,6 +10,7 @@ using MultiPlayer.Core.Animation.Messages;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
+using Runner.Builders;
 using Runner.Components;
 
 namespace Runner.Systems
@@ -45,8 +46,7 @@ namespace Runner.Systems
 
                     entity.Get<Transform>().Rotation = 0;
 
-                    entity.Remove<Dive>();
-                    entity.Add<Roll>();
+                    Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.ROLL_STATE));
                 }
             }
         }

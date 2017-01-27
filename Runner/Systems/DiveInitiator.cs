@@ -8,6 +8,7 @@ using MultiPlayer.Core;
 using MultiPlayer.Core.Families;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
+using Runner.Builders;
 using Runner.Components;
 
 namespace Runner.Systems
@@ -31,8 +32,7 @@ namespace Runner.Systems
                 if (Math.Abs(info.Velocity.X) < node.MinSpeedForDive || info.Velocity.Y > -3) continue;
 
                 //Transition to the dive state
-                character.Remove<Move>();
-                character.Add<Dive>();
+                Engine.MessageHub.SendMessage(new StateTransitionMessage(character, CharacterBuilder.DIVE_STATE));
             }
         }
     }

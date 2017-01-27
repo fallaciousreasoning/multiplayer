@@ -35,6 +35,8 @@ namespace MultiPlayer
 
             Engine.AddSystem(new AnimationSystem());
 
+            Engine.AddSystem(new StateManager());
+
             Engine.Start();
         }
 

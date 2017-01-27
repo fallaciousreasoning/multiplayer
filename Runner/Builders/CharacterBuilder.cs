@@ -6,6 +6,7 @@ using System.Text;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using MultiPlayer;
+using MultiPlayer.Core;
 using MultiPlayer.Core.Animation;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Factories;
@@ -19,6 +20,12 @@ namespace Runner.Builders
     {
         public const string CHARACTER_TAG = "character";
         public const string PLAYER_TAG = "player";
+
+        public const string CLAMBER_STATE = "clamber";
+        public const string DIVE_STATE = "dive";
+        public const string MOVE_STATE = "move";
+        public const string ROLL_STATE = "roll";
+        public const string SLIDE_STATE = "slide";
 
         public static EntityBuilder Player()
         {
@@ -154,7 +161,38 @@ namespace Runner.Builders
                         .WithTexture(TextureUtil.CreateTexture(widthPixels*3, sensorWidthPixels, Color.Red))
                         .AtPosition(-new Vector2(0, (height*0.5f + sensorWidth*0.5f)*clamberSensorOffset))))
                 .AtPosition(new Vector2(0, -10))
-                .With(ColliderBuilder.New().BoxShape(width, height).IsDynamic().IsFixedRotation(true).Create());
+                .With(ColliderBuilder.New().BoxShape(width, height).IsDynamic().IsFixedRotation(true).Create())
+                .With(new StateMachine()
+                    .WithState(MOVE_STATE, new State()
+                        .WithComponent<Move>()
+                        .WithoutComponent<Clamber>()
+                        .WithoutComponent<Dive>()
+                        .WithoutComponent<Roll>()
+                        .WithoutComponent<Slide>())
+                     .WithState(SLIDE_STATE, new State()
+                        .WithComponent<Slide>()
+                        .WithoutComponent<Clamber>()
+                        .WithoutComponent<Dive>()
+                        .WithoutComponent<Move>()
+                        .WithoutComponent<Roll>())
+                    .WithState(ROLL_STATE, new State()
+                        .WithComponent<Roll>()
+                        .WithoutComponent<Clamber>()
+                        .WithoutComponent<Dive>()
+                        .WithoutComponent<Move>()
+                        .WithoutComponent<Slide>())
+                    .WithState(DIVE_STATE, new State()
+                        .WithComponent<Dive>()
+                        .WithoutComponent<Clamber>()
+                        .WithoutComponent<Move>()
+                        .WithoutComponent<Roll>()
+                        .WithoutComponent<Slide>())
+                    .WithState(CLAMBER_STATE, new State()
+                        .WithComponent<Clamber>()
+                        .WithoutComponent<Dive>()
+                        .WithoutComponent<Move>()
+                        .WithoutComponent<Roll>()
+                        .WithoutComponent<Slide>()));
         }
 
         public static AnimationBuilder ClamberAnimation()

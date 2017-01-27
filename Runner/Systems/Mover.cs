@@ -10,6 +10,7 @@ using MultiPlayer.Core;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
+using Runner.Builders;
 using Runner.Components;
 
 namespace Runner.Systems
@@ -54,8 +55,7 @@ namespace Runner.Systems
             if (!info.WasOnGround && info.OnGround && info.ShouldRoll)
             {
                 info.ShouldRoll = false;
-                entity.Remove<Move>();
-                entity.Add<Roll>();
+                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.ROLL_STATE));
             }
 
             info.WasOnGround = info.OnGround;
@@ -72,8 +72,8 @@ namespace Runner.Systems
             else if (info.CanClamber)
             {
                 info.Velocity = Vector2.Zero;
-                entity.Remove<Move>();
-                entity.Add<Clamber>();
+
+                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.CLAMBER_STATE));
             }
             else if (info.CanWallJump)
             {
@@ -88,8 +88,7 @@ namespace Runner.Systems
         {
             if (info.OnGround)
             {
-                entity.Remove<Move>();
-                entity.Add<Slide>();
+                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.SLIDE_STATE));
 
                 info.TillJump = stats.SlideJumpDelay;
             }

@@ -9,6 +9,7 @@ using MultiPlayer.Core.Animation;
 using MultiPlayer.Core.Animation.Messages;
 using MultiPlayer.Core.Messaging;
 using MultiPlayer.Core.Systems;
+using Runner.Builders;
 using Runner.Components;
 
 namespace Runner.Systems
@@ -34,8 +35,7 @@ namespace Runner.Systems
                 var otherEntity = NodeFamily.EntityForNode(otherNode);
                 if (entity != otherEntity) continue;
 
-                entity.Remove<Clamber>();
-                entity.Add<Move>();
+                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.MOVE_STATE));
                 break;
             }
         }
