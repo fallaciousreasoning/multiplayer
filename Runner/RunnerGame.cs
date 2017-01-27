@@ -48,12 +48,14 @@ namespace Runner
 
             var player = PrefabManager.Instantiate("player", new Vector2(2, -.25f));
 
-            PrefabManager.Instantiate("platform", new Vector2(0, 3), 0, new Vector2(24, 1));
-            PrefabManager.Instantiate("platform", new Vector2(-12, 0), 0, new Vector2(1, 6));
-            PrefabManager.Instantiate("platform", new Vector2(12f, 0), 0, new Vector2(1, 6));
-            PrefabManager.Instantiate("platform", new Vector2(11f, 1), 0, new Vector2(1, 4));
+            PrefabManager.Instantiate("platform", new Vector2(0, 0), 0, new Vector2(48, 1));
+            PrefabManager.Instantiate("platform", new Vector2(-23.5f, -10), 0, new Vector2(1, 20));
+            PrefabManager.Instantiate("platform", new Vector2(23.5f, -10), 0, new Vector2(1, 20));
+            PrefabManager.Instantiate("platform", new Vector2(21f, -2.5f), 0, new Vector2(4, 4));
 
-            PrefabManager.Instantiate("divable", new Vector2(0f, 1.5f), 0, new Vector2(1, 1));
+            PrefabManager.Instantiate("platform", new Vector2(-10, -3f), 0, new Vector2(4, 4));
+
+            PrefabManager.Instantiate("divable", new Vector2(0f, -1.5f), 0, new Vector2(1, 1));
             PrefabManager.Instantiate("buildings", new Vector2(0, 15));
 
             camera = CameraBuilder.Camera(player.Last().Get<Transform>()).CreateRoot();
