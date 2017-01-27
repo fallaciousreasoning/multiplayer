@@ -42,7 +42,7 @@ namespace Runner.Components
         /// <summary>
         /// The horizontal acceleration applied to the character when in the air
         /// </summary>
-        public float HorizontalAirAcceleration { get; set; } = 50;
+        public float HorizontalAirAcceleration { get; set; } = 15;
 
         /// <summary>
         /// The horizontal acceleration applied to the character on the ground
