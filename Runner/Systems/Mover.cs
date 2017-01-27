@@ -86,7 +86,7 @@ namespace Runner.Systems
 
         private void Slide(Entity entity, CharacterStats stats, CharacterInfo info)
         {
-            if (info.OnGround)
+            if (info.OnGround && Math.Abs(info.Velocity.X) > stats.MinSlideVelocity)
             {
                 Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.SLIDE_STATE));
 
