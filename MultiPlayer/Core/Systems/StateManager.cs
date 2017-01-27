@@ -28,26 +28,29 @@ namespace MultiPlayer.Core.Systems
 
             var state = stateMachine.States[stateName];
 
-            foreach (var type in state.withoutComponents)
+            if (state.IsCleanState)
+                entity.Clear();
+
+            foreach (var type in state.WithoutComponents)
             {
                 if (!entity.HasComponent(type)) continue;
 
                 entity.Remove(type);
             }
 
-            foreach (var type in state.ensureHas)
+            foreach (var type in state.EnsureHas)
             {
                 if (entity.HasComponent(type)) continue;
                 entity.Add(Activate(type));
             }
 
-            foreach (var type in state.newComponents)
+            foreach (var type in state.NewComponents)
             {
                 if (entity.HasComponent(type)) entity.Remove(type);
                 entity.Add(Activate(type));
             }
 
-            foreach (var component in state.withComponents)
+            foreach (var component in state.WithComponents)
             {
                 var type = component.GetType();
                 if (entity.HasComponent(type))
@@ -59,7 +62,7 @@ namespace MultiPlayer.Core.Systems
                 entity.Add(component);
             }
 
-            foreach (var creator in state.componentCreators)
+            foreach (var creator in state.ComponentCreators)
             {
                 var component = creator();
                 var type = component.GetType();

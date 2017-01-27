@@ -19,20 +19,27 @@ namespace MultiPlayer.Core
 
     public class State
     {
-        internal readonly List<Type> withoutComponents = new List<Type>();
-        internal readonly List<object> withComponents = new List<object>();
-        internal readonly List<Type> newComponents = new List<Type>();
-        internal readonly List<Type> ensureHas = new List<Type>();
-        internal readonly List<Func<object>> componentCreators = new List<Func<object>>();
+        internal bool IsCleanState { get; private set; }
+        internal readonly List<Type> WithoutComponents = new List<Type>();
+        internal readonly List<object> WithComponents = new List<object>();
+        internal readonly List<Type> NewComponents = new List<Type>();
+        internal readonly List<Type> EnsureHas = new List<Type>();
+        internal readonly List<Func<object>> ComponentCreators = new List<Func<object>>();
 
         private readonly HashSet<Type> types = new HashSet<Type>();
+
+        public State SetIsCleanState(bool isCleanState = true)
+        {
+            IsCleanState = isCleanState;
+            return this;
+        }
 
         public State WithoutComponent<T>()
             where T : class
         {
             var t = typeof(T);
             EnsureValidWithType(t);
-            withComponents.Add(t);
+            WithComponents.Add(t);
 
             return this;
         }
@@ -41,7 +48,7 @@ namespace MultiPlayer.Core
         {
             EnsureValidWithType(component.GetType());
 
-            withComponents.Add(component);
+            WithComponents.Add(component);
             return this;
         }
 
@@ -51,7 +58,7 @@ namespace MultiPlayer.Core
             var t = typeof(T);
             EnsureValidWithType(t);
 
-            ensureHas.Add(t);
+            EnsureHas.Add(t);
             return this;
         }
 
@@ -60,7 +67,7 @@ namespace MultiPlayer.Core
         {
             var t = typeof(T);
             EnsureValidWithType(t);
-            newComponents.Add(t);
+            NewComponents.Add(t);
             return this;
         }
 
@@ -68,7 +75,7 @@ namespace MultiPlayer.Core
         {
             EnsureValidWithType(typeof(T));
 
-            componentCreators.Add(() => creator);
+            ComponentCreators.Add(() => creator);
             return this;
         }
 
