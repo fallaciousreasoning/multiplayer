@@ -35,7 +35,7 @@ namespace MultiPlayer.Core.Messaging
 
         public void BroadcastMessage(IMessage message)
         {
-            engine.Systems.Foreach(s => s.RecieveMessage(message));
+            engine.Systems.ForEach(s => s.RecieveMessage(message));
         }
 
         public void SendMessage(IMessage message)
@@ -49,7 +49,7 @@ namespace MultiPlayer.Core.Messaging
 
         public void SendMessage(IMessage message, IEnumerable<Type> to)
         {
-            to.Foreach(t => SendMessage(message, t));
+            to.ForEach(t => SendMessage(message, t));
         }
 
         public void SendMessage(IMessage message, Type to)

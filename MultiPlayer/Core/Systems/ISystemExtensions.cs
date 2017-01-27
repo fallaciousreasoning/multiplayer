@@ -24,11 +24,11 @@ namespace MultiPlayer.Core.Systems
                 if (!(a is HearsMessageAttribute)) continue;
 
                 var recieveAttr = (HearsMessageAttribute) a;
-                recieveAttr.MessageTypes.Foreach(t => receives.Add(t));
+                recieveAttr.MessageTypes.ForEach(t => receives.Add(t));
             }
 
             var hearsMessageTypes = system as IHearsMessageTypes;
-            hearsMessageTypes?.HearsMessages.Foreach(m => receives.Add(m));
+            hearsMessageTypes?.HearsMessages.ForEach(m => receives.Add(m));
 
             return receives;
         }
@@ -53,7 +53,7 @@ namespace MultiPlayer.Core.Systems
                 if (!(attribute is NodeTypeAttribute)) continue;
 
                 var nodeTypeAttr = ((NodeTypeAttribute) attribute);
-                nodeTypeAttr.Expects.ComposingTypes().Foreach(t => types.Add(t));
+                nodeTypeAttr.Expects.ComposingTypes().ForEach(t => types.Add(t));
             }
 
             return new ConstituentTypes(types);

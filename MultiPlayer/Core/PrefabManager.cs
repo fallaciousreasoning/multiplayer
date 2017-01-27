@@ -51,7 +51,7 @@ namespace MultiPlayer.Core
             var entities = Build(name, position, rotation, scale);
 
             entities.Reverse();
-            entities.Foreach(manager.AddEntity);
+            EnumerableExtensions.ForEach(entities, manager.AddEntity);
 
             return entities;
         }

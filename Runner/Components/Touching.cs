@@ -15,7 +15,7 @@ namespace Runner.Components
 
         public void Touched(Entity entity, IEnumerable<string> tags)
         {
-            tags.Foreach(t => Touched(entity, t));
+            tags.ForEach(t => Touched(entity, t));
         }
          
         public void Touched(Entity entity, string tag)
@@ -29,7 +29,7 @@ namespace Runner.Components
 
         public void Seperated(Entity entity, IEnumerable<string> tags)
         {
-            tags.Foreach(t=>Seperated(entity, t));
+            tags.ForEach(t=>Seperated(entity, t));
         }
 
         public void Seperated(Entity entity, string tag)

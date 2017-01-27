@@ -14,9 +14,6 @@ namespace MultiPlayer.Core.Families
         private readonly ObservableLinkedList<Entity> entities = new ObservableLinkedList<Entity>();
 
         private readonly Dictionary<Entity, LinkedListNode<Entity>> entityMap = new Dictionary<Entity, LinkedListNode<Entity>>();
-
-        private readonly LinkedList<Entity> entitiesToRemove = new LinkedList<Entity>();
-        private readonly LinkedList<Entity> entitiesToAdd = new LinkedList<Entity>();
         
         public SophisticatedFamily(ConstituentTypes constituentTypes)
         {
@@ -25,19 +22,19 @@ namespace MultiPlayer.Core.Families
 
         public void OnEntityCreated(Entity entity)
         {
-            QueueAddIfMatch(entity);
+            AddIfMatch(entity);
         }
 
         public void OnEntityRemoved(Entity entity)
         {
-            QueueRemove(entity);
+            Remove(entity);
         }
 
         public void OnComponentAdded(Entity entity, object component)
         {
             if (!ConstituentTypes.Contains(component.GetType())) return;
 
-            QueueAddIfMatch(entity);
+            AddIfMatch(entity);
         }
 
         public void OnComponentRemoved(Entity entity, object component)
@@ -46,17 +43,7 @@ namespace MultiPlayer.Core.Families
             if (!ConstituentTypes.Contains(component.GetType())) return;
 
             //If it was, remove it
-            QueueRemove(entity);
-        }
-
-        private void QueueRemove(Entity entity)
-        {
-            entitiesToRemove.AddLast(entity);
-        }
-
-        private void QueueAddIfMatch(Entity entity)
-        {
-            entitiesToAdd.AddLast(entity);
+            Remove(entity);
         }
 
         private void AddIfMatch(Entity entity)
@@ -84,12 +71,6 @@ namespace MultiPlayer.Core.Families
         private bool Matches(Entity entity)
         {
             return ConstituentTypes.TypesList.All(entity.HasComponent);
-        }
-
-        public void Maintain()
-        {
-            foreach (var node in entitiesToRemove) Remove(node);
-            foreach (var entity in entitiesToAdd) AddIfMatch(entity);
         }
 
         public ConstituentTypes ConstituentTypes { get; }

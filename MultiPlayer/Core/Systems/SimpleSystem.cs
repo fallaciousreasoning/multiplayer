@@ -13,9 +13,11 @@ namespace MultiPlayer.Core.Systems
 {
     public abstract class SimpleSystem<T> : ISystem, IKnowsEngine, IHearsMessageTypes, IRequiresFamily
     {
-        private Dictionary<Type, Action<IMessage>> messageHandlers = new Dictionary<Type, Action<IMessage>>();
+        private readonly Dictionary<Type, Action<IMessage>> messageHandlers = new Dictionary<Type, Action<IMessage>>();
 
-        protected IObservableLinkedList<T> Nodes { get { return NodeFamily.Nodes; } }
+        protected IObservableLinkedList<T> Nodes => NodeFamily.Nodes;
+
+        protected IObservableLinkedList<Entity> Entities { get; private set; }
 
         public Engine Engine { get; set; }
         public INodeFamily<T> NodeFamily { get; private set; }
@@ -84,16 +86,18 @@ namespace MultiPlayer.Core.Systems
 
         public virtual void StartSystem()
         {
+            Entities = Engine.FamilyManager.Get(this.RequiredTypes()).Entities;
             NodeFamily = Engine.FamilyManager.GetNodeFamily<T>();
-            Nodes.ItemAdded += (o, e) =>
+
+            Entities.ItemAdded += (o, e) =>
             {
-                var node = (T)e;
-                OnNodeAdded(NodeFamily.EntityForNode(node), node);
+                var entity = (Entity)e;
+                OnNodeAdded(entity, NodeFamily.NodeForEntity(entity));
             };
-            Nodes.ItemRemoved += (o, e) =>
+            Entities.ItemRemoved += (o, e) =>
             {
-                var node = (T)e;
-                OnNodeRemoved(NodeFamily.EntityForNode(node), node);
+                var entity = (Entity)e;
+                OnNodeRemoved(entity, NodeFamily.NodeForEntity(entity));
             };
         }
 
@@ -132,23 +136,23 @@ namespace MultiPlayer.Core.Systems
             if (message is StartMessage)
             {
                 StartSystem();
-                Nodes.Foreach(n =>
+                Entities.ForEach(e =>
                 {
-                    Start(NodeFamily.EntityForNode(n), n);
+                    Start(e, NodeFamily.NodeForEntity(e));
                 });
             }
             else if (message is UpdateMessage)
             {
                 UpdateSystem();
-                Nodes.Foreach(n => {
-                    Update(NodeFamily.EntityForNode(n), n);
+                Entities.ForEach(e => {
+                    Update(e, NodeFamily.NodeForEntity(e));
                 });
             }
             else if (message is DrawMessage)
             {
                 DrawSystem();
-                Nodes.Foreach(n => {
-                    Draw(NodeFamily.EntityForNode(n), n);
+                Entities.ForEach(e => {
+                    Draw(e, NodeFamily.NodeForEntity(e));
                 });
             }
             else if (message is ComponentAddedMessage)

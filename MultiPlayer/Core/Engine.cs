@@ -91,7 +91,7 @@ namespace MultiPlayer.Core
 
             var systemType = system.GetType();
             var messageTypes = system.HearsMessages();
-            messageTypes.Foreach(t => MessageHub.Register(systemType, t));
+            messageTypes.ForEach(t => MessageHub.Register(systemType, t));
 
             var requiredTypes = system.RequiredTypes();
             FamilyManager.Register(requiredTypes);
@@ -115,8 +115,6 @@ namespace MultiPlayer.Core
             MessageHub.SendMessage(new LateUpdateMessage(time));
 
             Updating = false;
-
-            FamilyManager.Update();
         }
 
         public void Draw()

@@ -34,22 +34,22 @@ namespace MultiPlayer.Core.Families
 
         public void OnEntityCreated(Entity entity)
         {
-            families.Foreach(f => f.OnEntityCreated(entity));
+            families.ForEach(f => f.OnEntityCreated(entity));
         }
 
         public void OnEntityRemoved(Entity entity)
         {
-            families.Foreach(f => f.OnEntityRemoved(entity));
+            families.ForEach(f => f.OnEntityRemoved(entity));
         }
 
         public void OnComponentAdded(Entity entity, object component)
         {
-            families.Foreach(f => f.OnComponentAdded(entity, component));
+            families.ForEach(f => f.OnComponentAdded(entity, component));
         }
 
         public void OnComponentRemoved(Entity entity, object component)
         {
-            families.Foreach(f => f.OnComponentRemoved(entity, component));
+            families.ForEach(f => f.OnComponentRemoved(entity, component));
         }
 
         public IFamily Get(ConstituentTypes constituentTypes)
@@ -87,11 +87,6 @@ namespace MultiPlayer.Core.Families
         public INodeFamily<T> GetNodeFamily<T>()
         {
             return (INodeFamily<T>)nodeFamilyTypes[typeof(T)];
-        }
-
-        internal void Update()
-        {
-            families.Foreach(family => family.Maintain());
         }
     }
 }
