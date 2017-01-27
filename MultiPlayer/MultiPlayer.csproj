@@ -48,6 +48,9 @@
     <Compile Include="Annotations\EditorIgnoreAttribute.cs" />
     <Compile Include="Annotations\HearsMessageAttribute.cs" />
     <Compile Include="Annotations\NodeTypeAttribute.cs" />
+    <Compile Include="Assets\Asset.cs" />
+    <Compile Include="Assets\AssetManager.cs" />
+    <Compile Include="Assets\TextureAsset.cs" />
     <Compile Include="Collections\ConstituentTypes.cs" />
     <Compile Include="Collections\ObservableLinkedList.cs" />
     <Compile Include="Core\AABB.cs" />
