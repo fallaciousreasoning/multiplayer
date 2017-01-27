@@ -39,7 +39,7 @@ namespace MultiPlayer.Core
         {
             var t = typeof(T);
             EnsureValidWithType(t);
-            WithComponents.Add(t);
+            WithoutComponents.Add(t);
 
             return this;
         }

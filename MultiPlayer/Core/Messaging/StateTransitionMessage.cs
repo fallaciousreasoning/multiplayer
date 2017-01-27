@@ -8,7 +8,13 @@ namespace MultiPlayer.Core.Messaging
 {
     public class StateTransitionMessage : ITargetedMessage
     {
-        public Entity Target { get; set; }
-        public string TargetState { get; set; }
+        public StateTransitionMessage(Entity entity, string targetState)
+        {
+            Target = entity;
+            TargetState = targetState;
+
+        }
+        public Entity Target { get; }
+        public string TargetState { get; }
     }
 }
