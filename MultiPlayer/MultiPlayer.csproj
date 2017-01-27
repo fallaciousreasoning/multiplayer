@@ -82,7 +82,9 @@
     <Compile Include="Core\Messaging\ComponentRemovedMessage.cs" />
     <Compile Include="Core\Messaging\MessageHandler.cs" />
     <Compile Include="Core\Messaging\MessageRouter.cs" />
+    <Compile Include="Core\Messaging\StateTransitionMessage.cs" />
     <Compile Include="Core\PrefabManager.cs" />
+    <Compile Include="Core\StateMachine.cs" />
     <Compile Include="Core\Systems\ComponentProcessingSystem.cs" />
     <Compile Include="Core\Systems\EntityProcessingSystem.cs" />
     <Compile Include="Core\Components\Camera.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="Core\Systems\SimpleSystem.cs" />
     <Compile Include="Core\Systems\SingleResponsibilitySystem.cs" />
     <Compile Include="Core\Systems\SpriteRenderer.cs" />
+    <Compile Include="Core\Systems\StateManager.cs" />
     <Compile Include="Core\Systems\SystemManager.cs" />
     <Compile Include="Core\Systems\ISystem.cs" />
     <Compile Include="Core\Systems\LateUpdateableSystem.cs" />

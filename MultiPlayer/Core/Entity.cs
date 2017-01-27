@@ -32,6 +32,12 @@ namespace MultiPlayer.Core
             Remove(component);
         }
 
+        public void Remove(Type t)
+        {
+            var component = components[t];
+            Remove(component);
+        }
+
         public void Remove(object component)
         {
             components.Remove(component.GetType());
@@ -67,7 +73,7 @@ namespace MultiPlayer.Core
 
         public Action<Entity, object> ComponentAdded;
         public Action<Entity, object> ComponentRemoved;
-
+        
         public int Id { get; internal set; }
         public string FriendlyName { get; set; }
         public LinkedListNode<Entity> Node { get; set; }
