@@ -45,9 +45,11 @@
     <StartupObject>Runner.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Builders\BackgroundBuilder.cs" />
     <Compile Include="Builders\CameraBuilder.cs" />
     <Compile Include="Builders\ObstacleBuilder.cs" />
     <Compile Include="Builders\CharacterBuilder.cs" />
+    <Compile Include="Components\BuildingInfo.cs" />
     <Compile Include="Components\CharacterInput.cs" />
     <Compile Include="Components\Clamber.cs" />
     <Compile Include="Components\Divable.cs" />
@@ -56,6 +58,7 @@
     <Compile Include="Components\Roll.cs" />
     <Compile Include="Components\Slide.cs" />
     <Compile Include="Components\Touching.cs" />
+    <Compile Include="Systems\BuildingRenderer.cs" />
     <Compile Include="Systems\CharacterSystem.cs" />
     <Compile Include="Systems\Clamberer.cs" />
     <Compile Include="Systems\DiveInitiator.cs" />
