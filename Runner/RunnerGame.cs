@@ -26,6 +26,8 @@ namespace Runner
 
             Engine.AddSystem(new TouchTrackingSystem());
 
+            Engine.AddSystem(new BuildingRenderer());
+
             Engine.AddSystem(new CharacterSystem());
             Engine.AddSystem(new Mover());
             Engine.AddSystem(new Roller());
@@ -52,6 +54,7 @@ namespace Runner
             PrefabManager.Instantiate("platform", new Vector2(11f, 1), 0, new Vector2(1, 4));
 
             PrefabManager.Instantiate("divable", new Vector2(0f, 1.5f), 0, new Vector2(1, 1));
+            PrefabManager.Instantiate("buildings", new Vector2(0, 15));
 
             camera = CameraBuilder.Camera(player.Last().Get<Transform>()).CreateRoot();
             Engine.AddEntity(camera);

@@ -3,21 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using MultiPlayer;
 using MultiPlayer.Factories;
+using Runner.Components;
 
 namespace Runner.Builders
 {
     public static class BackgroundBuilder
     {
         private const int SEED = 17560832;
-        private const int BUILDINGS = 10;
+        private const int BUILDINGS = 5;
 
-        public static EntityBuilder Build()
+        public static EntityBuilder BuildBuildings()
         {
             var random = new Random(SEED);
 
-            var builder = new EntityBuilder();
-            var children = new List<EntityBuilder>();
+            var builder = EntityBuilder.New();
+
+            for (var i = 0; i < BUILDINGS; ++i)
+            {
+                var building = EntityBuilder.New()
+                    .With(new BuildingInfo()
+                    {
+                        HeightInTiles = random.Next(10, 50),
+                        WidthInTiles = random.Next(5, 8),
+                        Z = (float)random.NextDouble() * 30,
+                        TopLeftCorner = TextureUtil.CreateTexture(64, 64, Color.DarkGray),
+                        TopTexture = TextureUtil.CreateTexture(64, 64, Color.DarkGray),
+                        WallTexture = TextureUtil.CreateTexture(64, 64, Color.LightGray),
+                        InnerTexture = TextureUtil.CreateTexture(64, 64, Color.LightGray)
+                    })
+                    .AtPosition(new Vector2((float)random.NextDouble() * 20 - 10, 0));
+                builder.WithChild(building);
+            }
 
             return builder;
         }

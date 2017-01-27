@@ -29,16 +29,17 @@ namespace Runner.Systems
 
         private void DrawBuilding(SpriteBatch spriteBatch, BuildingInfo info, Transform transform)
         {
-            var step = info.TileSize;
-            var halfSize = info.TileSize * 0.5f;
-            var halfWidth = info.Width * 0.5f;
+            var step = info.TileSize * info.PositionScale;
+            var halfSize = info.TileSize * 0.5f * info.PositionScale;
+            var halfWidth = info.Width * 0.5f * info.PositionScale;
+            var height = info.Height * info.PositionScale;
 
             for (int x = 0; x < info.WidthInTiles; ++x)
             for (var y = 0; y < info.HeightInTiles; ++y)
             {
                 var xPos = transform.Position.X - halfWidth + step * x;
-                var yPos = transform.Position.Y - info.Height + step * y;
-                var position = new Vector2(xPos, yPos) * Transform.PIXELS_A_METRE;
+                var yPos = transform.Position.Y - height + step * y;
+                var position = new Vector2(xPos, yPos + transform.WorldPosition.Y*info.PositionScale) * Transform.PIXELS_A_METRE ;
 
                 var texture = info.InnerTexture;
                 var effects = SpriteEffects.None;

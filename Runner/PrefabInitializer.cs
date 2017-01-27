@@ -16,6 +16,7 @@ namespace Runner
             prefabManager.RegisterPrefab("divable", ObstacleBuilder.DivableObstacle);
 
             prefabManager.RegisterPrefab("player", CharacterBuilder.Player);
+            prefabManager.RegisterPrefab("buildings", BackgroundBuilder.BuildBuildings);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Runner.Components
     {
         public Color Tint { get; set; } = Color.White;
 
-        public const float MAX_Z = 100;
+        public const float MAX_Z = 200;
         public float Z { get; set; }
 
         public int WidthInTiles { get; set; }
@@ -33,8 +33,8 @@ namespace Runner.Components
 
         public float TextureXScale => TopTexture.Width * Transform.METRES_A_PIXEL / TileSize;
         public float TextureYScale => InnerTexture.Height * Transform.METRES_A_PIXEL / TileSize;
-
-        public Vector2 Scale => new Vector2(TextureXScale, TextureYScale) * Z / MAX_Z;
+        public float PositionScale => (MAX_Z - Z) / MAX_Z;
+        public Vector2 Scale => new Vector2(TextureXScale, TextureYScale) * PositionScale;
 
         public bool IsWindow(int x, int y)
         {
