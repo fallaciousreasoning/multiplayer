@@ -8,16 +8,16 @@ namespace MultiPlayer.Core
 {
     public class StateMachine
     {
-        public readonly Dictionary<string, State> States = new Dictionary<string, State>();
+        internal readonly Dictionary<string, Transition> Transitions = new Dictionary<string, Transition>();
 
-        public StateMachine WithState(string stateName, State state)
+        public StateMachine WithTransition(string stateName, Transition state)
         {
-            States.Add(stateName, state);
+            Transitions.Add(stateName, state);
             return this;
         }
     }
 
-    public class State
+    public class Transition
     {
         internal bool IsCleanState { get; private set; }
         internal readonly List<Type> WithoutComponents = new List<Type>();
@@ -28,13 +28,13 @@ namespace MultiPlayer.Core
 
         private readonly HashSet<Type> types = new HashSet<Type>();
 
-        public State SetIsCleanState(bool isCleanState = true)
+        public Transition SetIsCleanState(bool isCleanState = true)
         {
             IsCleanState = isCleanState;
             return this;
         }
 
-        public State WithoutComponent<T>()
+        public Transition WithoutComponent<T>()
             where T : class
         {
             var t = typeof(T);
@@ -44,7 +44,7 @@ namespace MultiPlayer.Core
             return this;
         }
 
-        public State WithComponent(object component)
+        public Transition WithComponent(object component)
         {
             EnsureValidWithType(component.GetType());
 
@@ -52,7 +52,7 @@ namespace MultiPlayer.Core
             return this;
         }
 
-        public State WithComponent<T>()
+        public Transition WithComponent<T>()
             where T : class, new()
         {
             var t = typeof(T);
@@ -62,7 +62,7 @@ namespace MultiPlayer.Core
             return this;
         }
 
-        public State WithNewComponent<T>()
+        public Transition WithNewComponent<T>()
             where T : class, new()
         {
             var t = typeof(T);
@@ -71,7 +71,7 @@ namespace MultiPlayer.Core
             return this;
         }
 
-        public State WithComponent<T>(Func<T> creator)
+        public Transition WithComponent<T>(Func<T> creator)
         {
             EnsureValidWithType(typeof(T));
 

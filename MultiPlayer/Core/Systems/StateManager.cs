@@ -24,9 +24,9 @@ namespace MultiPlayer.Core.Systems
         {
             var stateMachine = entity.Get<StateMachine>();
 
-            if (!stateMachine.States.ContainsKey(stateName)) throw new ArgumentException($"Invalid state {stateName}");
+            if (!stateMachine.Transitions.ContainsKey(stateName)) throw new ArgumentException($"Invalid state {stateName}");
 
-            var state = stateMachine.States[stateName];
+            var state = stateMachine.Transitions[stateName];
 
             if (state.IsCleanState)
                 entity.Clear();
