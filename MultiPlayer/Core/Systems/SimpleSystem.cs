@@ -44,32 +44,32 @@ namespace MultiPlayer.Core.Systems
 
         }
 
-        public virtual void OnComponentAdded(Entity entity, T node, object component)
+        public virtual void OnComponentAdded(Entity entity, object component)
         {
 
         }
 
-        public virtual void OnComponentRemoved(Entity entity, T node, object component)
+        public virtual void OnComponentRemoved(Entity entity, object component)
         {
 
         }
 
-        public virtual void OnCollisionEnter(Entity entity1, Entity entity2, T node1, T node2)
+        public virtual void OnCollisionEnter(Entity entity1, Entity entity2)
         {
 
         }
 
-        public virtual void OnCollisionExit(Entity entity1, Entity entity2, T node1, T node2)
+        public virtual void OnCollisionExit(Entity entity1, Entity entity2)
         {
 
         }
 
-        public virtual void OnTriggerEnter(Entity entity1, Entity entity2, T node1, T node2)
+        public virtual void OnTriggerEnter(Entity entity1, Entity entity2)
         {
 
         }
 
-        public virtual void OnTriggerExit(Entity entity1, Entity entity2, T node1, T node2)
+        public virtual void OnTriggerExit(Entity entity1, Entity entity2)
         {
 
         }
@@ -158,12 +158,12 @@ namespace MultiPlayer.Core.Systems
             else if (message is ComponentAddedMessage)
             {
                 var m = (ComponentAddedMessage)message;
-                OnComponentAdded(m.Target, NodeFamily.NodeForEntity(m.Target), m.Component);
+                OnComponentAdded(m.Target, m.Component);
             }
             else if (message is ComponentRemovedMessage)
             {
                 var m = (ComponentRemovedMessage)message;
-                OnComponentRemoved(m.Target, NodeFamily.NodeForEntity(m.Target), m.Component);
+                OnComponentRemoved(m.Target, m.Component);
             }
             else if (message is CollisionMessage)
             {
@@ -171,14 +171,14 @@ namespace MultiPlayer.Core.Systems
                 if (m.IsTrigger)
                 {
                     if (m.Mode == CollisionMode.Entered)
-                        OnTriggerEnter(m.Hit, m.Target, NodeFamily.NodeForEntity(m.Target), NodeFamily.NodeForEntity(m.Hit));
-                    else OnTriggerExit(m.Hit, m.Target, NodeFamily.NodeForEntity(m.Target), NodeFamily.NodeForEntity(m.Hit));
+                        OnTriggerEnter(m.Hit, m.Target);
+                    else OnTriggerExit(m.Hit, m.Target);
                 }
                 else
                 {
                     if (m.Mode == CollisionMode.Entered)
-                        OnCollisionEnter(m.Hit, m.Target, NodeFamily.NodeForEntity(m.Target), NodeFamily.NodeForEntity(m.Hit));
-                    else OnCollisionExit(m.Hit, m.Target, NodeFamily.NodeForEntity(m.Target), NodeFamily.NodeForEntity(m.Hit));
+                        OnCollisionEnter(m.Hit, m.Target);
+                    else OnCollisionExit(m.Hit, m.Target);
                 }
             }
             else if (message is AnimationStartedMessage)
