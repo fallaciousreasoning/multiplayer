@@ -16,7 +16,7 @@ namespace MultiPlayer.Factories
             this.builder = builder;
         }
 
-        public List<Entity> Build()
+        public Entity Build()
         {
             return builder().Create();
         }

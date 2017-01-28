@@ -21,8 +21,20 @@ namespace MultiPlayer.Core
         {
             var type = component.GetType();
 
+            if (component is IKnowsEntity knowsEntity)
+                knowsEntity.Entity = this;
+
+            if (component is IKnowsParent knowsParent && HasComponent<HasParent>())
+                knowsParent.Parent = Get<HasParent>().Parent;
+
             components.Add(type, component);
             ComponentAdded?.Invoke(this, component);
+
+            if (!(component is HasParent parent)) return;
+
+            foreach (var c in Components)     
+                if (c is IKnowsParent knows)
+                    knows.Parent = parent.Parent;
         }
 
         public void Remove<T>()

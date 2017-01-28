@@ -8,7 +8,7 @@ using MultiPlayer.Annotations;
 
 namespace MultiPlayer.Core.Components
 {
-    public class Transform
+    public class Transform : IKnowsParent
     {
         public const float PIXELS_A_METRE = 64;
         public const float METRES_A_PIXEL = 1/PIXELS_A_METRE;
@@ -17,19 +17,18 @@ namespace MultiPlayer.Core.Components
         public bool RotationIndependent;
         public bool ScaleIndependent;
 
-        public Transform Parent;
-
         public Vector2 Position;
         public Vector2 Scale = Vector2.One;
         public float Rotation;
+        private Entity parent;
 
         [EditorIgnore]
         public Vector2 WorldPosition
         {
             get
             {
-                return Parent != null && !PositionIndependent
-                    ? Parent.WorldPosition + Vector2.Transform(Position, Matrix.CreateRotationZ(Parent.Rotation))
+                return ParentTransform != null && !PositionIndependent
+                    ? ParentTransform.WorldPosition + Vector2.Transform(Position, Matrix.CreateRotationZ(ParentTransform.Rotation))
                     : Position;
             }
             set { Position = value - (WorldPosition - Position); }
@@ -38,15 +37,29 @@ namespace MultiPlayer.Core.Components
         [EditorIgnore]
         public Vector2 WorldScale
         {
-            get { return Scale*(ScaleIndependent ? Vector2.One : Parent?.WorldScale ?? Vector2.One); }
-            set { Scale = value/(ScaleIndependent ? Vector2.One : Parent?.WorldScale ?? Vector2.One); }
+            get { return Scale*(ScaleIndependent ? Vector2.One : ParentTransform?.WorldScale ?? Vector2.One); }
+            set { Scale = value/(ScaleIndependent ? Vector2.One : ParentTransform?.WorldScale ?? Vector2.One); }
         }
 
         [EditorIgnore]
         public float WorldRotation
         {
-            get { return Rotation + (RotationIndependent ? 0 : Parent?.WorldRotation ?? 0); }
-            set { Rotation = value - (RotationIndependent ? 0 : Parent?.WorldRotation ?? 0); }
+            get { return Rotation + (RotationIndependent ? 0 : ParentTransform?.WorldRotation ?? 0); }
+            set { Rotation = value - (RotationIndependent ? 0 : ParentTransform?.WorldRotation ?? 0); }
+        }
+
+        [EditorIgnore]
+        public Transform ParentTransform { get; set; }
+
+        [EditorIgnore]
+        public Entity Parent
+        {
+            get { return parent; }
+            set
+            {
+                parent = value;
+                ParentTransform = parent != null && parent.HasComponent<Transform>() ? parent.Get<Transform>() : null;
+            }
         }
     }
 }

@@ -13,7 +13,8 @@ namespace MultiPlayer.Factories
     public class EntityBuilder
     {
         private Dictionary<Type, object> Components = new Dictionary<Type, object>();
-        private List<EntityBuilder> children = new List<EntityBuilder>();
+
+        private List<EntityBuilder> childCreators = new List<EntityBuilder>();
 
         public EntityBuilder WithTag(string tag)
         {
@@ -61,30 +62,29 @@ namespace MultiPlayer.Factories
             });
         }
 
-        public List<Entity> Create(Entity parent=null)
+        public Entity Create()
         {
-            var created = new List<Entity>();
+            var root = CreateRoot();
+            var children = root.HasComponent<HasChildren>() ? root.Get<HasChildren>() : null;
 
-            var root = CreateRoot(parent);
-            created.Add(root);
-
-            foreach (var builder in children)
+            foreach (var builder in childCreators)
             {
-                var entities = builder.Create(root);
-                created.AddRange(entities);
+                var entity = builder.Create();
+                children.AddChild(entity);
             }
 
-            return created;
+            return root;
         }
 
-        public Entity CreateRoot(Entity parent=null)
+        private Entity CreateRoot()
         {
             var entity = new Entity();
+
             foreach (var key in Components.Keys)
                 entity.Add(Components[key]);
 
-            if (parent != null && entity.HasComponent<Transform>() && parent.HasComponent<Transform>())
-                entity.Get<Transform>().Parent = parent.Get<Transform>();
+            if (childCreators.Count > 0 && !entity.HasComponent<HasChildren>())
+                entity.Add<HasChildren>();
 
             return entity;
         }
@@ -109,7 +109,7 @@ namespace MultiPlayer.Factories
 
         public EntityBuilder WithChild(EntityBuilder child)
         {
-            children.Add(child);
+            childCreators.Add(child);
             return this;
         }
     }

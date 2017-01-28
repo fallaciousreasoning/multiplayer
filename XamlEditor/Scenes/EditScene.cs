@@ -37,7 +37,7 @@ namespace XamlEditor.Scenes
                 entity.Add(new Transform());
 
 
-            entity.Get<Transform>().Parent = parent;
+            entity.Get<Transform>().ParentTransform = parent;
 
             entity.Add(new Dragger());
             entity.Add(new TransformWatcher());

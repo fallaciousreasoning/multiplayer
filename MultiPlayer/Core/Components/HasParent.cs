@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MultiPlayer.Core;
 
-namespace MultiPlayer.Factories
+namespace MultiPlayer.Core.Components
 {
-    public interface IPrefab
+    public class HasParent
     {
-        Entity Build();
+        public Entity Parent { get; internal set; }
     }
 }

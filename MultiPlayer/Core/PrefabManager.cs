@@ -31,64 +31,67 @@ namespace MultiPlayer.Core
             entityBuilders.Add(name, builder);
         }
 
-        public List<Entity> Instantiate(string name)
+        public Entity Instantiate(string name)
         {
             return Instantiate(name, Vector2.Zero);
         }
 
-        public List<Entity> Instantiate(string name, Vector2 position)
+        public Entity Instantiate(string name, Vector2 position)
         {
             return Instantiate(name, position, 0);
         }
 
-        public List<Entity> Instantiate(string name, Vector2 position, float rotation)
+        public Entity Instantiate(string name, Vector2 position, float rotation)
         {
             return Instantiate(name, position, rotation, Vector2.One);
         }
 
-        public List<Entity> Instantiate(string name, Vector2 position, float rotation, Vector2 scale)
+        public Entity Instantiate(string name, Vector2 position, float rotation, Vector2 scale)
         {
-            var entities = Build(name, position, rotation, scale);
+            var entity = Build(name, position, rotation, scale);
+            
+            Instantiate(entity);
 
-            entities.Reverse();
-            EnumerableExtensions.ForEach(entities, manager.AddEntity);
-
-            return entities;
+            return entity;
         }
 
         public Entity Instantiate(Entity entity)
         {
+            var children = entity.Get<HasChildren>();
+            children?.Children.ForEach(c => Instantiate(c));
+
             manager.AddEntity(entity);
+
             return entity;
         }
 
-        public List<Entity> Build(string name)
+        public Entity Build(string name)
         {
             return Build(name, Vector2.Zero);
         }
 
-        public List<Entity> Build(string name, Vector2 position)
+        public Entity Build(string name, Vector2 position)
         {
             return Build(name, position, 0);
         }
 
-        public List<Entity> Build(string name, Vector2 position, float rotation)
+        public Entity Build(string name, Vector2 position, float rotation)
         {
             return Build(name, position, rotation, Vector2.One);
         }
 
-        public List<Entity> Build(string name, Vector2 position, float rotation, Vector2 scale)
+        public Entity Build(string name, Vector2 position, float rotation, Vector2 scale)
         {
             name = ignoreCase ? name.ToLower() : name;
             if (!entityBuilders.ContainsKey(name)) throw new Exception($"You don't have a prefab called {name}");
 
-            var entities = entityBuilders[name]()
+            var entity = entityBuilders[name]()
                 .AtPosition(position)
                 .AtRotation(rotation)
                 .AtScale(scale)
                 .Create();
 
-            return entities;
+            return entity;
         }
     }
 }

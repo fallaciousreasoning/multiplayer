@@ -10,8 +10,10 @@ using MultiPlayer;
 using MultiPlayer.Core;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.InputMethods;
+using MultiPlayer.Factories;
 using Newtonsoft.Json;
 using Runner.Builders;
+using Runner.Components;
 using Runner.Systems;
 
 namespace Runner
@@ -58,7 +60,7 @@ namespace Runner
             PrefabManager.Instantiate("divable", new Vector2(0f, -1.5f), 0, new Vector2(1, 1));
             PrefabManager.Instantiate("buildings", new Vector2(0, 15));
 
-            camera = CameraBuilder.Camera(player.Last().Get<Transform>()).CreateRoot();
+            camera = CameraBuilder.Camera(player.Get<Transform>()).Create();
             Engine.AddEntity(camera);
         }
 

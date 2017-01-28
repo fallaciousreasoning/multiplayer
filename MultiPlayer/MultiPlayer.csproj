@@ -78,6 +78,10 @@
     <Compile Include="Core\Animation\ScaleAccessor.cs" />
     <Compile Include="Core\Animation\Vector2Calculator.cs" />
     <Compile Include="Core\Animation\Vector2Frame.cs" />
+    <Compile Include="Core\Components\HasChildren.cs" />
+    <Compile Include="Core\Components\IKnowsEntity.cs" />
+    <Compile Include="Core\Components\HasParent.cs" />
+    <Compile Include="Core\Components\IKnowsParent.cs" />
     <Compile Include="Core\Components\Tag.cs" />
     <Compile Include="Core\Families\IFamilyComposedOf.cs" />
     <Compile Include="Core\Families\NodeFamily.cs" />
