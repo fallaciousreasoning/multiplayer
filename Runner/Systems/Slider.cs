@@ -57,7 +57,7 @@ namespace Runner.Systems
 
         private void Complete(Entity entity)
         {
-            Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.MOVE_STATE));
+            Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterPrefab.MOVE_STATE));
 
             entity.Get<CharacterInput>().Slide = false;
         }

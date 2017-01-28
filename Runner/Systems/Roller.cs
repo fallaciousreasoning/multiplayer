@@ -41,7 +41,7 @@ namespace Runner.Systems
                     Roll(entity);
                 else
                 {
-                    Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.MOVE_STATE));
+                    Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterPrefab.MOVE_STATE));
                 }
             }
         }

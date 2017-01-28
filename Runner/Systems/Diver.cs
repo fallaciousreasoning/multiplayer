@@ -46,7 +46,7 @@ namespace Runner.Systems
 
                     entity.Get<Transform>().Rotation = 0;
 
-                    Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.ROLL_STATE));
+                    Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterPrefab.ROLL_STATE));
                 }
             }
         }

@@ -12,22 +12,20 @@ using MultiPlayer.Core.Components;
 using MultiPlayer.Factories;
 using Newtonsoft.Json;
 using Runner.Components;
+using Runner.Prefabs;
 using Runner.Systems;
 
 namespace Runner.Builders
 {
-    public static class CharacterBuilder
+    public class CharacterPrefab : IPrefab
     {
-        public const string CHARACTER_TAG = "character";
-        public const string PLAYER_TAG = "player";
-
         public const string CLAMBER_STATE = "clamber";
         public const string DIVE_STATE = "dive";
         public const string MOVE_STATE = "move";
         public const string ROLL_STATE = "roll";
         public const string SLIDE_STATE = "slide";
 
-        public static EntityBuilder Player()
+        public Entity Build()
         {
             var width = 0.5f;
             var height = 1f;
@@ -101,8 +99,8 @@ namespace Runner.Builders
                 .Add(Animations.Name(PlayerAnimation.Dive, Direction.Left), diveLeftAnimation);
 
             return EntityBuilder.New()
-                .WithTag(PLAYER_TAG)
-                .WithTag(CHARACTER_TAG)
+                .WithTag(Tags.PLAYER)
+                .WithTag(Tags.CHARACTER)
                 .WithTexture(TextureUtil.CreateTexture(widthPixels, heightPixels, Color.White))
                 .With(LoadStats())
                 .With(new CharacterInfo()
@@ -192,7 +190,8 @@ namespace Runner.Builders
                         .WithoutComponent<Dive>()
                         .WithoutComponent<Move>()
                         .WithoutComponent<Roll>()
-                        .WithoutComponent<Slide>()));
+                        .WithoutComponent<Slide>()))
+                        .Create();
         }
 
         public static AnimationBuilder ClamberAnimation()

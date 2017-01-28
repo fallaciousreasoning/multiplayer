@@ -12,7 +12,7 @@ namespace MultiPlayer.Core
 {
     public class PrefabManager
     {
-        private readonly Dictionary<string, Func<EntityBuilder>> entityBuilders = new Dictionary<string, Func<EntityBuilder>>();
+        private readonly Dictionary<string, IPrefab> entityBuilders = new Dictionary<string, IPrefab>();
         private readonly bool ignoreCase;
 
         private readonly Engine manager;
@@ -23,12 +23,12 @@ namespace MultiPlayer.Core
             this.ignoreCase = ignoreCase;
         }
 
-        public void RegisterPrefab(string name, Func<EntityBuilder> builder)
+        public void RegisterPrefab(string name, IPrefab prefab)
         {
             name = ignoreCase ? name.ToLower() : name;
             if (entityBuilders.ContainsKey(name)) throw new Exception($"You've already created a prefab called {name}");
 
-            entityBuilders.Add(name, builder);
+            entityBuilders.Add(name, prefab);
         }
 
         public Entity Instantiate(string name)
@@ -85,11 +85,14 @@ namespace MultiPlayer.Core
             name = ignoreCase ? name.ToLower() : name;
             if (!entityBuilders.ContainsKey(name)) throw new Exception($"You don't have a prefab called {name}");
 
-            var entity = entityBuilders[name]()
-                .AtPosition(position)
-                .AtRotation(rotation)
-                .AtScale(scale)
-                .Create();
+            var entity = entityBuilders[name].Build();
+            var transform = entity.Get<Transform>();
+            if (transform != null)
+            {
+                transform.Position = position;
+                transform.Rotation = rotation;
+                transform.Scale = scale;
+            }
 
             return entity;
         }

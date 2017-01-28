@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer.Core;
 using Runner.Builders;
+using Runner.Prefabs;
 
 namespace Runner.Components
 {
@@ -13,6 +14,6 @@ namespace Runner.Components
         public float MinSpeedForDive = 10;
         public Touching Touching;
 
-        public LinkedList<Entity> Characters => Touching?.TouchingTag(CharacterBuilder.CHARACTER_TAG);
+        public LinkedList<Entity> Characters => Touching?.TouchingTag(Tags.CHARACTER);
     }
 }

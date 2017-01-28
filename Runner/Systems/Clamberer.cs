@@ -35,7 +35,7 @@ namespace Runner.Systems
                 var otherEntity = NodeFamily.EntityForNode(otherNode);
                 if (entity != otherEntity) continue;
 
-                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.MOVE_STATE));
+                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterPrefab.MOVE_STATE));
                 break;
             }
         }

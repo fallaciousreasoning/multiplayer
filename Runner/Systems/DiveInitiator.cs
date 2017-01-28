@@ -34,7 +34,7 @@ namespace Runner.Systems
                 if (Math.Abs(info.Velocity.X) < divable.MinSpeedForDive || info.Velocity.Y > -3) continue;
 
                 //Transition to the dive state
-                Engine.MessageHub.SendMessage(new StateTransitionMessage(character, CharacterBuilder.DIVE_STATE));
+                Engine.MessageHub.SendMessage(new StateTransitionMessage(character, CharacterPrefab.DIVE_STATE));
             }
         }
     }

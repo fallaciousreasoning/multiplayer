@@ -55,7 +55,7 @@ namespace Runner.Systems
             if (!info.WasOnGround && info.OnGround && info.ShouldRoll)
             {
                 info.ShouldRoll = false;
-                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.ROLL_STATE));
+                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterPrefab.ROLL_STATE));
             }
 
             info.WasOnGround = info.OnGround;
@@ -73,7 +73,7 @@ namespace Runner.Systems
             {
                 info.Velocity = Vector2.Zero;
 
-                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.CLAMBER_STATE));
+                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterPrefab.CLAMBER_STATE));
             }
             else if (info.CanWallJump)
             {
@@ -88,7 +88,7 @@ namespace Runner.Systems
         {
             if (info.OnGround && Math.Abs(info.Velocity.X) > stats.MinSlideVelocity)
             {
-                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterBuilder.SLIDE_STATE));
+                Engine.MessageHub.SendMessage(new StateTransitionMessage(entity, CharacterPrefab.SLIDE_STATE));
 
                 info.TillJump = stats.SlideJumpDelay;
             }

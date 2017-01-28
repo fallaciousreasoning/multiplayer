@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Runner.Builders;
+using Runner.Prefabs;
 
 namespace Runner.Components
 {
@@ -48,8 +49,8 @@ namespace Runner.Components
             get
             {
                 var away = 0;
-                if (LeftWallDetector.IsTouching(ObstacleBuilder.OBSTACLE_TAG)) away++;
-                if (RightWallDetector.IsTouching(ObstacleBuilder.OBSTACLE_TAG)) away--;
+                if (LeftWallDetector.IsTouching(Tags.PLATFORM)) away++;
+                if (RightWallDetector.IsTouching(Tags.PLATFORM)) away--;
                 return away;
             }
         }
@@ -61,21 +62,21 @@ namespace Runner.Components
         public bool CanWallJump
             =>
                 !OnGround &&
-                (LeftWallDetector.IsTouching(ObstacleBuilder.OBSTACLE_TAG) ||
-                 RightWallDetector.IsTouching(ObstacleBuilder.OBSTACLE_TAG)) && !CanClamber;
+                (LeftWallDetector.IsTouching(Tags.PLATFORM) ||
+                 RightWallDetector.IsTouching(Tags.PLATFORM)) && !CanClamber;
 
         /// <summary>
         /// Determines whether the player is on the ground
         /// </summary>
-        public bool OnGround => GroundDetector.IsTouching(ObstacleBuilder.OBSTACLE_TAG);
+        public bool OnGround => GroundDetector.IsTouching(Tags.PLATFORM);
 
         /// <summary>
         /// Indicates whether the player can stand
         /// </summary>
         public bool CanStand
             =>
-                !CeilingDetector.IsTouching(ObstacleBuilder.OBSTACLE_TAG) &&
-                !RoomToStandDetector.IsTouching(ObstacleBuilder.OBSTACLE_TAG);
+                !CeilingDetector.IsTouching(Tags.PLATFORM) &&
+                !RoomToStandDetector.IsTouching(Tags.PLATFORM);
 
         /// <summary>
         /// Determines whether the player can clamber onto a ledge. Ledge direction is 
@@ -83,9 +84,9 @@ namespace Runner.Components
         /// </summary>
         public bool CanClamber
             =>
-                (LeftWallDetector.IsTouching(ObstacleBuilder.OBSTACLE_TAG) ||
-                 RightWallDetector.IsTouching(ObstacleBuilder.OBSTACLE_TAG)) &&
-                !ClamberDetector.IsTouching(ObstacleBuilder.OBSTACLE_TAG);
+                (LeftWallDetector.IsTouching(Tags.PLATFORM) ||
+                 RightWallDetector.IsTouching(Tags.PLATFORM)) &&
+                !ClamberDetector.IsTouching(Tags.PLATFORM);
 
         /// <summary>
         /// Detects when the gameobject is touching the ground
@@ -124,7 +125,7 @@ namespace Runner.Components
         /// <returns>Whether it is touching an obstacle</returns>
         public bool Triggered(Touching touching)
         {
-            return touching.IsTouching(ObstacleBuilder.OBSTACLE_TAG);
+            return touching.IsTouching(Tags.PLATFORM);
         }
     }
 }

@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MultiPlayer;
+using MultiPlayer.Core;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Factories;
 using Runner.Components;
 
-namespace Runner.Builders
+namespace Runner.Prefabs
 {
-    public static class CameraBuilder
+    public class CameraPrefab : IPrefab
     {
-        public static EntityBuilder Camera(Transform target)
+        private Transform target;
+        public CameraPrefab(Transform target)
+        {
+            this.target = target;
+        }
+
+        public Entity Build()
         {
             return EntityBuilder.New()
                 .With(new Camera())
@@ -19,7 +26,8 @@ namespace Runner.Builders
                 {
                     Spring = 5,
                     Target = target
-                });
+                })
+                .Create();
         }
     }
 }

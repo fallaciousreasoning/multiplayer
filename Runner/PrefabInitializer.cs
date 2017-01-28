@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MultiPlayer.Core;
 using Runner.Builders;
+using Runner.Prefabs;
 
 namespace Runner
 {
@@ -12,11 +13,11 @@ namespace Runner
     {
         public static void AddRunnerGamePrefabs(PrefabManager prefabManager)
         {
-            prefabManager.RegisterPrefab("platform", ObstacleBuilder.Obstacle);
-            prefabManager.RegisterPrefab("divable", ObstacleBuilder.DivableObstacle);
+            prefabManager.RegisterPrefab("platform", new PlatformPrefab());
+            prefabManager.RegisterPrefab("divable", new DivablePrefab());
 
-            prefabManager.RegisterPrefab("player", CharacterBuilder.Player);
-            prefabManager.RegisterPrefab("buildings", BackgroundBuilder.BuildBuildings);
+            prefabManager.RegisterPrefab("player", new CharacterPrefab());
+            prefabManager.RegisterPrefab("buildings", new BuildingPrefab());
         }
     }
 }
