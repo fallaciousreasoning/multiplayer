@@ -150,7 +150,7 @@
     <Compile Include="Factories\BasicPrefab.cs" />
     <Compile Include="Factories\ColliderBuilder.cs" />
     <Compile Include="Factories\EntityBuilder.cs" />
-    <Compile Include="Factories\EntitySerializer.cs" />
+    <Compile Include="Serialization\EntitySerializer.cs" />
     <Compile Include="Factories\IPrefab.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -158,6 +158,7 @@
     <Compile Include="Core\Content\TextureUtil.cs" />
     <Compile Include="Reflection\ObjectActivator.cs" />
     <Compile Include="Scene.cs" />
+    <Compile Include="Serialization\SerializationContractResolver.cs" />
     <Compile Include="Test\Components\StayOnMouse.cs" />
     <Compile Include="Test\Systems\StayOnMouseSystem.cs" />
     <Compile Include="Test\Systems\TestCollisionListener.cs" />
@@ -174,6 +175,9 @@
     <Reference Include="MonoGame.Framework, Version=3.5.1.1679, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Desktop\Game1\Game1\bin\Windows\x86\Debug\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">

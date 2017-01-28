@@ -11,6 +11,7 @@ using MultiPlayer.Core;
 using MultiPlayer.Core.Components;
 using MultiPlayer.Core.InputMethods;
 using MultiPlayer.Factories;
+using MultiPlayer.Serialization;
 using Newtonsoft.Json;
 using Runner.Builders;
 using Runner.Components;
@@ -62,6 +63,10 @@ namespace Runner
             PrefabManager.Instantiate("buildings", new Vector2(0, 15));
 
             camera = new CameraPrefab(player.Get<Transform>()).Build();
+
+            var json = new EntitySerializer().Serialize(camera);
+            File.WriteAllText("entity.json", json);
+            var result = new EntitySerializer().Deserialize(json);
             Engine.AddEntity(camera);
         }
 
